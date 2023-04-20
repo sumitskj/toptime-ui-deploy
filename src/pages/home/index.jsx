@@ -43,7 +43,7 @@ const Home = () => {
             </CustomisedHomeText>
           </Grid>
           <Grid item xs={4}>
-            <Card sx={{ width: '100%' }}>
+            <Card sx={{ width: '100%', height: '100%' }}>
               <CardMedia image={CtImage} title='content creator' sx={{ height: '100%' }} />
             </Card>
           </Grid>

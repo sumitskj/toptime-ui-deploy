@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 import { styled } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
@@ -41,6 +41,15 @@ const CustomisedBecomeExpert = styled(Button)`
 `;
 
 const Main = () => {
+  const navigate = useNavigate();
+
+  const handleLogIn = () => {
+    navigate('/login');
+  };
+  const handleSignUp = () => {
+    navigate('/sign-up');
+  };
+
   return (
     <div className='top-time-app-bar'>
       <AppBar position='static'>
@@ -68,8 +77,10 @@ const Main = () => {
                 <Grid container item xs={6} justifyContent='flex-end'>
                   <CustomisedBecomeExpert variant='outlined'>Become expert</CustomisedBecomeExpert>
                   <ButtonGroup variant='outlined' disableRipple>
-                    <CustomizedCreateAccount>Create account</CustomizedCreateAccount>
-                    <CustomizedSignIn>Sign In</CustomizedSignIn>
+                    <CustomizedCreateAccount onClick={handleSignUp}>
+                      Create account
+                    </CustomizedCreateAccount>
+                    <CustomizedSignIn onClick={handleLogIn}>Sign In</CustomizedSignIn>
                   </ButtonGroup>
                 </Grid>
               </Grid>
