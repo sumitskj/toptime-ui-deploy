@@ -1,0 +1,8 @@
+.ratings {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.ratings .rating-val + .rating-val {
+  margin-left: 1rem;
+}
