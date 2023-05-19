@@ -1,5 +1,6 @@
 import React from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import { styled } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
@@ -43,6 +44,8 @@ const CustomisedBecomeExpert = styled(Button)`
 const Main = () => {
   const navigate = useNavigate();
 
+  const authData = useSelector((state) => state.auth);
+
   const handleLogIn = () => {
     navigate('/login');
   };
@@ -76,12 +79,14 @@ const Main = () => {
                 <Grid item xs={6}></Grid>
                 <Grid container item xs={6} justifyContent='flex-end'>
                   <CustomisedBecomeExpert variant='outlined'>Become expert</CustomisedBecomeExpert>
-                  <ButtonGroup variant='outlined' disableRipple>
-                    <CustomizedCreateAccount onClick={handleSignUp}>
-                      Create account
-                    </CustomizedCreateAccount>
-                    <CustomizedSignIn onClick={handleLogIn}>Sign In</CustomizedSignIn>
-                  </ButtonGroup>
+                  {!authData.isAuthenticated && (
+                    <ButtonGroup variant='outlined' disableRipple>
+                      <CustomizedCreateAccount onClick={handleSignUp}>
+                        Create account
+                      </CustomizedCreateAccount>
+                      <CustomizedSignIn onClick={handleLogIn}>Sign In</CustomizedSignIn>
+                    </ButtonGroup>
+                  )}
                 </Grid>
               </Grid>
             </Box>
