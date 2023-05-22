@@ -13,6 +13,9 @@ import Home from './pages/home';
 import Login from './pages/login';
 import SignUp from './pages/signup';
 import UserProfile from './pages/user-profile';
+import MyServices from './pages/my-services';
+import Bookings from './pages/bookings';
+import Wallet from './pages/wallet';
 
 const router = createBrowserRouter([
   {
@@ -27,6 +30,18 @@ const router = createBrowserRouter([
       {
         path: 'user-profile',
         element: <UserProfile />,
+      },
+      {
+        path: 'my-services',
+        element: <MyServices />,
+      },
+      {
+        path: 'wallet',
+        element: <Wallet />,
+      },
+      {
+        path: 'bookings',
+        element: <Bookings />,
       },
     ],
   },
