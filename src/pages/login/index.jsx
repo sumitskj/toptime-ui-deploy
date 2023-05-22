@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Button, Divider, Grid, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { validateEmail } from '../../utils';
 import { Header } from '../../components/no-login/header';
 import MuiTextbox from '../../components/Textbox/MuiTextbox';
-import { Link } from 'react-router-dom';
+import { getEmailOtp, verifyOtp } from './api/login';
+import { setlogin } from './slice/login';
+import { storeLogin, removeLogin } from '../../utils/loginStore';
 
 const CustomizedLoginBox = styled(Box)`
   border: 1px solid #ddd;
@@ -36,15 +41,65 @@ const CustomisedResetButton = styled(Button)`
 `;
 
 const Login = () => {
-  const [showOtp, setShowOtp] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleSendOtp = () => {
-    setShowOtp(true);
+  const auth = useSelector((state) => state.auth);
+
+  const [showOtp, setShowOtp] = useState(false);
+  const [email, setEmail] = useState('');
+  const [otp, setOtp] = useState('');
+  const [isValidEmail, setIsValidEmail] = useState(true);
+
+  const _handleSendOtp = async () => {
+    if (email && isValidEmail) {
+      await getEmailOtp(email);
+      setShowOtp(true);
+    }
   };
 
-  const handleReset = () => {
+  const _handleBlur = () => {
+    const isValid = validateEmail(email);
+    setIsValidEmail(isValid);
+  };
+
+  const _handleReset = () => {
     setShowOtp(false);
   };
+
+  const _verifyOtp = async () => {
+    const payload = {
+      email,
+      otp,
+    };
+
+    try {
+      const resp = await verifyOtp(payload);
+      if (resp.ok) {
+        const respJson = await resp.json();
+        console.log('response is verify wala ', respJson);
+        storeLogin(respJson);
+        dispatch(setlogin(respJson));
+        navigate('/');
+      } else {
+        removeLogin();
+        if (resp.status === 401) {
+          alert('invalid otp');
+        } else {
+          alert('something went wrong');
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      removeLogin();
+    }
+  };
+
+  useEffect(() => {
+    if (auth.isAuthenticated) {
+      navigate('/', { replace: true });
+    }
+  }, []);
 
   return (
     <Grid container className='pre-login-header'>
@@ -72,26 +127,50 @@ const Login = () => {
                 gutterBottom>
                 Sign In
               </Typography>
-              <MuiTextbox label='Email' disabled={showOtp} />
-              {showOtp && <MuiTextbox label='One time password' />}
+              <MuiTextbox
+                label='Email'
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
+                onBlur={_handleBlur}
+                name='email'
+                disabled={showOtp}
+                error={!isValidEmail}
+                helperText={!isValidEmail ? 'Please enter valid email' : ''}
+              />
+              {showOtp && (
+                <MuiTextbox
+                  label='One time password'
+                  type='password'
+                  value={otp}
+                  onChange={(e) => {
+                    setOtp(e.target.value);
+                  }}
+                />
+              )}
 
               <Grid
                 container
-                itex
+                item
                 xs={12}
                 justifyContent='flex-end'
                 sx={{ marginTop: '1rem', marginBottom: '2rem' }}>
                 {!showOtp && (
-                  <Button variant='contained' onClick={handleSendOtp}>
+                  <Button variant='contained' onClick={_handleSendOtp}>
                     Send OTP
                   </Button>
                 )}
                 {showOtp && (
-                  <CustomisedResetButton variant='text' onClick={handleReset}>
+                  <CustomisedResetButton variant='text' onClick={_handleReset}>
                     Reset
                   </CustomisedResetButton>
                 )}
-                {showOtp && <Button variant='contained'>Verify</Button>}
+                {showOtp && (
+                  <Button variant='contained' onClick={_verifyOtp}>
+                    Verify
+                  </Button>
+                )}
               </Grid>
               <Divider sx={{ margin: '2rem 0' }} />
               <Typography variant='body2' gutterBottom>

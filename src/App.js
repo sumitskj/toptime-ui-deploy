@@ -1,6 +1,9 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { ThemeProvider } from '@mui/material';
+import { Provider } from 'react-redux';
 
 import { theme } from './theme/theme';
+import store from './redux/store';
 
 import Main from './pages/main';
 import ErrorPage from './ErrorPage';
@@ -8,7 +11,6 @@ import Home from './pages/home';
 import Login from './pages/login';
 import SignUp from './pages/signup';
 import UserProfile from './pages/user-profile';
-import { ThemeProvider } from '@mui/material';
 
 const router = createBrowserRouter([
   {
@@ -39,9 +41,11 @@ const router = createBrowserRouter([
 function App() {
   return (
     <div className='top-time-app'>
-      <ThemeProvider theme={theme}>
-        <RouterProvider router={router} />
-      </ThemeProvider>
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          <RouterProvider router={router} />
+        </ThemeProvider>
+      </Provider>
     </div>
   );
 }
