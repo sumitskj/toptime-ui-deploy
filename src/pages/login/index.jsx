@@ -9,6 +9,7 @@ import { Header } from '../../components/no-login/header';
 import MuiTextbox from '../../components/Textbox/MuiTextbox';
 import { getEmailOtp, verifyOtp } from './api/login';
 import { setlogin } from './slice/login';
+import { openNotification } from '../notifications/slice/notification';
 import { storeLogin, removeLogin } from '../../utils/loginStore';
 
 const CustomizedLoginBox = styled(Box)`
@@ -80,17 +81,18 @@ const Login = () => {
         console.log('response is verify wala ', respJson);
         storeLogin(respJson);
         dispatch(setlogin(respJson));
+        dispatch(openNotification({ severity: 'success', message: 'Login successful!' }));
         navigate('/');
       } else {
         removeLogin();
         if (resp.status === 401) {
-          alert('invalid otp');
+          dispatch(openNotification({ severity: 'error', message: 'Invalid OTP!' }));
         } else {
-          alert('something went wrong');
+          dispatch(openNotification({ severity: 'error', message: 'Something went wrong!' }));
         }
       }
     } catch (error) {
-      console.log(error);
+      dispatch(openNotification({ severity: 'error', message: 'Something went wrong!' }));
       removeLogin();
     }
   };

@@ -2,13 +2,13 @@ import { configureStore } from '@reduxjs/toolkit';
 import { getLogin } from '../utils/loginStore';
 
 import loginReducer from '../pages/login/slice/login';
+import notificationReducer from '../pages/notifications/slice/notification';
 
 let preloadedState = {};
 const adata = getLogin();
 if (adata) {
   const jsonAuthData = JSON.parse(adata);
   if (jsonAuthData && jsonAuthData.accessToken) {
-    console.log('set loigin data');
     preloadedState = { ...preloadedState, auth: { isAuthenticated: true, authData: jsonAuthData } };
   }
 }
@@ -16,6 +16,7 @@ if (adata) {
 export default configureStore({
   reducer: {
     auth: loginReducer,
+    notif: notificationReducer,
   },
   preloadedState: preloadedState,
 });

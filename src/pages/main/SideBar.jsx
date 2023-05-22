@@ -59,8 +59,6 @@ const SideBar = (props) => {
     navigate(path, { replace: true });
   };
 
-  console.log('*** location ', location);
-
   const drawer = (
     <div>
       <Toolbar>
