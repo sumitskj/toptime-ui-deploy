@@ -73,41 +73,45 @@ const Main = () => {
     setMobileOpen(!mobileOpen);
   };
 
+  const calcDrawerWidth = authData.isAuthenticated ? drawerWidth : 0;
+
   return (
     <Box sx={{ display: 'flex' }} className='top-time-app-bar'>
       <AppBar
         position='fixed'
         sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
+          width: { sm: `calc(100% - ${calcDrawerWidth}px)` },
+          ml: { sm: `${calcDrawerWidth}px` },
         }}>
         <Container maxWidth='false'>
           <Toolbar disableGutters>
-            <IconButton
-              color='inherit'
-              aria-label='open drawer'
-              edge='start'
-              onClick={handleDrawerToggle}
-              sx={{ mr: 2, display: { sm: 'none' } }}>
-              <MenuIcon />
-            </IconButton>
-            {/* for screens other than xs */}
-            <Typography
-              variant='h6'
-              noWrap
-              component='a'
-              href='/'
-              sx={{
-                mr: 2,
-                fontFamily: 'monospace',
-                fontWeight: 700,
-                letterSpacing: '.1rem',
-                color: 'inherit',
-                textDecoration: 'none',
-                display: { sm: 'none' },
-              }}>
-              Top Time
-            </Typography>
+            {authData.isAuthenticated && (
+              <IconButton
+                color='inherit'
+                aria-label='open drawer'
+                edge='start'
+                onClick={handleDrawerToggle}
+                sx={{ mr: 2, display: { sm: 'none' } }}>
+                <MenuIcon />
+              </IconButton>
+            )}
+            {!authData.isAuthenticated && (
+              <Typography
+                variant='h6'
+                noWrap
+                component='a'
+                href='/'
+                sx={{
+                  mr: 2,
+                  fontFamily: 'monospace',
+                  fontWeight: 700,
+                  letterSpacing: '.1rem',
+                  color: 'inherit',
+                  textDecoration: 'none',
+                }}>
+                Top Time
+              </Typography>
+            )}
             <Box sx={{ flexGrow: 1, display: { xs: 'none', sm: 'flex' } }}>
               <Grid container>
                 <Grid item xs={6}></Grid>
@@ -127,19 +131,21 @@ const Main = () => {
           </Toolbar>
         </Container>
       </AppBar>
-      <Box
-        component='nav'
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label='mailbox folders'>
-        <SideBar
-          drawerWidth={drawerWidth}
-          mobileOpen={mobileOpen}
-          handleDrawerToggle={handleDrawerToggle}
-        />
-      </Box>
+      {authData.isAuthenticated && (
+        <Box
+          component='nav'
+          sx={{ width: { sm: calcDrawerWidth }, flexShrink: { sm: 0 } }}
+          aria-label='mailbox folders'>
+          <SideBar
+            drawerWidth={calcDrawerWidth}
+            mobileOpen={mobileOpen}
+            handleDrawerToggle={handleDrawerToggle}
+          />
+        </Box>
+      )}
       <Box
         component='main'
-        sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}>
+        sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${calcDrawerWidth}px)` } }}>
         <Toolbar />
         <Outlet />
       </Box>
