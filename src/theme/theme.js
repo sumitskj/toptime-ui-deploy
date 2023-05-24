@@ -10,6 +10,9 @@ export const theme = createTheme({
       main: '#f50057',
     },
   },
+  colors: {
+    tableHead: '#00adff',
+  },
   components: {
     MuiAppBar: {
       defaultProps: {

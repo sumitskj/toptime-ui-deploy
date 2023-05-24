@@ -9,13 +9,17 @@ export const validateEmail = (email) => {
   return email.match(emailRegEx);
 };
 
-const apiHeaders = new Headers();
-apiHeaders.append('Content-Type', 'application/json');
+const apiHeaders = {};
+apiHeaders['Content-Type'] = 'application/json';
 
-export const fetchWrapper = (path, options) => {
+export const fetchWrapper = async (path, options, token = '') => {
   if (!options.headers) {
     options.headers = apiHeaders;
   }
 
-  return fetch(`${process.env.REACT_APP_API}${path}`, options);
+  if (token) {
+    apiHeaders['auth-token'] = token;
+  }
+
+  return await fetch(`${process.env.REACT_APP_API}${path}`, options);
 };
