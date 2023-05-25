@@ -16,6 +16,7 @@ import UserProfile from './pages/user-profile';
 import MyServices from './pages/my-services';
 import Bookings from './pages/bookings';
 import Wallet from './pages/wallet';
+import Feeds from './pages/feeds';
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <Home />,
+      },
+      {
+        path: 'feeds',
+        element: <Feeds />,
       },
       {
         path: 'user-profile',

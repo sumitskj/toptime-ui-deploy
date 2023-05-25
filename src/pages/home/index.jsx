@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Card, CardMedia, Grid, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
-
-import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 
 import './home.css';
 import CtImage from '../../static/images/ct-creator.jpg';
@@ -13,6 +13,15 @@ const CustomisedHomeText = styled(Typography)`
 `;
 
 const Home = () => {
+  const navigate = useNavigate();
+  const auth = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (auth.isAuthenticated) {
+      navigate('/feeds', { replace: true });
+    }
+  }, []);
+
   return (
     <Grid container>
       <Grid item container justifyContent='space-between' xs={12} sx={{ p: '0 8rem;' }}>

@@ -16,7 +16,7 @@ import {
 const sidebarItems = [
   {
     name: 'Home',
-    path: '/',
+    path: '/feeds',
   },
   {
     name: 'My services',
