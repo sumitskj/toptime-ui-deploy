@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import {
   Box,
   Card,
@@ -8,40 +9,59 @@ import {
   Chip,
   Divider,
   Grid,
-  List,
-  ListItem,
-  ListItemText,
+  IconButton,
   Typography,
-  ListItemAvatar,
-  Avatar,
 } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import StarIcon from '@mui/icons-material/Star';
 import ReviewsIcon from '@mui/icons-material/Reviews';
-import EmailIcon from '@mui/icons-material/Email';
-import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone';
-import CategoryIcon from '@mui/icons-material/Category';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import YouTubeIcon from '@mui/icons-material/YouTube';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import LinkIcon from '@mui/icons-material/Link';
 
 import './user-profile.css';
 import UserRateCard from './UserRateCard';
 
-import { getUserDetails } from './api/userProfile';
-import { setUserDetails } from './slice/userProfile';
+import { getProfessionalProfile } from './api/userProfile';
+import { setProfessionalProfile } from './slice/userProfile';
 
-// TODO: remove
-import Pimage from '../../static/images/ct-creator.jpg';
+const ChipStyledProfile = styled(Chip)`
+  font-weight: 600;
+  border: none;
+  padding: 0 8px;
+  .MuiChip-icon {
+    color: #00adff;
+  }
+`;
+
+const IconButtonStyled = styled(IconButton)`
+  &:hover {
+    background: #00adff;
+    .MuiSvgIcon-root {
+      color: #444;
+    }
+  }
+  .MuiSvgIcon-root {
+    color: #00adff;
+  }
+`;
 
 const UserProfile = () => {
   const dispatch = useDispatch();
 
-  const userData = useSelector((state) => state.userProfile);
+  const { id } = useParams();
+
+  const userData = useSelector((state) => state.professionals.profile);
 
   const fetchUserDetails = async () => {
     try {
-      const resp = await dispatch(getUserDetails()).unwrap();
+      const query = `?id=${id}`;
+      const resp = await dispatch(getProfessionalProfile(query)).unwrap();
       if (resp.ok) {
         const respJson = await resp.json();
-        dispatch(setUserDetails(respJson));
+        dispatch(setProfessionalProfile(respJson));
       }
     } catch (error) {
       console.log('Error in UserDetails:: ', error);
@@ -50,7 +70,7 @@ const UserProfile = () => {
 
   useEffect(() => {
     fetchUserDetails();
-  }, []);
+  }, [id]);
 
   return (
     <Grid container>
@@ -61,7 +81,7 @@ const UserProfile = () => {
               <CardMedia
                 component='img'
                 alt='profile image'
-                image={Pimage}
+                image={userData.profilePicUrl}
                 sx={{ width: '200px', height: '200px', borderRadius: '50%' }}
               />
             </Box>
@@ -71,65 +91,59 @@ const UserProfile = () => {
                 {`${userData.firstName} ${userData.lastName}`}
               </Typography>
               <Typography gutterBottom variant='overline' sx={{ lineHeight: '3rem' }}>
-                Civil Engineer | Photographer
+                {`${userData.designation} at ${userData.company}`}
               </Typography>
               <span className='ratings'>
-                <Chip
+                <ChipStyledProfile
                   icon={<StarIcon sx={{ fontSize: 20 }} />}
-                  label='4.73'
+                  label={userData.rating}
                   className='rating-val'
                 />
-                <Chip
+                <ChipStyledProfile
                   icon={<ReviewsIcon sx={{ fontSize: 20 }} />}
-                  label='15 reviews'
+                  label={`${userData.sessionsCompleted} session completed`}
                   className='rating-val'
                 />
               </span>
+              <Typography variant='body1' component='div' gutterBottom>
+                {userData.description}
+              </Typography>
+              <Box p={1}>
+                {userData.instagramUrl && (
+                  <IconButtonStyled size='large'>
+                    <InstagramIcon />
+                  </IconButtonStyled>
+                )}
+                {userData.linkedInUrl && (
+                  <IconButtonStyled size='large'>
+                    <LinkedInIcon />
+                  </IconButtonStyled>
+                )}
+                {userData.youTubeUrl && (
+                  <IconButtonStyled size='large'>
+                    <YouTubeIcon />
+                  </IconButtonStyled>
+                )}
+                {userData.githubUrl && (
+                  <IconButtonStyled size='large'>
+                    <GitHubIcon />
+                  </IconButtonStyled>
+                )}
+                {userData.otherUrl && (
+                  <IconButtonStyled size='large'>
+                    <LinkIcon />
+                  </IconButtonStyled>
+                )}
+              </Box>
             </CardContent>
           </Card>
           <Divider variant='middle' />
         </Box>
       </Grid>
       <Grid item xs={12}>
-        <Grid container sx={{ justifyContent: 'center' }}>
+        <Grid container sx={{ justifyContent: 'space-evenly' }}>
           <Grid item xs={12} sm={12} md={6} lg={5} xl={4}>
-            <List>
-              <ListItem>
-                <ListItemAvatar>
-                  <Avatar>
-                    <EmailIcon />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText primary={userData.emailId} />
-              </ListItem>
-              <ListItem>
-                <ListItemAvatar>
-                  <Avatar>
-                    <PhoneIphoneIcon />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText primary={userData.mobileNumber} />
-              </ListItem>
-              <ListItem>
-                <ListItemAvatar>
-                  <Avatar>
-                    <CategoryIcon />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText primary={userData.preferredCategory} />
-              </ListItem>
-              <ListItem>
-                <ListItemAvatar>
-                  <Avatar>
-                    <AccessTimeIcon />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText primary={userData.timeZone} />
-              </ListItem>
-            </List>
-          </Grid>
-          <Grid item xs={12} sm={12} md={6} lg={5} xl={4}>
-            <UserRateCard />
+            <UserRateCard userData={userData} />
           </Grid>
         </Grid>
       </Grid>

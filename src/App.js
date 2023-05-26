@@ -14,6 +14,7 @@ import Login from './pages/login';
 import SignUp from './pages/signup';
 import UserProfile from './pages/user-profile';
 import MyServices from './pages/my-services';
+import MyProfile from './pages/my-profile';
 import Bookings from './pages/bookings';
 import Wallet from './pages/wallet';
 import Feeds from './pages/feeds';
@@ -33,8 +34,12 @@ const router = createBrowserRouter([
         element: <Feeds />,
       },
       {
-        path: 'user-profile',
+        path: 'user-profile/:id',
         element: <UserProfile />,
+      },
+      {
+        path: 'my-profile',
+        element: <MyProfile />,
       },
       {
         path: 'my-services',

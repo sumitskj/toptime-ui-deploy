@@ -32,7 +32,7 @@ const sidebarItems = [
   },
   {
     name: 'My profile',
-    path: '/user-profile',
+    path: '/my-profile',
   },
   {
     name: 'Switch to user mode',

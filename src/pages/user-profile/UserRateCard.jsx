@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Box, Typography, Radio, TextField, InputAdornment, Button, Divider } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
@@ -30,12 +31,26 @@ const TotalCostLabel = styled(Typography)`
   }
 `;
 
-const UserRateCard = () => {
+const UserRateCard = ({ userData }) => {
   const [selectedValue, setSelectedValue] = useState('audio');
+
+  const [duration, setDuration] = useState(10);
 
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
   };
+
+  let callCost = 0;
+  let platformCharge = 0;
+  if (selectedValue === 'audio') {
+    callCost = (duration * userData.voiceRate).toFixed(2);
+    platformCharge = ((callCost * 10) / 100).toFixed(2);
+  }
+
+  if (selectedValue === 'video') {
+    callCost = (duration * userData.videoRate).toFixed(2);
+    platformCharge = ((callCost * 10) / 100).toFixed(2);
+  }
 
   return (
     <BoxStyled m={2} p={2}>
@@ -51,7 +66,7 @@ const UserRateCard = () => {
             name='call-type'
             inputProps={{ 'aria-label': 'Audio' }}
           />
-          <label>Audio 15 INR/Min</label>
+          <label>Voice {userData.voiceRate} INR/Min</label>
         </SpanStyled>
 
         <SpanStyled>
@@ -62,7 +77,7 @@ const UserRateCard = () => {
             name='call-type'
             inputProps={{ 'aria-label': 'Video' }}
           />
-          <label>Video 25 INR/Min</label>
+          <label>Video {userData.videoRate} INR/Min</label>
         </SpanStyled>
       </div>
       <TextField label='Date Time' id='date-time-picker' sx={{ m: 1, width: '90%' }} />
@@ -74,6 +89,8 @@ const UserRateCard = () => {
         InputProps={{
           endAdornment: <InputAdornment position='end'>min</InputAdornment>,
         }}
+        value={duration}
+        onChange={(e) => setDuration(e.target.value)}
       />
       <Button variant='contained' sx={{ margin: '8px', width: '90%' }}>
         Reserve
@@ -81,18 +98,25 @@ const UserRateCard = () => {
       <Divider sx={{ margin: '8px', width: '90%', color: '#444' }} />
       {/* cost calculation */}
       <CostLabels variant='subtitle2' gutterBottom>
-        Call duration cost <span>1234 INR</span>
+        Call duration cost <span>{callCost} INR</span>
       </CostLabels>
       <CostLabels variant='subtitle2' gutterBottom>
-        Platform cost (10% call duration cost) <span>123 INR</span>
+        Platform cost (10% call duration cost) <span>{platformCharge} INR</span>
       </CostLabels>
       <Divider sx={{ margin: '8px', width: '90%', color: '#444' }} />
 
       <TotalCostLabel variant='subtitle1' gutterBottom>
-        Total cost <span>12345 INR</span>
+        Total cost <span>{Number(callCost) + Number(platformCharge)} INR</span>
       </TotalCostLabel>
     </BoxStyled>
   );
+};
+
+UserRateCard.propTypes = {
+  userData: PropTypes.objectOf({
+    voiceRate: PropTypes.number,
+    videoRate: PropTypes.number,
+  }).isRequired,
 };
 
 export default UserRateCard;

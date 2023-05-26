@@ -1,14 +1,14 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchWrapper } from '../../../utils/index';
 
-const getProfessionalProfile = createAsyncThunk(
-  'professional/profile',
+const getUserDetails = createAsyncThunk(
+  'userDetails/getUserDetails',
   async (arg, { getState, rejectWithValue }) => {
     try {
       const state = getState();
       const authToken = state.auth.authData.accessToken;
       const response = await fetchWrapper(
-        `/api/v1/professionals/profile${arg}`,
+        '/api/v1/user/userDetails',
         {
           method: 'GET',
         },
@@ -24,4 +24,4 @@ const getProfessionalProfile = createAsyncThunk(
   },
 );
 
-export { getProfessionalProfile };
+export { getUserDetails };

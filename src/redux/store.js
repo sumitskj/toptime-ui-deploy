@@ -4,8 +4,9 @@ import { getLogin } from '../utils/loginStore';
 import loginReducer from '../pages/login/slice/login';
 import notificationReducer from '../pages/notifications/slice/notification';
 import bookingsReducer from '../pages/bookings/slice/bookings';
-import userDetailsReducer from '../pages/user-profile/slice/userProfile';
+import myProfileReducer from '../pages/my-profile/slice/myProfile';
 import feedsReducer from '../pages/feeds/slice/feeds';
+import professionalReducer from '../pages/user-profile/slice/userProfile';
 
 let preloadedState = {};
 const adata = getLogin();
@@ -21,8 +22,9 @@ export default configureStore({
     auth: loginReducer,
     notif: notificationReducer,
     bookings: bookingsReducer,
-    userProfile: userDetailsReducer,
+    myProfile: myProfileReducer,
     feeds: feedsReducer,
+    professionals: professionalReducer,
   },
   preloadedState: preloadedState,
 });

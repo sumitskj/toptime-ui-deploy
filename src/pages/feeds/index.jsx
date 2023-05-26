@@ -67,7 +67,7 @@ const Feeds = () => {
             <ChipStyled label='Recommended for you' variant='outlined' />
           </DividerStyled>
           {feeds.recommended.map((f) => (
-            <UserFeedCard data={f} key={f.userId} />
+            <UserFeedCard data={f} key={f.professionalId} />
           ))}
         </Grid>
       )}
@@ -77,7 +77,7 @@ const Feeds = () => {
             <ChipStyled label='Favorites' variant='outlined' />
           </DividerStyled>
           {feeds.favourites.map((f) => (
-            <UserFeedCard data={f} key={f.userId} />
+            <UserFeedCard data={f} key={f.professionalId} />
           ))}
         </Grid>
       )}
@@ -88,7 +88,7 @@ const Feeds = () => {
             <ChipStyled label='Trendings' variant='outlined' />
           </DividerStyled>
           {feeds.trending.map((f) => (
-            <UserFeedCard data={f} key={f.userId} />
+            <UserFeedCard data={f} key={f.professionalId} />
           ))}
         </Grid>
       )}
