@@ -145,7 +145,7 @@ const Main = () => {
       )}
       <Box
         component='main'
-        sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${calcDrawerWidth}px)` } }}>
+        sx={{ flexGrow: 1, width: { sm: `calc(100% - ${calcDrawerWidth}px)` } }}>
         <Toolbar />
         <Outlet />
       </Box>

@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react';
-import { Card, CardMedia, Grid, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { Card, CardMedia, Grid } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
+import { CustomisedHomeText } from './components';
+import Trending from './Trending';
+import HowItWorks from './HowItWorks';
+
 import './home.css';
 import CtImage from '../../static/images/ct-creator.jpg';
-
-const CustomisedHomeText = styled(Typography)`
-  font-weight: 700;
-  padding: 2rem 4rem 2rem 0rem;
-`;
+import FAQs from './FAQs';
+import Footer from './Footer';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -48,7 +48,7 @@ const Home = () => {
         <Grid container sx={{ p: '4rem 4rem' }}>
           <Grid item xs={8}>
             <CustomisedHomeText variant='h1'>
-              Connect with the person you need in minutes
+              Connect, Learn and Grow: Unlock Expertise, One Minute at a Time
             </CustomisedHomeText>
           </Grid>
           <Grid item xs={4}>
@@ -56,7 +56,14 @@ const Home = () => {
               <CardMedia image={CtImage} title='content creator' sx={{ height: '100%' }} />
             </Card>
           </Grid>
+          {/* TODO Trending */}
+          <Trending />
+          <HowItWorks />
+          <FAQs />
         </Grid>
+      </Grid>
+      <Grid item xs={12}>
+        <Footer />
       </Grid>
     </Grid>
   );
