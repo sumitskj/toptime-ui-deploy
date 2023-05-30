@@ -13,6 +13,9 @@ export const theme = createTheme({
   colors: {
     tableHead: '#00adff',
   },
+  typography: {
+    fontFamily: ['Rubik', 'Roboto'].join(','),
+  },
   components: {
     MuiAppBar: {
       defaultProps: {
