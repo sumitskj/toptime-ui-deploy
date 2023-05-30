@@ -3,15 +3,8 @@ import PropTypes from 'prop-types';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 
-import {
-  Drawer,
-  Toolbar,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  Typography,
-} from '@mui/material';
+import { Drawer, Toolbar, List, ListItem, ListItemButton, ListItemText } from '@mui/material';
+import Logo from './Logo';
 
 const sidebarItems = [
   {
@@ -62,21 +55,7 @@ const SideBar = (props) => {
   const drawer = (
     <div>
       <Toolbar>
-        <Typography
-          variant='h6'
-          noWrap
-          component='a'
-          href='/'
-          sx={{
-            mr: 2,
-            fontFamily: 'monospace',
-            fontWeight: 700,
-            letterSpacing: '.1rem',
-            color: 'inherit',
-            textDecoration: 'none',
-          }}>
-          Top Time
-        </Typography>
+        <Logo />
       </Toolbar>
       <List>
         {sidebarItems.map((text) => (

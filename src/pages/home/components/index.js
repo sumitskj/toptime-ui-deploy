@@ -2,7 +2,7 @@ import { Accordion, Box, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 export const CustomisedHomeText = styled(Typography)`
-  font-weight: 700;
+  font-weight: 600;
   padding: 2rem 4rem 2rem 0rem;
 `;
 
@@ -19,8 +19,8 @@ export const StyledBoxHIW = styled(Box)`
 `;
 
 export const AccordionBox = styled(Box)`
-  padding: 2rem;
-  margin: 2rem 0;
+  padding: 1rem;
+  margin: 1rem 2rem;
   border: 2px solid #000;
   border-radius: 1rem;
   box-shadow: 0px 5px 12px 0px #888;

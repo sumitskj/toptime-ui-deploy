@@ -4,19 +4,11 @@ import { useSelector } from 'react-redux';
 
 import { styled } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
-import {
-  Container,
-  Toolbar,
-  Typography,
-  Box,
-  Grid,
-  ButtonGroup,
-  Button,
-  IconButton,
-} from '@mui/material';
+import { Container, Toolbar, Box, Grid, ButtonGroup, Button, IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 
 import SideBar from './SideBar';
+import Logo from './Logo';
 
 const CustomizedSignIn = styled(Button)`
   background: #000;
@@ -95,23 +87,7 @@ const Main = () => {
                 <MenuIcon />
               </IconButton>
             )}
-            {!authData.isAuthenticated && (
-              <Typography
-                variant='h6'
-                noWrap
-                component='a'
-                href='/'
-                sx={{
-                  mr: 2,
-                  fontFamily: 'monospace',
-                  fontWeight: 700,
-                  letterSpacing: '.1rem',
-                  color: 'inherit',
-                  textDecoration: 'none',
-                }}>
-                Top Time
-              </Typography>
-            )}
+            {!authData.isAuthenticated && <Logo />}
             <Box sx={{ flexGrow: 1, display: { xs: 'none', sm: 'flex' } }}>
               <Grid container>
                 <Grid item xs={6}></Grid>
