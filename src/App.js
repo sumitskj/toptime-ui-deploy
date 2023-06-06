@@ -18,6 +18,7 @@ import MyProfile from './pages/my-profile';
 import Bookings from './pages/bookings';
 import Wallet from './pages/wallet';
 import Feeds from './pages/feeds';
+import Search from './pages/search';
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <Home />,
+      },
+      {
+        path: 'explore/:category?',
+        element: <Search />,
       },
       {
         path: 'feeds',

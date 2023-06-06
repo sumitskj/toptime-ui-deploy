@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Card, Grid, CardMedia } from '@mui/material';
 import { useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { CustomisedHomeText } from './components';
 import Trending from './Trending';
@@ -11,6 +11,7 @@ import './home.css';
 import CtImage from '../../static/images/home-image.svg';
 import FAQs from './FAQs';
 import Footer from './Footer';
+import Categories from './Categories';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -24,26 +25,7 @@ const Home = () => {
 
   return (
     <Grid container>
-      <Grid item container justifyContent='space-between' xs={12} sx={{ p: '0 8rem;' }}>
-        <Link to='/' className='nav-item active'>
-          Home
-        </Link>
-        <Link to='/' className='nav-item'>
-          Vloggers
-        </Link>
-        <Link to='/' className='nav-item'>
-          Engineers
-        </Link>
-        <Link to='/' className='nav-item'>
-          Engineers
-        </Link>
-        <Link to='/' className='nav-item'>
-          Engineers
-        </Link>
-        <Link to='/' className='nav-item'>
-          Engineers
-        </Link>
-      </Grid>
+      <Categories />
       <Grid item xs={12}>
         <Grid container sx={{ p: '4rem 4rem' }}>
           <Grid item xs={12}>

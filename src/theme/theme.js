@@ -17,12 +17,26 @@ export const theme = createTheme({
     fontFamily: ['Rubik', 'Roboto'].join(','),
   },
   components: {
+    MuiToolbar: {
+      styleOverrides: {
+        root: {
+          minHeight: '67px',
+          '@media (min-width: 600px)': {
+            minHeight: '67px',
+          },
+        },
+        dense: {
+          minHeight: '67px',
+        },
+      },
+    },
     MuiAppBar: {
       defaultProps: {
         disableRipple: true,
       },
       styleOverrides: {
         root: {
+          minHeight: '67px',
           boxShadow: 'none',
           background: '#FFFFFF',
           color: '#000000',

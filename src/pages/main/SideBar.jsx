@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 
 import { Drawer, Toolbar, List, ListItem, ListItemButton, ListItemText } from '@mui/material';
-import Logo from './Logo';
+import Logo from '../../components/logo/Logo';
 
 const sidebarItems = [
   {
@@ -55,7 +55,9 @@ const SideBar = (props) => {
   const drawer = (
     <div>
       <Toolbar>
-        <Logo />
+        <Link to='/'>
+          <Logo />
+        </Link>
       </Toolbar>
       <List>
         {sidebarItems.map((text) => (

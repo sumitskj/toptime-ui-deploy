@@ -7,6 +7,7 @@ import bookingsReducer from '../pages/bookings/slice/bookings';
 import myProfileReducer from '../pages/my-profile/slice/myProfile';
 import feedsReducer from '../pages/feeds/slice/feeds';
 import professionalReducer from '../pages/user-profile/slice/userProfile';
+import categoriesReducer from '../pages/common/slice/categories';
 
 let preloadedState = {};
 const adata = getLogin();
@@ -25,6 +26,7 @@ export default configureStore({
     myProfile: myProfileReducer,
     feeds: feedsReducer,
     professionals: professionalReducer,
+    categories: categoriesReducer,
   },
   preloadedState: preloadedState,
 });

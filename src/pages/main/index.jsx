@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import { styled } from '@mui/material/styles';
@@ -8,7 +8,7 @@ import { Container, Toolbar, Box, Grid, ButtonGroup, Button, IconButton } from '
 import MenuIcon from '@mui/icons-material/Menu';
 
 import SideBar from './SideBar';
-import Logo from './Logo';
+import Logo from '../../components/logo/Logo';
 
 const CustomizedSignIn = styled(Button)`
   background: #000;
@@ -87,7 +87,11 @@ const Main = () => {
                 <MenuIcon />
               </IconButton>
             )}
-            {!authData.isAuthenticated && <Logo />}
+            {!authData.isAuthenticated && (
+              <Link to='/'>
+                <Logo />
+              </Link>
+            )}
             <Box sx={{ flexGrow: 1, display: { xs: 'none', sm: 'flex' } }}>
               <Grid container>
                 <Grid item xs={6}></Grid>
