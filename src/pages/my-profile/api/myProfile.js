@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchWrapper } from '../../../utils/index';
 
 const getUserDetails = createAsyncThunk(
-  'userDetails/getUserDetails',
+  'myProfile/getUserDetails',
   async (arg, { getState, rejectWithValue }) => {
     try {
       const state = getState();
