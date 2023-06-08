@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useNavigate } from 'react-router-dom';
-import { Card, CardContent, CardMedia, Chip, Typography, Button, Box } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { Card, CardContent, CardMedia, Chip, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import HandshakeIcon from '@mui/icons-material/Handshake';
 import StarIcon from '@mui/icons-material/Star';
 
 const ChipStyledProfile = styled(Chip)`
@@ -15,9 +14,10 @@ const ChipStyledProfile = styled(Chip)`
 `;
 
 const CardMediaStyled = styled(CardMedia)`
-  height: 200px;
-  border-radius: 4px;
-  margin: auto;
+  height: 280px;
+  border-radius: 1rem;
+  margin: 8px;
+  box-shadow: 0px 10px 10px 0px #888;
 `;
 
 const CardContentStyled = styled(CardContent)`
@@ -27,69 +27,56 @@ const CardContentStyled = styled(CardContent)`
   }
 `;
 
-const UserFeedCard = ({ data }) => {
-  const navigate = useNavigate();
-  const gotoProfessional = () => {
-    navigate(`/user-profile/${data.professionalId}`);
-  };
+const StyledName = styled(Typography)`
+  display: flex;
+  justify-content: space-between;
+  .profile-link {
+    text-decoration: none;
+    color: #000000;
+    font-size: 1rem;
+  }
+`;
 
+const UserFeedCard = ({ data, navKey, category }) => {
   return (
     <Card
       sx={{
         width: 275,
         display: 'inline-block',
-        minHeight: 372,
-        maxHeight: 372,
+        minHeight: 400,
+        maxHeight: 400,
         margin: '1rem',
-        background: '#dbf3ff',
-        boxShadow: '4px 4px 10px 5px #ddd',
+        boxShadow: 'none',
       }}>
       <CardMediaStyled title={`${data.firstName}`} image={data.profilePicUrl} />
       <CardContentStyled sx={{ padding: '0.5rem' }}>
-        <Typography gutterBottom variant='h6' component='div'>
-          {`${data.firstName} ${data.lastName}`}
+        <StyledName gutterBottom variant='h6' component='div'>
+          <Link
+            className='profile-link'
+            to={`/user-profile/${data[navKey]}`}>{`${data.firstName} ${data.lastName}`}</Link>
+          <ChipStyledProfile icon={<StarIcon />} label={data.rating} variant='outlined' />
+        </StyledName>
+        <Typography gutterBottom variant='caption' component='div'>
+          {`${data.designation} at ${data.company || data.currentCompany}`}
         </Typography>
         <Typography gutterBottom variant='caption' component='div'>
-          {`${data.designation} at ${data.company}`}
+          {category}
         </Typography>
-        <Typography
-          variant='body2'
-          color='text.secondary'
-          sx={{ height: '40px', maxHeight: '40px', textOverflow: 'ellipsis' }}
-          gutterBottom>
-          {data.description}
-        </Typography>
-        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }} pt={1} pb={1}>
-          <span>
-            <ChipStyledProfile
-              icon={<HandshakeIcon />}
-              label={data.sessionsCompleted}
-              variant='outlined'
-            />
-            <ChipStyledProfile icon={<StarIcon />} label={data.rating} variant='outlined' />
-          </span>
-          <Button
-            size='small'
-            variant='contained'
-            sx={{ minWidth: '110px' }}
-            onClick={gotoProfessional}>
-            Learn More
-          </Button>
-        </Box>
       </CardContentStyled>
-      {/* <CardActions>
-        <Button size='small'>Learn More</Button>
-      </CardActions> */}
     </Card>
   );
 };
 
 UserFeedCard.propTypes = {
   data: PropTypes.objectOf({}),
+  navKey: PropTypes.string,
+  category: PropTypes.string,
 };
 
 UserFeedCard.defaultProps = {
   data: {},
+  navKey: 'professionalId',
+  category: '',
 };
 
 export default UserFeedCard;

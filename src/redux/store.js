@@ -8,6 +8,7 @@ import myProfileReducer from '../pages/my-profile/slice/myProfile';
 import feedsReducer from '../pages/feeds/slice/feeds';
 import professionalReducer from '../pages/user-profile/slice/userProfile';
 import categoriesReducer from '../pages/common/slice/categories';
+import searchReducer from '../pages/search/slice/search';
 
 let preloadedState = {};
 const adata = getLogin();
@@ -27,6 +28,7 @@ export default configureStore({
     feeds: feedsReducer,
     professionals: professionalReducer,
     categories: categoriesReducer,
+    search: searchReducer,
   },
   preloadedState: preloadedState,
 });

@@ -19,7 +19,7 @@ const Categories = ({ selected }) => {
       console.log(key);
       const value = data[key].split('|');
       cateJson.push({
-        id: value[0],
+        id: Number(value[0]),
         label: key,
         image: value[1],
         hex: value[2],

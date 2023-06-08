@@ -1,82 +1,105 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import { Grid, IconButton, Paper, TextField, Typography } from '@mui/material';
-import { SearchOutlined } from '@mui/icons-material';
-import { styled } from '@mui/material/styles';
+import { Grid, Typography } from '@mui/material';
+import { find, times } from 'lodash';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { openNotification } from '../notifications/slice/notification';
+import ProfessionalCardSkeleton from '../../components/skeleton/ProfessionalCardSkeleton';
 import Categories from '../home/Categories';
+import SearchForm from './SearchForm';
+import UserFeedCard from '../feeds/UserFeedCard';
 
-const StyledSeachHead = styled(Typography)`
-  font-weight: 600;
-  padding: 2rem;
-  text-align: center;
-`;
-
-const StyledFormLabel = styled(Typography)`
-  font-weight: 600;
-  font-size: 1rem;
-`;
-
-const StyledSearchButton = styled(IconButton)`
-  background: #000;
-  color: #fff;
-  width: 50px;
-  height: 50px;
-  margin: auto;
-  &:hover {
-    background: #00adff;
-    color: #fff;
-  }
-`;
+import { searchByCategory } from './api/search';
+import { setSearchResults } from './slice/search';
 
 const Search = () => {
   const params = useParams();
+  const dispatch = useDispatch();
 
-  const handleSearch = () => {};
+  const pageNoRef = useRef(0);
+  const [loading, setLoading] = useState(true);
+
+  const categories = useSelector((state) => state.categories);
+  const searchResults = useSelector((state) => state.search);
+
+  const findCategory = (query, returnKey = 'id') => {
+    const findItem = find(categories, { ...query });
+    if (findItem) {
+      return findItem[returnKey];
+    }
+    // default category
+    return returnKey === 'id' ? 8 : 'Others';
+  };
+
+  const handleSearchByName = () => {};
+
+  const handleSearchByCategory = async () => {
+    try {
+      setLoading(true);
+      const categoryNum = findCategory({ label: params.category }, 'id');
+      const resp = await dispatch(
+        searchByCategory({ category: categoryNum, page: pageNoRef.current }),
+      ).unwrap();
+      setLoading(false);
+      if (resp.ok) {
+        const resJson = await resp.json();
+        dispatch(setSearchResults({ page: pageNoRef.current, data: resJson }));
+      }
+    } catch (error) {
+      console.log('Error:: Search by category::: ', error);
+      setLoading(false);
+      dispatch(openNotification({ severity: 'error', message: 'Something went wrong!' }));
+    }
+  };
+
+  useEffect(() => {
+    pageNoRef.current = 0;
+    dispatch(setSearchResults({ page: 0, data: [] }));
+    handleSearchByCategory();
+  }, [params.category]);
 
   return (
     <Grid container>
       <Categories selected={params} />
-      <Grid item xs={12} id='search-form'>
-        <Grid container justifyContent='center'>
-          <Grid item xs={12} sm={12} md={8} lg={5} xl={5}>
-            <StyledSeachHead variant='h5' gutterBottom>
-              Find and connect with experts in seconds
-            </StyledSeachHead>
-            <Paper elevation={6} sx={{ padding: '1rem' }}>
-              <Grid container justifyContent='space-between'>
-                <Grid item>
-                  <StyledFormLabel variant='h6' gutterBottom>
-                    Category
-                  </StyledFormLabel>
-                  <Typography variant='subtitle1' gutterBottom>
-                    {params.category}
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <StyledFormLabel variant='h6' gutterBottom>
-                    Search by name
-                  </StyledFormLabel>
-                  <TextField
-                    variant='standard'
-                    id='search-by-name'
-                    placeholder='search by name'
-                    sx={{ minWidth: '64px' }}
-                  />
-                </Grid>
-                <Grid item sx={{ display: 'flex' }}>
-                  <StyledSearchButton onClick={handleSearch}>
-                    <SearchOutlined />
-                  </StyledSearchButton>
-                </Grid>
-              </Grid>
-            </Paper>
-          </Grid>
+      <SearchForm category={params.category} handleSearch={handleSearchByName} />
+      {/* search results */}
+      <Grid item xs={12}>
+        <Grid container>
+          {searchResults.length > 0 && (
+            <Grid item xs={12} sx={{ padding: '1rem 2rem', margin: '0 auto' }}>
+              {searchResults.map((u) => (
+                <UserFeedCard
+                  key={u.id}
+                  data={u}
+                  navKey='id'
+                  category={findCategory({ id: u.category }, 'label')}
+                />
+              ))}
+            </Grid>
+          )}
         </Grid>
       </Grid>
+      {/* loading state */}
       <Grid item xs={12}>
-        Search results
+        <Grid container>
+          {loading && (
+            <Grid item xs={12} sx={{ padding: '1rem 2rem', margin: '0 auto' }}>
+              {times(8).map((v) => (
+                <ProfessionalCardSkeleton key={v} width='21%' />
+              ))}
+            </Grid>
+          )}
+        </Grid>
       </Grid>
+      {/* no data available */}
+      {searchResults.length === 0 && (
+        <Grid container item xs={12} justifyContent='center' sx={{ padding: '2rem 0' }}>
+          <Typography variant='subtitle2' component='div' gutterBottom>
+            No data available
+          </Typography>
+        </Grid>
+      )}
     </Grid>
   );
 };

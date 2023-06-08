@@ -70,6 +70,9 @@ const UserProfile = () => {
 
   useEffect(() => {
     fetchUserDetails();
+    return () => {
+      dispatch(setProfessionalProfile({}));
+    };
   }, [id]);
 
   return (
