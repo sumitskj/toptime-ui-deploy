@@ -1,35 +1,67 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 
 import { Drawer, Toolbar, List, ListItem, ListItemButton, ListItemText } from '@mui/material';
 import Logo from '../../components/logo/Logo';
+import { useSelector } from 'react-redux';
 
-const sidebarItems = [
+const sidebarUserItems = [
   {
     name: 'Home',
-    path: '/feeds',
+    path: '/user/feeds',
   },
   {
-    name: 'My services',
-    path: '/my-services',
+    name: 'Explore',
+    path: '/user/explore',
   },
   {
     name: 'Wallet',
-    path: '/wallet',
+    path: '/user/wallet',
   },
   {
     name: 'Bookings',
-    path: '/bookings',
+    path: '/user/bookings',
+  },
+  {
+    name: 'My Profile',
+    path: '/user/my-profile',
+  },
+  {
+    name: 'My Raised Issues',
+    path: '/user/raised-issues',
+  },
+  {
+    name: 'Register as Professional',
+    path: '/user/register-as-professional',
+  },
+];
+
+const sidebarProfessionlItems = [
+  {
+    name: 'Home',
+    path: '/professional/feeds',
+  },
+  {
+    name: 'Bookings',
+    path: '/professional/bookings',
+  },
+  {
+    name: 'Wallet',
+    path: '/professional/wallet',
   },
   {
     name: 'My profile',
-    path: '/my-profile',
+    path: '/professional/my-profile',
   },
   {
-    name: 'Switch to user mode',
-    path: '/switch-user-mode',
+    name: 'My services',
+    path: '/professional/my-services',
+  },
+  {
+    name: 'Monetize other skill',
+    path: '/professional/register-other-skill',
   },
 ];
 
@@ -44,6 +76,7 @@ const CustomisedListItemText = styled(ListItemText)`
 const SideBar = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const loginData = useSelector((state) => state.auth);
   const { mobileOpen, handleDrawerToggle, drawerWidth } = props;
 
   const container = window !== undefined ? window.document.body : undefined;
@@ -51,6 +84,8 @@ const SideBar = (props) => {
   const handleListItemClick = (path) => {
     navigate(path, { replace: true });
   };
+
+  useEffect(() => {}, [loginData.alreadyAppliedCategories]);
 
   const drawer = (
     <div>
@@ -60,17 +95,33 @@ const SideBar = (props) => {
         </Link>
       </Toolbar>
       <List>
-        {sidebarItems.map((text) => (
-          <ListItem key={text.name} disablePadding>
-            <ListItemButton onClick={() => handleListItemClick(text.path)} disableRipple>
-              <CustomisedListItemText
-                primary={text.name}
-                className={location.pathname === text.path ? 'active' : ''}
-                disableTypography
-              />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        <ListItem sx={{ color: 'orange', fontWeight: '500', fontFamily: 'Rubik' }}>
+          {loginData.alreadyAppliedCategories.length > 0 ? 'Professional Mode' : 'User Mode'}
+        </ListItem>
+        {!loginData.alreadyAppliedCategories.length > 0 &&
+          sidebarUserItems.map((text) => (
+            <ListItem key={text.name} disablePadding>
+              <ListItemButton onClick={() => handleListItemClick(text.path)} disableRipple>
+                <CustomisedListItemText
+                  primary={text.name}
+                  className={location.pathname === text.path ? 'active' : ''}
+                  disableTypography
+                />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        {loginData.alreadyAppliedCategories.length > 0 &&
+          sidebarProfessionlItems.map((text) => (
+            <ListItem key={text.name} disablePadding>
+              <ListItemButton onClick={() => handleListItemClick(text.path)} disableRipple>
+                <CustomisedListItemText
+                  primary={text.name}
+                  className={location.pathname === text.path ? 'active' : ''}
+                  disableTypography
+                />
+              </ListItemButton>
+            </ListItem>
+          ))}
       </List>
     </div>
   );

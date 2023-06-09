@@ -6,9 +6,9 @@ import { Button, Grid, Paper, Typography } from '@mui/material';
 
 import { getUserDetails } from './api/myProfile';
 import { setMyUserDetails } from './slice/myProfile';
-import { openNotification } from '../notifications/slice/notification';
-import { removeLogin } from '../../utils/loginStore';
-import { removeLogin as removeLoginRedux } from '../login/slice/login';
+import { openNotification } from '../../notifications/slice/notification';
+import { removeLogin } from '../../../utils/loginStore';
+import { removeLogin as removeLoginRedux } from '../../login/slice/login';
 
 const ProfilePropText = ({ label, value }) => {
   return (
@@ -23,7 +23,7 @@ const ProfilePropText = ({ label, value }) => {
   );
 };
 
-const MyProfile = () => {
+const UserMyProfile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -104,4 +104,4 @@ ProfilePropText.propTypes = {
   value: PropTypes.string.isRequired,
 };
 
-export default MyProfile;
+export default UserMyProfile;

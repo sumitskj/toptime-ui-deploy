@@ -25,7 +25,7 @@ const DividerStyled = styled(Divider)`
   }
 `;
 
-const Feeds = () => {
+const UserFeeds = () => {
   const dispatch = useDispatch();
 
   const feeds = useSelector((state) => state.feeds);
@@ -96,4 +96,4 @@ const Feeds = () => {
   );
 };
 
-export default Feeds;
+export default UserFeeds;

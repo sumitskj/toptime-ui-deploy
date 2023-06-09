@@ -23,17 +23,6 @@ const CustomizedSignIn = styled(Button)`
   }
 `;
 
-const CustomizedCreateAccount = styled(Button)`
-  color: #000;
-  border: 1px solid #000;
-  font-weight: 600;
-
-  :hover {
-    border: 1px solid #000;
-    transform: translateY(-1px);
-  }
-`;
-
 const CustomisedBecomeExpert = styled(Button)`
   font-weight: 600;
   border: 1px solid #000;
@@ -54,9 +43,6 @@ const Main = () => {
 
   const handleLogIn = () => {
     navigate('/login');
-  };
-  const handleSignUp = () => {
-    navigate('/sign-up');
   };
 
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -96,12 +82,13 @@ const Main = () => {
               <Grid container>
                 <Grid item xs={6}></Grid>
                 <Grid container item xs={6} justifyContent='flex-end'>
-                  <CustomisedBecomeExpert variant='outlined'>Become expert</CustomisedBecomeExpert>
+                  {!authData.isAuthenticated && (
+                    <CustomisedBecomeExpert variant='outlined'>
+                      Become expert
+                    </CustomisedBecomeExpert>
+                  )}
                   {!authData.isAuthenticated && (
                     <ButtonGroup variant='outlined' disableRipple>
-                      <CustomizedCreateAccount onClick={handleSignUp}>
-                        Create account
-                      </CustomizedCreateAccount>
                       <CustomizedSignIn onClick={handleLogIn}>Sign In</CustomizedSignIn>
                     </ButtonGroup>
                   )}

@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   isAuthenticated: false,
   authData: {},
+  alreadyAppliedCategories: [],
 };
 
 export const loginSlice = createSlice({
@@ -17,9 +18,12 @@ export const loginSlice = createSlice({
       state.isAuthenticated = false;
       state.authData = {};
     },
+    setAlreadyAppliedCategories: (state, action) => {
+      state.alreadyAppliedCategories = action.payload;
+    },
   },
 });
 
-export const { setlogin, removeLogin } = loginSlice.actions;
+export const { setlogin, removeLogin, setAlreadyAppliedCategories } = loginSlice.actions;
 
 export default loginSlice.reducer;

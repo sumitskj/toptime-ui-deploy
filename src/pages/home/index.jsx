@@ -19,7 +19,7 @@ const Home = () => {
 
   useEffect(() => {
     if (auth.isAuthenticated) {
-      navigate('/feeds', { replace: true });
+      navigate('/user/feeds', { replace: true });
     }
   }, []);
 
