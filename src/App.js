@@ -13,11 +13,11 @@ import Home from './pages/home';
 import Login from './pages/login';
 import SignUp from './pages/signup';
 import UserProfile from './pages/user-profile';
-import MyServices from './pages/my-services';
-import MyProfile from './pages/my-profile';
-import Bookings from './pages/bookings';
-import Wallet from './pages/wallet';
-import Feeds from './pages/feeds';
+import MyServices from './pages/user/my-services';
+import UserMyProfile from './pages/user/my-profile';
+import UserBookings from './pages/user/bookings';
+import UserWallet from './pages/user/wallet';
+import UserFeeds from './pages/user/feeds';
 import Search from './pages/search';
 
 const router = createBrowserRouter([
@@ -35,28 +35,28 @@ const router = createBrowserRouter([
         element: <Search />,
       },
       {
-        path: 'feeds',
-        element: <Feeds />,
+        path: 'user/feeds',
+        element: <UserFeeds />,
       },
       {
         path: 'user-profile/:id',
         element: <UserProfile />,
       },
       {
-        path: 'my-profile',
-        element: <MyProfile />,
+        path: 'user/my-profile',
+        element: <UserMyProfile />,
       },
       {
-        path: 'my-services',
+        path: 'professional/my-services',
         element: <MyServices />,
       },
       {
-        path: 'wallet',
-        element: <Wallet />,
+        path: 'user/wallet',
+        element: <UserWallet />,
       },
       {
-        path: 'bookings',
-        element: <Bookings />,
+        path: 'user/bookings',
+        element: <UserBookings />,
       },
     ],
   },

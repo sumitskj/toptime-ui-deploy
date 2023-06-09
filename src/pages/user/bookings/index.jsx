@@ -6,7 +6,7 @@ import { TabPanel } from './TabPanel';
 import { getBookings } from './api/bookings';
 import { setBookings } from './slice/bookings';
 
-import ReactTable from '../../components/data-grid/ReactTable';
+import ReactTable from '../../../components/data-grid/ReactTable';
 
 const BOOKINGTYPES = {
   0: 'Voice',
@@ -20,7 +20,7 @@ function a11yProps(index) {
   };
 }
 
-const Bookings = () => {
+const UserBookings = () => {
   const dispatch = useDispatch();
   const bookingsData = useSelector((state) => state.bookings);
   const [value, setValue] = useState(0);
@@ -125,4 +125,4 @@ const Bookings = () => {
   );
 };
 
-export default Bookings;
+export default UserBookings;

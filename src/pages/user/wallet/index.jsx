@@ -20,7 +20,7 @@ const WalletValueCard = styled(Card)`
   width: 450px;
 `;
 
-const Wallet = () => {
+const UserWallet = () => {
   return (
     <Grid container>
       <Grid item xs={12} sx={{ marginBottom: '1em', textAlign: 'center' }}>
@@ -45,4 +45,4 @@ const Wallet = () => {
   );
 };
 
-export default Wallet;
+export default UserWallet;

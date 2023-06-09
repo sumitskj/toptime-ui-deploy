@@ -8,7 +8,7 @@ import { openNotification } from '../notifications/slice/notification';
 import ProfessionalCardSkeleton from '../../components/skeleton/ProfessionalCardSkeleton';
 import Categories from '../home/Categories';
 import SearchForm from './SearchForm';
-import UserFeedCard from '../feeds/UserFeedCard';
+import UserFeedCard from '../user/feeds/UserFeedCard';
 
 import { searchByCategory } from './api/search';
 import { setSearchResults } from './slice/search';

@@ -15,4 +15,15 @@ const verifyOtp = async (payload) => {
   return response;
 };
 
-export { getEmailOtp, verifyOtp };
+const getProfessionalAppliedCategories = async (token) => {
+  const response = await fetchWrapper(
+    '/api/v1/professionals/category',
+    {
+      method: 'GET',
+    },
+    token,
+  );
+  return response;
+};
+
+export { getEmailOtp, verifyOtp, getProfessionalAppliedCategories };

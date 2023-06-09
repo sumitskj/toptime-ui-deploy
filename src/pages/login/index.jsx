@@ -7,10 +7,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { validateEmail } from '../../utils';
 import { Header } from '../../components/no-login/header';
 import MuiTextbox from '../../components/Textbox/MuiTextbox';
-import { getEmailOtp, verifyOtp } from './api/login';
-import { setlogin } from './slice/login';
+import { getEmailOtp, verifyOtp, getProfessionalAppliedCategories } from './api/login';
+import { setlogin, setAlreadyAppliedCategories } from './slice/login';
 import { openNotification } from '../notifications/slice/notification';
-import { storeLogin, removeLogin } from '../../utils/loginStore';
+import {
+  storeLogin,
+  removeLogin,
+  storeAppliedProfessionalCategories,
+  storeIsProfessional,
+} from '../../utils/loginStore';
 
 const CustomizedLoginBox = styled(Box)`
   border: 1px solid #ddd;
@@ -78,10 +83,26 @@ const Login = () => {
       const resp = await verifyOtp(payload);
       if (resp.ok) {
         const respJson = await resp.json();
-        console.log('response is verify wala ', respJson);
+        console.log('Auth Token Response:: ', respJson);
         storeLogin(respJson);
         dispatch(setlogin(respJson));
         dispatch(openNotification({ severity: 'success', message: 'Login successful!' }));
+        try {
+          const alreadyAppliedCategoriesResp = await getProfessionalAppliedCategories(
+            respJson['accessToken'],
+          );
+          if (alreadyAppliedCategoriesResp.ok) {
+            const alreadyAppliedCategoriesRespJson = await alreadyAppliedCategoriesResp.json();
+            console.log('Already applied categoires:: ', alreadyAppliedCategoriesRespJson);
+            storeAppliedProfessionalCategories(alreadyAppliedCategoriesRespJson);
+            storeIsProfessional(
+              alreadyAppliedCategoriesRespJson['categories'].length > 0 ? true : false,
+            );
+            dispatch(setAlreadyAppliedCategories(alreadyAppliedCategoriesRespJson['categories']));
+          }
+        } catch (error) {
+          console.log('Error in fetching already Applied Categories: ', error);
+        }
         navigate('/');
       } else {
         removeLogin();

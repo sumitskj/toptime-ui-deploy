@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchWrapper } from '../../../utils/index';
+import { fetchWrapper } from '../../../../utils/index';
 
 const getAllFeedsHome = createAsyncThunk(
   'feeds/all',
