@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { getLogin } from '../utils/loginStore';
+import { getLogin, getAppliedProfessionalCategories } from '../utils/loginStore';
 
 import loginReducer from '../pages/login/slice/login';
 import notificationReducer from '../pages/notifications/slice/notification';
@@ -17,6 +17,28 @@ if (adata) {
   if (jsonAuthData && jsonAuthData.accessToken) {
     preloadedState = { ...preloadedState, auth: { isAuthenticated: true, authData: jsonAuthData } };
   }
+}
+const alreadyAppliedProfessionalCategories = getAppliedProfessionalCategories();
+console.log('store:: cats :: ', alreadyAppliedProfessionalCategories);
+if (
+  alreadyAppliedProfessionalCategories !== null &&
+  alreadyAppliedProfessionalCategories.length > 0
+) {
+  const appliedCategories = JSON.parse(alreadyAppliedProfessionalCategories);
+  preloadedState = {
+    ...preloadedState,
+    auth: {
+      ...preloadedState.auth,
+      alreadyAppliedCategories: appliedCategories,
+    },
+  };
+  preloadedState = {
+    ...preloadedState,
+    auth: {
+      ...preloadedState.auth,
+      currentMode: appliedCategories.categories.length > 0 ? 'professional' : 'user',
+    },
+  };
 }
 
 export default configureStore({

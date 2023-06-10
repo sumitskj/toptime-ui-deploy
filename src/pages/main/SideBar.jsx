@@ -5,7 +5,8 @@ import { styled } from '@mui/material/styles';
 
 import { Drawer, Toolbar, List, ListItem, ListItemButton, ListItemText } from '@mui/material';
 import Logo from '../../components/logo/Logo';
-import { getAppliedProfessionalCategories } from '../../utils/loginStore';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCurrentMode } from '../login/slice/login';
 
 const sidebarUserItems = [
   {
@@ -41,7 +42,7 @@ const sidebarUserItems = [
 const sidebarProfessionlItems = [
   {
     name: 'Home',
-    path: '/professional/feeds',
+    path: '/professional/home',
   },
   {
     name: 'Bookings',
@@ -76,13 +77,24 @@ const CustomisedListItemText = styled(ListItemText)`
 const SideBar = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const alreadyAppliedCategories = getAppliedProfessionalCategories();
+  const dispatch = useDispatch();
+  const currentMode = useSelector((state) => state.auth.currentMode);
   const { mobileOpen, handleDrawerToggle, drawerWidth } = props;
 
   const container = window !== undefined ? window.document.body : undefined;
 
   const handleListItemClick = (path) => {
     navigate(path, { replace: true });
+  };
+
+  const toggleMode = (curMode) => {
+    dispatch(setCurrentMode(curMode));
+    if (curMode === 'user') {
+      navigate('/user/feeds', { replace: true });
+    }
+    if (curMode === 'professional') {
+      navigate('/professional/home', { replace: true });
+    }
   };
 
   const drawer = (
@@ -94,9 +106,9 @@ const SideBar = (props) => {
       </Toolbar>
       <List>
         <ListItem sx={{ color: 'orange', fontWeight: '500', fontFamily: 'Rubik' }}>
-          {alreadyAppliedCategories.length > 0 ? 'Professional Mode' : 'User Mode'}
+          {currentMode === 'professional' ? 'Professional Mode' : 'User Mode'}
         </ListItem>
-        {!alreadyAppliedCategories.length > 0 &&
+        {currentMode === 'user' &&
           sidebarUserItems.map((text) => (
             <ListItem key={text.name} disablePadding>
               <ListItemButton onClick={() => handleListItemClick(text.path)} disableRipple>
@@ -108,7 +120,7 @@ const SideBar = (props) => {
               </ListItemButton>
             </ListItem>
           ))}
-        {alreadyAppliedCategories.length > 0 &&
+        {currentMode === 'professional' &&
           sidebarProfessionlItems.map((text) => (
             <ListItem key={text.name} disablePadding>
               <ListItemButton onClick={() => handleListItemClick(text.path)} disableRipple>
@@ -120,6 +132,20 @@ const SideBar = (props) => {
               </ListItemButton>
             </ListItem>
           ))}
+        {currentMode === 'professional' && (
+          <ListItem key='Switch to user mode' disablePadding>
+            <ListItemButton onClick={() => toggleMode('user')} disableRipple>
+              <CustomisedListItemText primary='Switch to user mode' disableTypography />
+            </ListItemButton>
+          </ListItem>
+        )}
+        {currentMode === 'user' && (
+          <ListItem key='Switch to professional mode' disablePadding>
+            <ListItemButton onClick={() => toggleMode('professional')} disableRipple>
+              <CustomisedListItemText primary='Switch to professional mode' disableTypography />
+            </ListItemButton>
+          </ListItem>
+        )}
       </List>
     </div>
   );

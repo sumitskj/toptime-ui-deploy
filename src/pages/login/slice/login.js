@@ -4,6 +4,7 @@ const initialState = {
   isAuthenticated: false,
   authData: {},
   alreadyAppliedCategories: [],
+  currentMode: 'user',
 };
 
 export const loginSlice = createSlice({
@@ -21,9 +22,14 @@ export const loginSlice = createSlice({
     setAlreadyAppliedCategories: (state, action) => {
       state.alreadyAppliedCategories = action.payload;
     },
+    setCurrentMode: (state, action) => {
+      console.log('Setting current mode : ', action.payload);
+      state.currentMode = action.payload;
+    },
   },
 });
 
-export const { setlogin, removeLogin, setAlreadyAppliedCategories } = loginSlice.actions;
+export const { setlogin, removeLogin, setAlreadyAppliedCategories, setCurrentMode } =
+  loginSlice.actions;
 
 export default loginSlice.reducer;

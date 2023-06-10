@@ -19,7 +19,13 @@ const Home = () => {
 
   useEffect(() => {
     if (auth.isAuthenticated) {
-      navigate('/user/feeds', { replace: true });
+      const curMode = auth.currentMode;
+      console.log('Current mode: ', curMode);
+      if (curMode === 'professional') {
+        navigate('/professional/home', { replace: true });
+      } else {
+        navigate('/user/feeds', { replace: true });
+      }
     }
   }, []);
 
