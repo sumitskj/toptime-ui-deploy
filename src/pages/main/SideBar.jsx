@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 
 import { Drawer, Toolbar, List, ListItem, ListItemButton, ListItemText } from '@mui/material';
 import Logo from '../../components/logo/Logo';
-import { useSelector } from 'react-redux';
+import { getAppliedProfessionalCategories } from '../../utils/loginStore';
 
 const sidebarUserItems = [
   {
@@ -76,7 +76,7 @@ const CustomisedListItemText = styled(ListItemText)`
 const SideBar = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const loginData = useSelector((state) => state.auth);
+  const alreadyAppliedCategories = getAppliedProfessionalCategories();
   const { mobileOpen, handleDrawerToggle, drawerWidth } = props;
 
   const container = window !== undefined ? window.document.body : undefined;
@@ -84,8 +84,6 @@ const SideBar = (props) => {
   const handleListItemClick = (path) => {
     navigate(path, { replace: true });
   };
-
-  useEffect(() => {}, [loginData.alreadyAppliedCategories]);
 
   const drawer = (
     <div>
@@ -96,9 +94,9 @@ const SideBar = (props) => {
       </Toolbar>
       <List>
         <ListItem sx={{ color: 'orange', fontWeight: '500', fontFamily: 'Rubik' }}>
-          {loginData.alreadyAppliedCategories.length > 0 ? 'Professional Mode' : 'User Mode'}
+          {alreadyAppliedCategories.length > 0 ? 'Professional Mode' : 'User Mode'}
         </ListItem>
-        {!loginData.alreadyAppliedCategories.length > 0 &&
+        {!alreadyAppliedCategories.length > 0 &&
           sidebarUserItems.map((text) => (
             <ListItem key={text.name} disablePadding>
               <ListItemButton onClick={() => handleListItemClick(text.path)} disableRipple>
@@ -110,7 +108,7 @@ const SideBar = (props) => {
               </ListItemButton>
             </ListItem>
           ))}
-        {loginData.alreadyAppliedCategories.length > 0 &&
+        {alreadyAppliedCategories.length > 0 &&
           sidebarProfessionlItems.map((text) => (
             <ListItem key={text.name} disablePadding>
               <ListItemButton onClick={() => handleListItemClick(text.path)} disableRipple>
