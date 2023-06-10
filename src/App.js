@@ -13,12 +13,14 @@ import Home from './pages/home';
 import Login from './pages/login';
 import SignUp from './pages/signup';
 import UserProfile from './pages/user-profile';
-import MyServices from './pages/user/my-services';
+import MyServices from './pages/professional/my-services';
 import UserMyProfile from './pages/user/my-profile';
 import UserBookings from './pages/user/bookings';
 import UserWallet from './pages/user/wallet';
 import UserFeeds from './pages/user/feeds';
 import Search from './pages/search';
+import ProfessionalBookings from './pages/professional/bookings';
+import ProfessionalHome from './pages/professional/home';
 
 const router = createBrowserRouter([
   {
@@ -57,6 +59,14 @@ const router = createBrowserRouter([
       {
         path: 'user/bookings',
         element: <UserBookings />,
+      },
+      {
+        path: '/professional/bookings',
+        element: <ProfessionalBookings />,
+      },
+      {
+        path: '/professional/home',
+        element: <ProfessionalHome />,
       },
     ],
   },

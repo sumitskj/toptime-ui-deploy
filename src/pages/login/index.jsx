@@ -8,7 +8,7 @@ import { validateEmail } from '../../utils';
 import { Header } from '../../components/no-login/header';
 import MuiTextbox from '../../components/Textbox/MuiTextbox';
 import { getEmailOtp, verifyOtp, getProfessionalAppliedCategories } from './api/login';
-import { setlogin, setAlreadyAppliedCategories } from './slice/login';
+import { setlogin, setAlreadyAppliedCategories, setCurrentMode } from './slice/login';
 import { openNotification } from '../notifications/slice/notification';
 import {
   storeLogin,
@@ -99,6 +99,11 @@ const Login = () => {
               alreadyAppliedCategoriesRespJson['categories'].length > 0 ? true : false,
             );
             dispatch(setAlreadyAppliedCategories(alreadyAppliedCategoriesRespJson['categories']));
+            dispatch(
+              setCurrentMode(
+                alreadyAppliedCategoriesRespJson['categories'].length > 0 ? 'professional' : 'user',
+              ),
+            );
           }
         } catch (error) {
           console.log('Error in fetching already Applied Categories: ', error);
