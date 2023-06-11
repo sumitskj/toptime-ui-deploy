@@ -3,7 +3,8 @@ import { getLogin, getAppliedProfessionalCategories } from '../utils/loginStore'
 
 import loginReducer from '../pages/login/slice/login';
 import notificationReducer from '../pages/notifications/slice/notification';
-import bookingsReducer from '../pages/user/bookings/slice/bookings';
+import userBookingsReducer from '../pages/user/bookings/slice/bookings';
+import professionalBookingsReducer from '../pages/professional/bookings/slice/bookings';
 import myProfileReducer from '../pages/user/my-profile/slice/myProfile';
 import feedsReducer from '../pages/user/feeds/slice/feeds';
 import professionalReducer from '../pages/user-profile/slice/userProfile';
@@ -45,7 +46,8 @@ export default configureStore({
   reducer: {
     auth: loginReducer,
     notif: notificationReducer,
-    bookings: bookingsReducer,
+    userBookings: userBookingsReducer,
+    professionalBookings: professionalBookingsReducer,
     myProfile: myProfileReducer,
     feeds: feedsReducer,
     professionals: professionalReducer,
