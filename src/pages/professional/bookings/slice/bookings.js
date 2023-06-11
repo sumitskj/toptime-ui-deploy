@@ -6,8 +6,8 @@ const initialState = {
   2: [],
 };
 
-export const userBookingsSlice = createSlice({
-  name: 'userBookings',
+export const professionalBookingsSlice = createSlice({
+  name: 'professionalBookings',
   initialState: initialState,
   reducers: {
     setBookings: (state, action) => {
@@ -16,6 +16,6 @@ export const userBookingsSlice = createSlice({
   },
 });
 
-export const { setBookings } = userBookingsSlice.actions;
+export const { setBookings } = professionalBookingsSlice.actions;
 
-export default userBookingsSlice.reducer;
+export default professionalBookingsSlice.reducer;

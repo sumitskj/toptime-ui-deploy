@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Box, Grid, Tabs, Tab, Avatar } from '@mui/material';
 
 import { TabPanel } from './TabPanel';
-import { getBookings } from './api/bookings';
+import { getUserBookings } from './api/bookings';
 import { setBookings } from './slice/bookings';
 
 import ReactTable from '../../../components/data-grid/ReactTable';
@@ -22,7 +22,7 @@ function a11yProps(index) {
 
 const UserBookings = () => {
   const dispatch = useDispatch();
-  const bookingsData = useSelector((state) => state.bookings);
+  const bookingsData = useSelector((state) => state.userBookings);
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -32,7 +32,7 @@ const UserBookings = () => {
   const fetchBookings = async () => {
     try {
       const query = `?status=${value}&page=0&limit=15`;
-      const resp = await dispatch(getBookings(query)).unwrap();
+      const resp = await dispatch(getUserBookings(query)).unwrap();
       if (resp.ok) {
         const respJson = await resp.json();
         console.log('response is bookings wala ', respJson);
