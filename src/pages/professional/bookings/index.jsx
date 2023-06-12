@@ -6,12 +6,18 @@ import { getProfessionalBookings } from './api/bookings';
 import { useDispatch, useSelector } from 'react-redux';
 import ProfessionalCardSkeleton from '../../../components/skeleton/ProfessionalCardSkeleton';
 import { useNavigate } from 'react-router-dom';
+import moment from 'moment';
+import { getBookingStatusFromValue, getBookingTypeFromValue } from '../../../utils/enums';
+import { openNotification } from '../../notifications/slice/notification';
+import { find } from 'lodash';
 
 const ProfessionalBookings = () => {
-  const [activeState, setActiveState] = useState(() => 0);
+  const [activeState, setActiveState] = useState(0);
   const [loading, setLoading] = useState(() => false);
   const dispatch = useDispatch();
   const bookingData = useSelector((state) => state.professionalBookings);
+  const categoriesData = useSelector((state) => state.categories);
+  const authData = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
   const changeTab = (index) => {
@@ -19,15 +25,38 @@ const ProfessionalBookings = () => {
   };
 
   const openBooking = (booking) => {
-    navigate('/professional/booking/' + booking.bookingId, { state: { booking: booking } });
+    navigate('/professional/booking/' + booking.bookingId, {
+      state: { booking: booking.bookingId },
+    });
+  };
+
+  const findCategory = (query, returnKey = 'id') => {
+    const findItem = find(categoriesData, { ...query });
+    if (findItem) {
+      return findItem[returnKey];
+    }
+    // default category
+    return returnKey === 'id' ? 8 : 'Others';
   };
 
   useEffect(() => {
-    setLoading(true);
-    fetchBookings(0);
-    fetchBookings(1);
-    fetchBookings(2);
-    setLoading(false);
+    if (!authData.isAuthenticated) {
+      dispatch(
+        openNotification({ severity: 'error', message: 'Please login first to access that page!' }),
+      );
+      navigate('/');
+    }
+    if (
+      bookingData['0'].length === 0 &&
+      bookingData['1'].length === 0 &&
+      bookingData['2'].length === 0
+    ) {
+      setLoading(true);
+      fetchBookings(0);
+      fetchBookings(1);
+      fetchBookings(2);
+      setLoading(false);
+    }
   }, []);
 
   const fetchBookings = async (state) => {
@@ -47,9 +76,6 @@ const ProfessionalBookings = () => {
   return (
     <>
       <div style={{ marginLeft: '1rem', marginRight: '1rem' }}>
-        {/* <div>
-          <Typography sx={{ fontSize: '1.6rem', fontWeight: '500' }}>Bookings</Typography>
-        </div> */}
         <div className='tabItems'>
           <div
             className={`tabBtn ${activeState === 0 ? 'tabActive' : 'tabInactive'}`}
@@ -80,24 +106,55 @@ const ProfessionalBookings = () => {
             <>
               {bookingData[activeState].map((booking, index) => (
                 <div key={index} className='bookingCardDiv' onClick={() => openBooking(booking)}>
-                  <div className='bookingImgDiv'>{booking.userFirstName.substring(0, 1)}</div>
-                  <div>
-                    <Typography>{booking.duration}</Typography>
-                    <Typography>{booking.finalBookingTime}</Typography>
+                  {/* <div className='bookingImgDiv'>{booking.userFirstName.substring(0, 1)}</div> */}
+                  <div className='bookingHeadingDiv'>
+                    <div style={{ padding: '12px' }}>
+                      {booking.isAnonymous === 1
+                        ? booking.userFirstName + ' ' + booking.userLastName
+                        : '*********'}
+                    </div>
+                    <div
+                      style={{
+                        padding: '10px',
+                        borderRadius: '20px',
+                        backgroundColor: '#D6EFFF',
+                        textAlign: 'center',
+                        margin: '12px',
+                        fontSize: '0.8rem',
+                      }}>
+                      {getBookingStatusFromValue(booking.status)}
+                    </div>
                   </div>
-                  <div>
-                    <Typography>
-                      {booking.userFirstName} {booking.userLastName}
-                    </Typography>
-                    <Typography>
-                      {booking.userFirstName} {booking.userLastName}
-                    </Typography>
-                    <Typography>
-                      {booking.userFirstName} {booking.userLastName}
-                    </Typography>
-                    <Typography>
-                      {booking.userFirstName} {booking.userLastName}
-                    </Typography>
+                  <div className='bookingDataDiv'>
+                    <div className='dataDivLeft'>
+                      <div>
+                        {moment(
+                          booking.finalBookingTime === null || booking.finalBookingTime.length === 0
+                            ? booking.initialBookingTime
+                            : booking.finalBookingTime,
+                        ).format('DD MMM YYYY hh:mm A')}
+                      </div>
+                      <br />
+                      <div>{findCategory({ id: booking.category }, 'label')}</div>
+                    </div>
+                    <div className='dataDivRight'>
+                      <div>
+                        {getBookingTypeFromValue(booking.bookingType) +
+                          ' (' +
+                          booking.duration +
+                          ' min)'}
+                      </div>
+                      <br />
+                      <div
+                        style={{
+                          padding: '8px',
+                          backgroundColor: '#ECF7F0',
+                          color: '#48705B',
+                          borderRadius: '20px',
+                        }}>
+                        ₹{booking.totalAmount}
+                      </div>
+                    </div>
                   </div>
                 </div>
               ))}

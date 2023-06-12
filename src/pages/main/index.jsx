@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Outlet, useNavigate, Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { styled } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import { Container, Toolbar, Box, Grid, ButtonGroup, Button, IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import { getCategories } from '../common/api/categories';
+import { setCategories } from '../common/slice/categories';
+import { keys } from 'lodash';
 
 import SideBar from './SideBar';
 import Logo from '../../components/logo/Logo';
@@ -38,6 +41,7 @@ const drawerWidth = 240;
 
 const Main = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const authData = useSelector((state) => state.auth);
 
@@ -52,6 +56,43 @@ const Main = () => {
   };
 
   const calcDrawerWidth = authData.isAuthenticated ? drawerWidth : 0;
+
+  // store categories details
+  const categoriesData = useSelector((state) => state.categories);
+
+  const categoriesToJson = (data) => {
+    const cateJson = [];
+    keys(data).forEach((key) => {
+      console.log(key);
+      const value = data[key].split('|');
+      cateJson.push({
+        id: Number(value[0]),
+        label: key,
+        image: value[1],
+        hex: value[2],
+      });
+    });
+    return cateJson;
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const res = await dispatch(getCategories()).unwrap();
+      if (res.ok) {
+        const resJson = await res.json();
+        const jsonValues = categoriesToJson(resJson);
+        dispatch(setCategories(jsonValues));
+      }
+    } catch (error) {
+      console.log('something went wrong');
+    }
+  };
+
+  useEffect(() => {
+    if (categoriesData && categoriesData.length === 0) {
+      fetchCategories();
+    }
+  }, []);
 
   return (
     <Box sx={{ display: 'flex' }} className='top-time-app-bar'>
