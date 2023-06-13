@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchWrapper } from '../../../utils/index';
+import { fetchBackendApiWrapper } from '../../../utils/index';
 
 const getProfessionalProfile = createAsyncThunk(
   'professional/profile',
@@ -7,7 +7,7 @@ const getProfessionalProfile = createAsyncThunk(
     try {
       const state = getState();
       const authToken = state.auth.authData.accessToken;
-      const response = await fetchWrapper(
+      const response = await fetchBackendApiWrapper(
         `/api/v1/professionals/profile${arg}`,
         {
           method: 'GET',

@@ -1,14 +1,14 @@
-import { fetchWrapper } from '../../../utils/index';
+import { fetchBackendApiWrapper } from '../../../utils/index';
 
 const getEmailOtp = async (email) => {
-  const response = await fetchWrapper(`/api/v1/auth/sendEmailOtp/${email}`, {
+  const response = await fetchBackendApiWrapper(`/api/v1/auth/sendEmailOtp/${email}`, {
     method: 'POST',
   });
   return response;
 };
 
 const verifyOtp = async (payload) => {
-  const response = await fetchWrapper('/api/v1/auth/login', {
+  const response = await fetchBackendApiWrapper('/api/v1/auth/login', {
     method: 'POST',
     body: JSON.stringify(payload),
   });
@@ -16,7 +16,7 @@ const verifyOtp = async (payload) => {
 };
 
 const getProfessionalAppliedCategories = async (token) => {
-  const response = await fetchWrapper(
+  const response = await fetchBackendApiWrapper(
     '/api/v1/professionals/category',
     {
       method: 'GET',

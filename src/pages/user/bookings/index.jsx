@@ -1,128 +1,249 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Box, Grid, Tabs, Tab, Avatar } from '@mui/material';
-
-import { TabPanel } from './TabPanel';
-import { getUserBookings } from './api/bookings';
+import { Typography, Button } from '@mui/material';
+import './bookings.css';
+import { useEffect, useState } from 'react';
 import { setBookings } from './slice/bookings';
+import { getUserBookings } from './api/bookings';
+import { useDispatch, useSelector } from 'react-redux';
+import ProfessionalCardSkeleton from '../../../components/skeleton/ProfessionalCardSkeleton';
+import { useNavigate } from 'react-router-dom';
+import moment from 'moment';
+import { getBookingStatusFromValue, getBookingTypeFromValue } from '../../../utils/enums';
+import { openNotification } from '../../notifications/slice/notification';
+import { find } from 'lodash';
 
-import ReactTable from '../../../components/data-grid/ReactTable';
-
-const BOOKINGTYPES = {
-  0: 'Voice',
-  1: 'Video',
-};
-
-function a11yProps(index) {
-  return {
-    id: `booking-tab-${index}`,
-    'aria-controls': `booking-tabpanel-${index}`,
-  };
-}
-
-const UserBookings = () => {
+const ProfessionalBookings = () => {
+  const pageSize = 15;
+  const [activeState, setActiveState] = useState(0);
+  const [loading, setLoading] = useState(() => false);
+  const [error, setError] = useState(() => false);
   const dispatch = useDispatch();
-  const bookingsData = useSelector((state) => state.userBookings);
-  const [value, setValue] = useState(0);
+  const bookingData = useSelector((state) => state.userBookings);
+  const categoriesData = useSelector((state) => state.categories);
+  const authData = useSelector((state) => state.auth);
+  const navigate = useNavigate();
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  const changeTab = (index) => {
+    setActiveState(index);
   };
 
-  const fetchBookings = async () => {
+  const openBooking = (booking) => {
+    window.open(`${window.location.origin}/user/booking/` + booking.bookingId, '_blank');
+  };
+
+  const findCategory = (query, returnKey = 'id') => {
+    const findItem = find(categoriesData, { ...query });
+    if (findItem) {
+      return findItem[returnKey];
+    }
+    // default
+    return '';
+  };
+
+  const [curPageNum, setCurPageNum] = useState(() => [0, 0, 0]);
+
+  useEffect(() => {
+    if (!authData.isAuthenticated) {
+      dispatch(
+        openNotification({
+          severity: 'error',
+          message: 'Please login first to access that page!',
+        }),
+      );
+      navigate('/');
+    }
+    const initBookings = async () => {
+      setLoading(true);
+      await Promise.all([
+        fetchBookings(0, curPageNum[0]),
+        fetchBookings(1, curPageNum[1]),
+        fetchBookings(2, curPageNum[2]),
+      ]);
+      setLoading(false);
+    };
+    initBookings();
+  }, []);
+
+  const handlePageChange = (curPage) => {
+    curPageNum[activeState] = curPage;
+    setCurPageNum(curPageNum);
+    setLoading(true);
+    fetchBookings(activeState, curPageNum[activeState]);
+    setLoading(false);
+  };
+
+  const fetchBookings = async (state, pageNum) => {
     try {
-      const query = `?status=${value}&page=0&limit=15`;
-      const resp = await dispatch(getUserBookings(query)).unwrap();
+      const query = `?status=${state}&page=${pageNum}&limit=${pageSize}`;
+      const resp = await getUserBookings(query, authData.authData.accessToken);
       if (resp.ok) {
         const respJson = await resp.json();
-        console.log('response is bookings wala ', respJson);
-        dispatch(setBookings({ id: value, data: respJson }));
+        console.log('user bookings response:: ', respJson);
+        dispatch(setBookings({ id: state, data: respJson }));
+      } else {
+        setError(true);
       }
-    } catch (error) {
-      console.log('Error: fetch bookings::', error);
+    } catch (err) {
+      console.log('Error: fetch user bookings::', err);
+      setError(true);
     }
   };
 
-  const columns = useMemo(() => {
-    return [
-      {
-        accessor: 'bookingType',
-        Header: 'Booking Type',
-        Cell: ({ data }) => BOOKINGTYPES[data[0].bookingType],
-      },
-      {
-        accessor: 'avatar',
-        Header: 'Image',
-        // eslint-disable-next-line react/prop-types
-        Cell: ({ data }) => (
-          // eslint-disable-next-line react/prop-types
-          <Avatar alt={data[0].professionalFirstName} src={data[0].professionalPicUrl} />
-        ),
-      },
-      {
-        accessor: 'pfullName',
-        Header: 'Professional Name',
-        Cell: ({ data }) => `${data[0].professionalFirstName} ${data[0].professionalLastName}`,
-        width: 200,
-      },
-      {
-        accessor: 'duration',
-        Header: 'Duration (Minutes)',
-        width: 200,
-      },
-      {
-        accessor: 'rate',
-        Header: 'Rate (per Minutes)',
-        width: 200,
-      },
-      {
-        accessor: 'totalAmount',
-        Header: 'Total',
-        type: 'number',
-        width: 200,
-      },
-      {
-        accessor: 'initialBookingTime',
-        Header: 'Initial Booking Time',
-        Cell: ({ data }) => new Date(data[0].initialBookingTime).toLocaleString(),
-        width: 200,
-      },
-      {
-        accessor: 'finalBookingTime',
-        Header: 'Final Booking Time',
-        Cell: ({ data }) =>
-          data[0].finalBookingTime ? new Date(data[0].finalBookingTime).toLocaleString() : '',
-        width: 200,
-      },
-    ];
-  }, []);
-
-  useEffect(() => {
-    fetchBookings();
-  }, [value]);
-
   return (
-    <Grid container>
-      <Grid item xs={12}>
-        <Box sx={{ width: '100%' }}>
-          <Tabs value={value} onChange={handleChange} aria-label='bookings tabs'>
-            <Tab label='Inprogress' {...a11yProps(0)} />
-            <Tab label='Completed' {...a11yProps(1)} />
-            <Tab label='Cancelled' {...a11yProps(2)} />
-          </Tabs>
-        </Box>
-        <TabPanel value={value} index={0}>
-          <ReactTable data={bookingsData['0']} columns={columns} />
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <ReactTable data={bookingsData['1']} columns={columns} />
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          <ReactTable data={bookingsData['2']} columns={columns} />
-        </TabPanel>
-      </Grid>
-    </Grid>
+    <>
+      <div style={{ marginLeft: '1rem', marginRight: '1rem' }}>
+        <div className='tabItems'>
+          <div
+            className={`tabBtn ${activeState === 0 ? 'tabActive' : 'tabInactive'}`}
+            onClick={() => changeTab(0)}>
+            Inprogress
+          </div>
+          <div
+            className={`tabBtn ${activeState === 1 ? 'tabActive' : 'tabInactive'}`}
+            onClick={() => changeTab(1)}>
+            Completed
+          </div>
+          <div
+            className={`tabBtn ${activeState === 2 ? 'tabActive' : 'tabInactive'}`}
+            onClick={() => changeTab(2)}>
+            Cancelled
+          </div>
+        </div>
+        <div className='bookingsDiv'>
+          {loading && <ProfessionalCardSkeleton />}
+          {!loading && !error && bookingData[activeState].length === 0 && (
+            <Typography>
+              No{' '}
+              {activeState === 0 ? 'Inprogress ' : activeState === 1 ? 'Completed ' : 'Cancelled '}
+              Bookings found
+            </Typography>
+          )}
+          {error && (
+            <Typography>Something went wrong. Please try refreshing page again.</Typography>
+          )}
+          {!error && !loading && bookingData[activeState].length !== 0 && (
+            <>
+              {bookingData[activeState].map((booking, index) => (
+                <div key={index} className='bookingCardDiv' onClick={() => openBooking(booking)}>
+                  <div className='bookingHeadingDiv'>
+                    <div style={{ padding: '12px' }}>
+                      {booking.professionalFirstName + ' ' + booking.professionalLastName}
+                    </div>
+                    <div
+                      style={{
+                        padding: '10px',
+                        borderRadius: '20px',
+                        backgroundColor: '#D6EFFF',
+                        textAlign: 'center',
+                        margin: '12px',
+                        fontSize: '0.8rem',
+                      }}>
+                      {getBookingStatusFromValue(booking.status)}
+                    </div>
+                  </div>
+                  <div className='bookingDataDiv'>
+                    <div className='dataDivLeft'>
+                      <div>
+                        {moment(
+                          booking.finalBookingTime === null || booking.finalBookingTime.length === 0
+                            ? booking.initialBookingTime
+                            : booking.finalBookingTime,
+                        ).format('DD MMM YYYY hh:mm A')}
+                      </div>
+                      <br />
+                      <div>{findCategory({ id: booking.category }, 'label')}</div>
+                    </div>
+                    <div className='dataDivRight'>
+                      <div>
+                        {getBookingTypeFromValue(booking.bookingType) +
+                          ' (' +
+                          booking.duration +
+                          ' min)'}
+                      </div>
+                      <br />
+                      <div
+                        style={{
+                          padding: '8px',
+                          backgroundColor: '#ECF7F0',
+                          color: '#48705B',
+                          borderRadius: '20px',
+                        }}>
+                        ₹{booking.totalAmount}
+                      </div>
+                    </div>
+                  </div>
+                  {(booking.status === 4 ||
+                    (booking.status === 3 &&
+                      moment(booking.finalBookingTime)
+                        .add(booking.duration + 15, 'minutes')
+                        .isAfter(moment()) &&
+                      moment(booking.finalBookingTime).add(-10, 'minutes').isBefore(moment()))) && (
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        position: 'relative',
+                        width: '100%',
+                        margin: '1rem',
+                      }}>
+                      <Button
+                        style={{
+                          margin: 'auto',
+                          width: '80%',
+                          backgroundColor: 'black',
+                          color: 'white',
+                        }}>
+                        Join
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </>
+          )}
+        </div>
+        <div className='paginationDiv'>
+          {bookingData[activeState].length === pageSize && (
+            <>
+              <div
+                style={{
+                  padding: '10px',
+                  border: '1px solid grey',
+                  borderRadius: '20px',
+                  cursor: 'pointer',
+                  marginRight: '1rem',
+                }}
+                onClick={() => handlePageChange(curPageNum[activeState] + 1)}>
+                Next
+              </div>
+            </>
+          )}
+          {curPageNum[activeState] > 0 && (
+            <>
+              <div
+                onClick={() => handlePageChange(curPageNum[activeState] - 1)}
+                style={{
+                  padding: '10px',
+                  border: '1px solid grey',
+                  borderRadius: '20px',
+                  cursor: 'pointer',
+                  marginRight: '1rem',
+                }}>
+                Previous
+              </div>
+            </>
+          )}
+          {!error && (
+            <div
+              style={{
+                color: 'grey',
+              }}>
+              Page : {curPageNum[activeState] + 1}
+            </div>
+          )}
+        </div>
+      </div>
+    </>
   );
 };
 
-export default UserBookings;
+export default ProfessionalBookings;

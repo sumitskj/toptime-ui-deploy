@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { Typography, Button } from '@mui/material';
 import './bookings.css';
 import { useEffect, useState } from 'react';
 import { setBookings } from './slice/bookings';
@@ -12,8 +12,10 @@ import { openNotification } from '../../notifications/slice/notification';
 import { find } from 'lodash';
 
 const ProfessionalBookings = () => {
+  const pageSize = 15;
   const [activeState, setActiveState] = useState(0);
   const [loading, setLoading] = useState(() => false);
+  const [error, setError] = useState(() => false);
   const dispatch = useDispatch();
   const bookingData = useSelector((state) => state.professionalBookings);
   const categoriesData = useSelector((state) => state.categories);
@@ -25,9 +27,7 @@ const ProfessionalBookings = () => {
   };
 
   const openBooking = (booking) => {
-    navigate('/professional/booking/' + booking.bookingId, {
-      state: { booking: booking.bookingId },
-    });
+    window.open(`${window.location.origin}/professional/booking/` + booking.bookingId, '_blank');
   };
 
   const findCategory = (query, returnKey = 'id') => {
@@ -36,8 +36,10 @@ const ProfessionalBookings = () => {
       return findItem[returnKey];
     }
     // default category
-    return returnKey === 'id' ? 8 : 'Others';
+    return '';
   };
+
+  const [curPageNum, setCurPageNum] = useState(() => [0, 0, 0]);
 
   useEffect(() => {
     if (!authData.isAuthenticated) {
@@ -46,30 +48,41 @@ const ProfessionalBookings = () => {
       );
       navigate('/');
     }
-    if (
-      bookingData['0'].length === 0 &&
-      bookingData['1'].length === 0 &&
-      bookingData['2'].length === 0
-    ) {
+    const initBookings = async () => {
       setLoading(true);
-      fetchBookings(0);
-      fetchBookings(1);
-      fetchBookings(2);
+      await Promise.all([
+        fetchBookings(0, curPageNum[0]),
+        fetchBookings(1, curPageNum[1]),
+        fetchBookings(2, curPageNum[2]),
+      ]);
       setLoading(false);
-    }
+    };
+    initBookings();
   }, []);
 
-  const fetchBookings = async (state) => {
+  const handlePageChange = (curPage) => {
+    curPageNum[activeState] = curPage;
+    setCurPageNum(curPageNum);
+    setLoading(true);
+    fetchBookings(activeState, curPageNum[activeState]);
+    setLoading(false);
+  };
+
+  const fetchBookings = async (state, pageNum) => {
     try {
-      const query = `?status=${state}&page=0&limit=15`;
-      const resp = await dispatch(getProfessionalBookings(query)).unwrap();
+      const query = `?status=${state}&page=${pageNum}&limit=${pageSize}`;
+      console.log('auth : ', authData.accessToken);
+      const resp = await getProfessionalBookings(query, authData.authData.accessToken);
       if (resp.ok) {
         const respJson = await resp.json();
         console.log('Professional bookings response:: ', respJson);
         dispatch(setBookings({ id: state, data: respJson }));
+      } else {
+        setError(true);
       }
-    } catch (error) {
-      console.log('Error: fetch professional bookings::', error);
+    } catch (err) {
+      console.log('Error: fetch professional bookings::', err);
+      setError(true);
     }
   };
 
@@ -95,18 +108,20 @@ const ProfessionalBookings = () => {
         </div>
         <div className='bookingsDiv'>
           {loading && <ProfessionalCardSkeleton />}
-          {bookingData[activeState].length === 0 && (
+          {!error && !loading && bookingData[activeState].length === 0 && (
             <Typography>
               No{' '}
               {activeState === 0 ? 'Inprogress ' : activeState === 1 ? 'Completed ' : 'Cancelled '}
               Bookings found
             </Typography>
           )}
-          {!loading && bookingData[activeState].length !== 0 && (
+          {error && (
+            <Typography>Something went wrong. Please try refreshing page again.</Typography>
+          )}
+          {!error && !loading && bookingData[activeState].length !== 0 && (
             <>
               {bookingData[activeState].map((booking, index) => (
                 <div key={index} className='bookingCardDiv' onClick={() => openBooking(booking)}>
-                  {/* <div className='bookingImgDiv'>{booking.userFirstName.substring(0, 1)}</div> */}
                   <div className='bookingHeadingDiv'>
                     <div style={{ padding: '12px' }}>
                       {booking.isAnonymous === 1
@@ -156,9 +171,74 @@ const ProfessionalBookings = () => {
                       </div>
                     </div>
                   </div>
+                  {(booking.status === 4 ||
+                    (booking.status === 3 &&
+                      moment(booking.finalBookingTime)
+                        .add(booking.duration + 15, 'minutes')
+                        .isAfter(moment()) &&
+                      moment(booking.finalBookingTime).add(-10, 'minutes').isBefore(moment()))) && (
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        position: 'relative',
+                        width: '100%',
+                        margin: '1rem',
+                      }}>
+                      <Button
+                        style={{
+                          margin: 'auto',
+                          width: '80%',
+                          backgroundColor: 'black',
+                          color: 'white',
+                        }}>
+                        Join
+                      </Button>
+                    </div>
+                  )}
                 </div>
               ))}
             </>
+          )}
+        </div>
+        <div className='paginationDiv'>
+          {bookingData[activeState].length === pageSize && (
+            <>
+              <div
+                style={{
+                  padding: '10px',
+                  border: '1px solid grey',
+                  borderRadius: '20px',
+                  cursor: 'pointer',
+                  marginRight: '1rem',
+                }}
+                onClick={() => handlePageChange(curPageNum[activeState] + 1)}>
+                Next
+              </div>
+            </>
+          )}
+          {curPageNum[activeState] > 0 && (
+            <>
+              <div
+                onClick={() => handlePageChange(curPageNum[activeState] - 1)}
+                style={{
+                  padding: '10px',
+                  border: '1px solid grey',
+                  borderRadius: '20px',
+                  cursor: 'pointer',
+                  marginRight: '1rem',
+                }}>
+                Previous
+              </div>
+            </>
+          )}
+          {!error && (
+            <div
+              style={{
+                color: 'grey',
+              }}>
+              Page : {curPageNum[activeState] + 1}
+            </div>
           )}
         </div>
       </div>

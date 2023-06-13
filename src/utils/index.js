@@ -12,7 +12,7 @@ export const validateEmail = (email) => {
 const apiHeaders = {};
 apiHeaders['Content-Type'] = 'application/json';
 
-export const fetchWrapper = async (path, options, token = '') => {
+export const fetchBackendApiWrapper = async (path, options, token = '') => {
   if (!options.headers) {
     options.headers = apiHeaders;
   }
@@ -21,5 +21,17 @@ export const fetchWrapper = async (path, options, token = '') => {
     apiHeaders['auth-token'] = token;
   }
 
-  return await fetch(`${process.env.REACT_APP_API}${path}`, options);
+  return await fetch(`${process.env.REACT_APP_BACKEND_API}${path}`, options);
+};
+
+export const fetchPaymentApiWrapper = async (path, options, token = '') => {
+  if (!options.headers) {
+    options.headers = apiHeaders;
+  }
+
+  if (token) {
+    apiHeaders['auth-token'] = token;
+  }
+
+  return await fetch(`${process.env.REACT_APP_PAYMENT_API}${path}`, options);
 };
