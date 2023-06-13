@@ -1,9 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchWrapper } from '../../../utils/index';
+import { fetchBackendApiWrapper } from '../../../utils/index';
 
 const searchByCategory = createAsyncThunk('search/byCategory', async (arg, { rejectWithValue }) => {
   try {
-    const response = await fetchWrapper(
+    const response = await fetchBackendApiWrapper(
       `/api/v1/professionals/searchByCategory?category=${arg.category}&page=${arg.page}`,
       {
         method: 'GET',

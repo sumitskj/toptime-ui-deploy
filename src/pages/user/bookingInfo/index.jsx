@@ -34,11 +34,11 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
-const ProfessionalBookingInfo = () => {
+const UserBookingInfo = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const bookingId = location.pathname.substring(22);
+  const bookingId = location.pathname.substring(14);
   const authData = useSelector((state) => state.auth);
   const [booking, setBooking] = useState(() => null);
   const [loading, setLoading] = useState(() => false);
@@ -577,14 +577,11 @@ const ProfessionalBookingInfo = () => {
           {!loading && !error && booking !== null && (
             <div className='bookingDetailDiv'>
               <Avatar
+                src={booking.professionalPicUrl}
                 sx={{
-                  backgroundColor: '#E44332',
                   width: '100px',
                   height: '100px',
-                  fontSize: '4rem',
-                }}>
-                {booking.userFirstName.substring(0, 1)}
-              </Avatar>
+                }}></Avatar>
               <div style={{ fontWeight: '500', fontSize: '1.2rem', marginTop: '2rem' }}>
                 <span style={{ fontWeight: '200', fontSize: '1rem' }}>Booking scheduled with </span>
                 {booking.isAnonymous === 1
@@ -793,4 +790,4 @@ const ProfessionalBookingInfo = () => {
   );
 };
 
-export default ProfessionalBookingInfo;
+export default UserBookingInfo;

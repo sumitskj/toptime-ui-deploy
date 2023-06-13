@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchWrapper } from '../../../../utils/index';
+import { fetchBackendApiWrapper } from '../../../../utils/index';
 
 const getAllFeedsHome = createAsyncThunk(
   'feeds/all',
@@ -7,7 +7,7 @@ const getAllFeedsHome = createAsyncThunk(
     try {
       const state = getState();
       const authToken = state.auth.authData.accessToken;
-      const response = await fetchWrapper(
+      const response = await fetchBackendApiWrapper(
         '/api/v1/home',
         {
           method: 'GET',
@@ -30,7 +30,7 @@ const getFeedsTrending = createAsyncThunk(
     try {
       const state = getState();
       const authToken = state.auth.authData.accessToken;
-      const response = await fetchWrapper(
+      const response = await fetchBackendApiWrapper(
         '/api/v1/getTrendingProfessionals',
         {
           method: 'GET',
@@ -53,7 +53,7 @@ const getStaticData = createAsyncThunk(
     try {
       const state = getState();
       const authToken = state.auth.authData.accessToken;
-      const response = await fetchWrapper(
+      const response = await fetchBackendApiWrapper(
         '/api/v1/getStaticData',
         {
           method: 'GET',
@@ -76,7 +76,7 @@ const getFeedsRecommended = createAsyncThunk(
     try {
       const state = getState();
       const authToken = state.auth.authData.accessToken;
-      const response = await fetchWrapper(
+      const response = await fetchBackendApiWrapper(
         '/api/v1/getRecommendedProfessionals',
         {
           method: 'GET',
@@ -99,7 +99,7 @@ const getFeedsCategories = createAsyncThunk(
     try {
       const state = getState();
       const authToken = state.auth.authData.accessToken;
-      const response = await fetchWrapper(
+      const response = await fetchBackendApiWrapper(
         '/api/v1/categories',
         {
           method: 'GET',

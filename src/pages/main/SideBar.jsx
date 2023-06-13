@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
@@ -122,6 +122,15 @@ const SideBar = (props) => {
   const { mobileOpen, handleDrawerToggle, drawerWidth } = props;
 
   const container = window !== undefined ? window.document.body : undefined;
+
+  useEffect(() => {
+    if (location.pathname.includes('/user/')) {
+      toggleMode('user');
+    }
+    if (location.pathname.includes('/professional/')) {
+      toggleMode('professional');
+    }
+  }, []);
 
   const handleListItemClick = (path) => {
     navigate(path, { replace: true });

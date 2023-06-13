@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchWrapper } from '../../../utils';
+import { fetchBackendApiWrapper } from '../../../utils';
 
 const fetchBookingById = createAsyncThunk(
   'fetchBookingById',
@@ -7,7 +7,7 @@ const fetchBookingById = createAsyncThunk(
     try {
       const state = getState();
       const authToken = state.auth.authData.accessToken;
-      const response = await fetchWrapper(
+      const response = await fetchBackendApiWrapper(
         `/api/v1/booking?bookingId=${arg}`,
         {
           method: 'GET',

@@ -21,7 +21,8 @@ import UserFeeds from './pages/user/feeds';
 import Search from './pages/search';
 import ProfessionalBookings from './pages/professional/bookings';
 import ProfessionalHome from './pages/professional/home';
-import BookingInfo from './pages/professional/bookingInfo';
+import ProfessionalBookingInfo from './pages/professional/bookingInfo';
+import UserBookingInfo from './pages/user/bookingInfo';
 
 const router = createBrowserRouter([
   {
@@ -81,7 +82,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/professional/booking/:id',
-    element: <BookingInfo />,
+    element: <ProfessionalBookingInfo />,
+  },
+  {
+    path: '/user/booking/:id',
+    element: <UserBookingInfo />,
   },
 ]);
 
