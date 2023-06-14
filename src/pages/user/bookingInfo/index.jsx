@@ -12,8 +12,10 @@ import {
   InputBase,
   Radio,
   RadioGroup,
+  Rating,
   Toolbar,
 } from '@mui/material';
+import PropTypes from 'prop-types';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Logo from '../../../components/logo/Logo';
 import './bookingInfo.css';
@@ -24,15 +26,16 @@ import { fetchBookingById } from '../../common/api/bookingData';
 import { useDispatch, useSelector } from 'react-redux';
 import ProfessionalCardSkeleton from '../../../components/skeleton/ProfessionalCardSkeleton';
 import { openNotification } from '../../notifications/slice/notification';
-import {
-  cancelBooking,
-  confirmBooking,
-  rescheduleBooking,
-  submitFeedback,
-} from './api/bookingOperations';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import {
+  submitFeedback,
+  cancelBooking,
+  rescheduleBooking,
+  raiseIssueApi,
+  confirmBooking,
+} from './api/bookingOperations';
 
 const UserBookingInfo = () => {
   const location = useLocation();
@@ -97,58 +100,89 @@ const UserBookingInfo = () => {
     fetchBookingData();
   }, []);
 
-  // handle accept booking
-  const [openAcceptDialog, setOpenAcceptDialog] = useState(false);
-  const handleAcceptDialogOpen = () => {
-    setOpenAcceptDialog(true);
+  // handle raise issue
+  const [openRaiseIssueDialog, setOpenRaiseIssueDialog] = useState(false);
+  const handleRaiseIssueDialogOpen = () => {
+    setOpenRaiseIssueDialog(true);
   };
 
-  const handleAcceptBooking = async () => {
-    if (!isOnline) {
-      dispatch(openNotification({ severity: 'error', message: 'You are offline!' }));
-      return;
-    }
-    if (actionBtnLoading) return;
-    try {
-      setActionBtnLoading(true);
-      const payload = {
-        bookingId: bookingId,
-        finalBookingTime: new Date(booking.initialBookingTime).toISOString(),
-      };
-      console.log('booking confimation payload: ', payload);
-      const confirmRes = await dispatch(confirmBooking(payload)).unwrap();
-      if (confirmRes.ok) {
-        booking.status = 3;
-        setBooking(booking);
-        dispatch(
-          openNotification({ severity: 'success', message: 'Your booking confirmed successfully' }),
-        );
-      } else {
+  const handleRaiseIssueDialogClose = (event, reason) => {
+    if (reason && reason == 'backdropClick') return;
+    setOpenRaiseIssueDialog(false);
+  };
+
+  const RaiseIssueDialog = () => {
+    const [issue, setIssue] = useState(() => null);
+    const handleIssueTextCallback = (event) => {
+      setIssue(event.target.value);
+    };
+
+    const handleRaiseIssueBooking = async () => {
+      if (!isOnline) {
+        dispatch(openNotification({ severity: 'error', message: 'You are offline!' }));
+        return;
+      }
+      if (actionBtnLoading) return;
+      try {
+        setActionBtnLoading(true);
+        const payload = {
+          bookingId: bookingId,
+          complainDescription: issue,
+          isUserComplain: true,
+        };
+        console.log('raise issue payload: ', payload);
+        const confirmRes = await dispatch(raiseIssueApi(payload)).unwrap();
+        if (confirmRes.ok) {
+          booking.status = 3;
+          setBooking(booking);
+          dispatch(
+            openNotification({ severity: 'success', message: 'Your issue raised successfully' }),
+          );
+        } else {
+          dispatch(
+            openNotification({
+              severity: 'error',
+              message: 'Unable to raise issue. Something went wrong. Please try again',
+            }),
+          );
+        }
+      } catch (err) {
         dispatch(
           openNotification({
             severity: 'error',
-            message: 'Unable to confirm booking. Something went wrong. Please try again',
+            message: 'Something went wrong. Please try again',
           }),
         );
       }
-    } catch (err) {
-      dispatch(
-        openNotification({ severity: 'error', message: 'Something went wrong. Please try again' }),
-      );
-    }
-    handleAcceptDialogClose();
-    setActionBtnLoading(false);
-  };
+      handleRaiseIssueDialogClose();
+      setActionBtnLoading(false);
+    };
 
-  const handleAcceptDialogClose = (event, reason) => {
-    if (reason && reason == 'backdropClick') return;
-    setOpenAcceptDialog(false);
-  };
-
-  const AcceptBookingDialog = () => {
     return (
-      <Dialog open={openAcceptDialog} onClose={handleAcceptDialogClose} onBac>
-        <DialogTitle>Do you want to accept the booking?</DialogTitle>
+      <Dialog open={openRaiseIssueDialog} onClose={handleRaiseIssueDialogClose} onBac>
+        <DialogTitle>Raise Issue</DialogTitle>
+        <div
+          style={{
+            padding: '1rem 2rem',
+          }}>
+          <div>Please explain your issue with the booking</div>
+          <div
+            style={{
+              marginTop: '1rem',
+              borderRadius: '10px',
+              padding: '0.4rem',
+              border: '1px solid grey',
+            }}>
+            <InputBase
+              placeholder='I had a problem...'
+              autoComplete='true'
+              fullWidth={true}
+              multiline={true}
+              value={issue}
+              onChange={handleIssueTextCallback}
+            />
+          </div>
+        </div>
         <DialogActions>
           <div
             style={{
@@ -158,14 +192,16 @@ const UserBookingInfo = () => {
               position: 'relative',
               width: '100%',
             }}>
-            <Button onClick={handleAcceptBooking}>
+            <Button
+              disabled={issue === null || issue.length === 0}
+              onClick={handleRaiseIssueBooking}>
               {actionBtnLoading ? (
                 <CircularProgress size='1rem' variant='indeterminate' sx={{ color: 'black' }} />
               ) : (
-                'Yes'
+                'Submit'
               )}
             </Button>
-            <Button onClick={handleAcceptDialogClose}>NO</Button>
+            <Button onClick={handleRaiseIssueDialogClose}>Cancel</Button>
           </div>
         </DialogActions>
       </Dialog>
@@ -192,7 +228,7 @@ const UserBookingInfo = () => {
       const payload = {
         bookingId: bookingId,
         cancellationTime: new Date(booking.initialBookingTime).toISOString(),
-        isUser: 'false',
+        isUser: 'true',
       };
       console.log('booking cancel payload: ', payload);
       const confirmRes = await dispatch(cancelBooking(payload)).unwrap();
@@ -223,6 +259,9 @@ const UserBookingInfo = () => {
     return (
       <Dialog open={openCancelDialog} onClose={handleCancelDialogClose} onBac>
         <DialogTitle>Do you want to cancel the booking?</DialogTitle>
+        <DialogContent>
+          If you cancel the booking within 60 min of its start time you will be fined 50% amount.
+        </DialogContent>
         <DialogActions>
           <div
             style={{
@@ -259,22 +298,13 @@ const UserBookingInfo = () => {
 
   const RescheduleBookingDialog = () => {
     const [time1, setTime1] = useState(() => null);
-    const [time2, setTime2] = useState(() => null);
-    const [time3, setTime3] = useState(() => null);
-    const [time4, setTime4] = useState(() => null);
 
     const handleRescheduleBooking = async () => {
-      const timeOptions = [];
-      if (time1 !== null) timeOptions.push(time1.toISOString());
-      if (time2 !== null) timeOptions.push(time2.toISOString());
-      if (time3 !== null) timeOptions.push(time3.toISOString());
-      if (time4 !== null) timeOptions.push(time4.toISOString());
-      console.log(JSON.stringify(timeOptions));
-      if (timeOptions.length < 2) {
+      if (time1 === null) {
         dispatch(
           openNotification({
             severity: 'error',
-            message: 'Please select atleast 2 new timings',
+            message: 'Please select new proposed timing',
           }),
         );
         return;
@@ -289,12 +319,14 @@ const UserBookingInfo = () => {
         setActionBtnLoading(true);
         const payload = {
           bookingId: bookingId,
-          bookingTimingProfessionalOptions: timeOptions,
+          bookingTime: time1.toISOString(),
         };
         console.log('booking reschedule payload: ', payload);
         const confirmRes = await dispatch(rescheduleBooking(payload)).unwrap();
         if (confirmRes.ok) {
-          booking.status = 2;
+          booking.status = 1;
+          booking.initialBookingTime = time1.toISOString();
+          booking.finalBookingTime = null;
           setBooking(booking);
           dispatch(
             openNotification({
@@ -328,51 +360,24 @@ const UserBookingInfo = () => {
         <DialogTitle>Reschedule Booking</DialogTitle>
         <DialogContent>
           <div style={{ color: 'grey', padding: '10px', textAlign: 'center' }}>
-            Select atleast 2 new timings for booking
+            Select new proposed timing for booking
           </div>
-          <div style={{ marginTop: '1rem' }}>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DateTimePicker
-                    label='Select time'
-                    value={time1}
-                    disablePast
-                    onChange={(newValue) => setTime1(newValue)}
-                  />
-                </LocalizationProvider>
-              </Grid>
-              <Grid item xs={6}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DateTimePicker
-                    label='Select time'
-                    value={time2}
-                    disablePast
-                    onChange={(newValue) => setTime2(newValue)}
-                  />
-                </LocalizationProvider>
-              </Grid>
-              <Grid item xs={6}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DateTimePicker
-                    label='Select time'
-                    value={time3}
-                    disablePast
-                    onChange={(newValue) => setTime3(newValue)}
-                  />
-                </LocalizationProvider>
-              </Grid>
-              <Grid item xs={6}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DateTimePicker
-                    label='Select time'
-                    value={time4}
-                    disablePast
-                    onChange={(newValue) => setTime4(newValue)}
-                  />
-                </LocalizationProvider>
-              </Grid>
-            </Grid>
+          <div
+            style={{
+              marginTop: '1rem',
+              display: 'flex',
+              justifyContent: 'center',
+              position: 'relative',
+              width: '100%',
+            }}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DateTimePicker
+                label='Select time'
+                value={time1}
+                disablePast
+                onChange={(newValue) => setTime1(newValue)}
+              />
+            </LocalizationProvider>
           </div>
         </DialogContent>
         <DialogActions>
@@ -411,6 +416,7 @@ const UserBookingInfo = () => {
   const FillFeedbackDialog = () => {
     const [satisfied, setSatisfied] = useState(() => 0);
     const [feedback, setFeedback] = useState(() => '');
+    const [rating, setRating] = useState(() => 3.0);
     const feedbackInputCallback = (event) => {
       setFeedback(event.target.value);
     };
@@ -425,15 +431,16 @@ const UserBookingInfo = () => {
       try {
         setActionBtnLoading(true);
         const payload = {
+          rating: rating,
           bookingId: bookingId,
           feedbackStatus: satisfied,
           feedback: feedback,
-          isProfessional: true,
+          isProfessional: false,
         };
         console.log('submit feedback payload: ', payload);
         const confirmRes = await dispatch(submitFeedback(payload)).unwrap();
         if (confirmRes.ok) {
-          booking.professionalCompleteStatusFeedback = 1;
+          booking.userCompleteStatusFeedback = satisfied;
           setBooking(booking);
           dispatch(
             openNotification({ severity: 'success', message: 'Feedback submitted successfully' }),
@@ -469,7 +476,7 @@ const UserBookingInfo = () => {
             position: 'relative',
             width: '100%',
           }}>
-          {/* <div
+          <div
             style={{
               display: 'flex',
               justifyContent: 'space-between',
@@ -483,7 +490,7 @@ const UserBookingInfo = () => {
               precision={0.5}
               onChange={(event, newRating) => setRating(newRating)}
             />
-          </div> */}
+          </div>
           <div
             style={{
               display: 'flex',
@@ -549,10 +556,102 @@ const UserBookingInfo = () => {
     );
   };
 
+  // handle confirm reschedule booking
+  const [openConfirmBookingDialog, setOpenConfirmBookingDialog] = useState(false);
+  const [selectedNewTime, setSelectedNewTime] = useState(() => null);
+
+  const handleConfirmBookingDialogOpen = () => {
+    setOpenConfirmBookingDialog(true);
+  };
+  const handleConfirmBookingDialogClose = () => {
+    setOpenConfirmBookingDialog(false);
+  };
+  const updateNewBookingTime = (index) => {
+    setSelectedNewTime(index);
+    handleConfirmBookingDialogOpen();
+  };
+  const handleConfirmBooking = async (index) => {
+    if (!isOnline) {
+      dispatch(openNotification({ severity: 'error', message: 'You are offline!' }));
+      return;
+    }
+    if (actionBtnLoading) return;
+    try {
+      setActionBtnLoading(true);
+      const payload = {
+        bookingId: bookingId,
+        finalBookingTime: new Date(booking.bookingTimingProfessionalOptions[index]).toISOString(),
+      };
+      console.log('booking reschedule confirm payload: ', payload);
+      const confirmRes = await dispatch(confirmBooking(payload)).unwrap();
+      if (confirmRes.ok) {
+        booking.status = 3;
+        booking.finalBookingTime = booking.bookingTimingProfessionalOptions[index];
+        setBooking(booking);
+        dispatch(
+          openNotification({ severity: 'success', message: 'Your booking confirmed successfully' }),
+        );
+      } else {
+        dispatch(
+          openNotification({
+            severity: 'error',
+            message: 'Unable to confirm booking. Something went wrong. Please try again',
+          }),
+        );
+      }
+    } catch (err) {
+      dispatch(
+        openNotification({ severity: 'error', message: 'Something went wrong. Please try again' }),
+      );
+    }
+    setActionBtnLoading(false);
+    handleConfirmBookingDialogClose();
+  };
+
+  const ConfirmBookingDialog = (props) => {
+    const { value: selectedIndex } = props;
+    return (
+      <Dialog open={openConfirmBookingDialog} onClose={handleConfirmBookingDialogClose} onBac>
+        <DialogTitle>Do you want to confirm the booking?</DialogTitle>
+        <DialogContent>
+          Selected time :{' '}
+          {moment(booking.bookingTimingProfessionalOptions[selectedIndex]).format(
+            'DD MMM YYYY hh:mm A',
+          )}
+        </DialogContent>
+        <DialogActions>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              position: 'relative',
+              width: '100%',
+            }}>
+            <Button onClick={() => handleConfirmBooking(selectedIndex)}>
+              {actionBtnLoading ? (
+                <CircularProgress size='1rem' variant='indeterminate' sx={{ color: 'black' }} />
+              ) : (
+                'Yes'
+              )}
+            </Button>
+            <Button onClick={handleCancelDialogClose}>No</Button>
+          </div>
+        </DialogActions>
+      </Dialog>
+    );
+  };
+  ConfirmBookingDialog.propTypes = {
+    value: PropTypes.number.isRequired,
+  };
+
   return (
     <>
-      <div style={{ width: '100vw', height: '100vh', backgroundColor: '#FFECEC' }}>
-        <AppBar position='sticky' sx={{ backgroundColor: '#FFECEC' }}>
+      <div
+        style={{
+          backgroundColor: '#FFECEC',
+        }}>
+        <AppBar position='relative' sx={{ backgroundColor: '#FFECEC' }}>
           <Toolbar disableGutters>
             <div onClick={handleNavigateHome} style={{ cursor: 'pointer' }}>
               <Logo />
@@ -579,14 +678,12 @@ const UserBookingInfo = () => {
               <Avatar
                 src={booking.professionalPicUrl}
                 sx={{
-                  width: '100px',
-                  height: '100px',
+                  width: '120px',
+                  height: '120px',
                 }}></Avatar>
               <div style={{ fontWeight: '500', fontSize: '1.2rem', marginTop: '2rem' }}>
                 <span style={{ fontWeight: '200', fontSize: '1rem' }}>Booking scheduled with </span>
-                {booking.isAnonymous === 1
-                  ? booking.userFirstName + ' ' + booking.userLastName
-                  : '*********'}
+                {booking.professionalFirstName + ' ' + booking.professionalLastName}
               </div>
               <div style={{ fontWeight: '500', fontSize: '1rem', marginTop: '1rem' }}>
                 {getBookingTypeFromValue(booking.bookingType)}{' '}
@@ -596,20 +693,79 @@ const UserBookingInfo = () => {
               <div style={{ fontWeight: '500', fontSize: '1rem', marginTop: '1rem' }}>
                 <span style={{ fontWeight: '200', fontSize: '1rem' }}>at</span>{' '}
                 {moment(
-                  booking.finalBookingTime === null || booking.finalBookingTime.length === 0
+                  booking.status < 3 ||
+                    booking.finalBookingTime === null ||
+                    booking.finalBookingTime.length === 0
                     ? booking.initialBookingTime
                     : booking.finalBookingTime,
                 ).format('DD MMM YYYY hh:mm A')}
               </div>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-around',
-                  alignItems: 'center',
-                  marginTop: '2rem',
-                  position: 'relative',
-                  width: '100%',
-                }}>
+              {booking.status === 2 && booking.bookingTimingProfessionalOptions.length !== 0 && (
+                <div
+                  style={{
+                    marginTop: '2rem',
+                    color: 'white',
+                    backgroundColor: '#03C988',
+                    borderRadius: '10px',
+                    padding: '1rem',
+                  }}>
+                  <div>
+                    Sorry, but {booking.professionalFirstName} is busy at your preferred time.
+                    He/She has proposed the following new timings. Please select one of them based
+                    on your convenience.
+                  </div>
+                  <div style={{ marginTop: '1rem' }}>
+                    <Grid container spacing={2}>
+                      {booking.bookingTimingProfessionalOptions.length > 0 && (
+                        <Grid item xs={6}>
+                          <Button
+                            onClick={() => updateNewBookingTime(0)}
+                            style={{ color: 'white', backgroundColor: 'black' }}>
+                            {moment(booking.bookingTimingProfessionalOptions[0]).format(
+                              'DD MMM YYYY hh:mm A',
+                            )}
+                          </Button>
+                        </Grid>
+                      )}
+                      {booking.bookingTimingProfessionalOptions.length > 1 && (
+                        <Grid item xs={6}>
+                          <Button
+                            onClick={() => updateNewBookingTime(1)}
+                            style={{ color: 'white', backgroundColor: 'black' }}>
+                            {moment(booking.bookingTimingProfessionalOptions[1]).format(
+                              'DD MMM YYYY hh:mm A',
+                            )}
+                          </Button>
+                        </Grid>
+                      )}
+                      {booking.bookingTimingProfessionalOptions.length > 2 && (
+                        <Grid item xs={6}>
+                          <Button
+                            onClick={() => updateNewBookingTime(2)}
+                            style={{ color: 'white', backgroundColor: 'black' }}>
+                            {moment(booking.bookingTimingProfessionalOptions[2]).format(
+                              'DD MMM YYYY hh:mm A',
+                            )}
+                          </Button>
+                        </Grid>
+                      )}
+                      {booking.bookingTimingProfessionalOptions.length > 3 && (
+                        <Grid item xs={6}>
+                          <Button
+                            onClick={() => updateNewBookingTime(3)}
+                            style={{ color: 'white', backgroundColor: 'black' }}>
+                            {moment(booking.bookingTimingProfessionalOptions[3]).format(
+                              'DD MMM YYYY hh:mm A',
+                            )}
+                          </Button>
+                        </Grid>
+                      )}
+                    </Grid>
+                  </div>
+                  <ConfirmBookingDialog value={selectedNewTime} />
+                </div>
+              )}
+              <div className='bookingIdDiv'>
                 <div
                   style={{
                     fontWeight: '500',
@@ -630,21 +786,16 @@ const UserBookingInfo = () => {
                   {getBookingStatusFromValue(booking.status)}
                 </div>
               </div>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-around',
-                  alignItems: 'center',
-                  position: 'relative',
-                  width: '100%',
-                }}>
+              <div className='bookingIdDiv'>
                 <div
                   style={{
                     fontWeight: '500',
                     fontSize: '1rem',
                     wordBreak: 'break-word',
                   }}>
-                  <span style={{ fontWeight: '200', fontSize: '0.8rem' }}>Hide Details:</span>{' '}
+                  <span style={{ fontWeight: '200', fontSize: '0.8rem' }}>
+                    Hide Customer Details:
+                  </span>{' '}
                   {booking.isAnonymous === 0 ? 'Yes' : 'No'}
                 </div>
                 <div
@@ -668,7 +819,7 @@ const UserBookingInfo = () => {
 
                   <div>
                     <span style={{ fontWeight: '200', fontSize: '0.8rem' }}>
-                      Is customer satisfied with the call:
+                      Am I satisfied with the call:
                     </span>{' '}
                     {booking.userCompleteStatusFeedback === 2 ? 'Yes' : 'No'}
                   </div>
@@ -677,16 +828,14 @@ const UserBookingInfo = () => {
                     {booking.rating}/5
                   </div>
                   <div>
-                    <span style={{ fontWeight: '200', fontSize: '0.8rem' }}>
-                      Customer feedback:
-                    </span>{' '}
+                    <span style={{ fontWeight: '200', fontSize: '0.8rem' }}>My feedback:</span>{' '}
                     {booking.userFeedback}
                   </div>
                 </div>
               )}
               {booking.status >= 5 &&
                 booking.status < 8 &&
-                booking.professionalCompleteStatusFeedback === 0 && (
+                booking.userCompleteStatusFeedback === 0 && (
                   <div style={{ marginTop: '1rem' }}>
                     <button
                       onClick={handleFeedbackDialogOpen}
@@ -720,6 +869,23 @@ const UserBookingInfo = () => {
                   </Button>
                 </div>
               )}
+              {booking.status >= 5 && (
+                <div style={{ marginTop: '2rem' }}>
+                  <button
+                    onClick={handleRaiseIssueDialogOpen}
+                    style={{
+                      color: 'white',
+                      backgroundColor: '#FF9429',
+                      border: '0px',
+                      borderRadius: '10px',
+                      padding: '10px',
+                      fontWeight: '600',
+                    }}>
+                    Raise an Issue
+                  </button>
+                </div>
+              )}
+              <RaiseIssueDialog />
               {booking.status <= 3 && (
                 <div
                   className='bookingBtn'
@@ -731,23 +897,6 @@ const UserBookingInfo = () => {
                     position: 'relative',
                     width: '100%',
                   }}>
-                  {booking.status < 2 && (
-                    <div>
-                      <button
-                        onClick={handleAcceptDialogOpen}
-                        style={{
-                          color: 'white',
-                          backgroundColor: '#03C988',
-                          border: '0px',
-                          borderRadius: '10px',
-                          padding: '10px',
-                          fontWeight: '600',
-                        }}>
-                        Accept
-                      </button>
-                    </div>
-                  )}
-                  <AcceptBookingDialog />
                   {(booking.status === 3 || booking.status === 1) && (
                     <div>
                       <button
@@ -785,6 +934,7 @@ const UserBookingInfo = () => {
             </div>
           )}
         </div>
+        <div style={{ height: '2rem' }}></div>
       </div>
     </>
   );

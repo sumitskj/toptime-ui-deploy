@@ -433,7 +433,7 @@ const ProfessionalBookingInfo = () => {
         console.log('submit feedback payload: ', payload);
         const confirmRes = await dispatch(submitFeedback(payload)).unwrap();
         if (confirmRes.ok) {
-          booking.professionalCompleteStatusFeedback = 1;
+          booking.professionalCompleteStatusFeedback = feedback;
           setBooking(booking);
           dispatch(
             openNotification({ severity: 'success', message: 'Feedback submitted successfully' }),
@@ -599,20 +599,14 @@ const ProfessionalBookingInfo = () => {
               <div style={{ fontWeight: '500', fontSize: '1rem', marginTop: '1rem' }}>
                 <span style={{ fontWeight: '200', fontSize: '1rem' }}>at</span>{' '}
                 {moment(
-                  booking.finalBookingTime === null || booking.finalBookingTime.length === 0
+                  booking.status < 3 ||
+                    booking.finalBookingTime === null ||
+                    booking.finalBookingTime.length === 0
                     ? booking.initialBookingTime
                     : booking.finalBookingTime,
                 ).format('DD MMM YYYY hh:mm A')}
               </div>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-around',
-                  alignItems: 'center',
-                  marginTop: '2rem',
-                  position: 'relative',
-                  width: '100%',
-                }}>
+              <div className='bookingIdDiv'>
                 <div
                   style={{
                     fontWeight: '500',
@@ -633,21 +627,16 @@ const ProfessionalBookingInfo = () => {
                   {getBookingStatusFromValue(booking.status)}
                 </div>
               </div>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-around',
-                  alignItems: 'center',
-                  position: 'relative',
-                  width: '100%',
-                }}>
+              <div className='bookingIdDiv'>
                 <div
                   style={{
                     fontWeight: '500',
                     fontSize: '1rem',
                     wordBreak: 'break-word',
                   }}>
-                  <span style={{ fontWeight: '200', fontSize: '0.8rem' }}>Hide Details:</span>{' '}
+                  <span style={{ fontWeight: '200', fontSize: '0.8rem' }}>
+                    Hide Customer Details:
+                  </span>{' '}
                   {booking.isAnonymous === 0 ? 'Yes' : 'No'}
                 </div>
                 <div
