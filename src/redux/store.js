@@ -10,6 +10,7 @@ import feedsReducer from '../pages/user/feeds/slice/feeds';
 import professionalReducer from '../pages/user-profile/slice/userProfile';
 import categoriesReducer from '../pages/common/slice/categories';
 import searchReducer from '../pages/search/slice/search';
+import homeReducer from '../pages/home/slice/home';
 
 let preloadedState = {};
 const adata = getLogin();
@@ -53,6 +54,7 @@ export default configureStore({
     professionals: professionalReducer,
     categories: categoriesReducer,
     search: searchReducer,
+    home: homeReducer,
   },
   preloadedState: preloadedState,
 });

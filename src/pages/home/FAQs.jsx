@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { AccordionDetails, AccordionSummary, Grid, Typography } from '@mui/material';
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
 import {
@@ -8,53 +9,54 @@ import {
   CustomisedAccordianLabels,
 } from './components';
 
-const QUESTIONS = [
-  {
-    id: 1,
-    question: 'What will happen after I book a call?',
-    ans: '',
-  },
-  {
-    id: 2,
-    question: 'My call is cancelled. What will happen now?',
-    ans: '',
-  },
-  {
-    id: 3,
-    question: 'Can I reschedule or cancel the call?',
-    ans: '',
-  },
-  {
-    id: 4,
-    question: 'Can I withdraw the the funds added to my wallet?',
-    ans: '',
-  },
-];
+import { getStaticData } from './api/home';
+import { setStaticData } from './slice/home';
 
 const FAQs = () => {
-  return (
-    <Grid item xs={12}>
-      <CustomisedCardLabels variant='h4'>FAQs</CustomisedCardLabels>
-      {QUESTIONS.map((q) => (
-        <AccordionBox key={q.id}>
-          <AccordionStyled>
-            <AccordionSummary
-              expandIcon={<ArrowCircleUpIcon />}
-              aria-controls='panel1a-content'
-              id='panel1a-header'>
-              <CustomisedAccordianLabels variant='h5'>{q.question}</CustomisedAccordianLabels>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus
-                ex, sit amet blandit leo lobortis eget.
-              </Typography>
-            </AccordionDetails>
-          </AccordionStyled>
-        </AccordionBox>
-      ))}
-    </Grid>
-  );
+  const dispatch = useDispatch();
+
+  const homeData = useSelector((state) => state.home);
+
+  const fetchStaticData = async () => {
+    try {
+      const res = await dispatch(getStaticData()).unwrap();
+      if (res.ok) {
+        const resJson = await res.json();
+        dispatch(setStaticData(resJson));
+      }
+    } catch (error) {
+      console.log('Error:: Static data:: ', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchStaticData();
+  }, []);
+
+  if (homeData.staticData.faqData.length > 0) {
+    return (
+      <Grid item xs={12}>
+        <CustomisedCardLabels variant='h4'>FAQs</CustomisedCardLabels>
+        {homeData.staticData.faqData.map((q) => (
+          <AccordionBox key={q.key}>
+            <AccordionStyled>
+              <AccordionSummary
+                expandIcon={<ArrowCircleUpIcon />}
+                aria-controls='panel1a-content'
+                id='panel1a-header'>
+                <CustomisedAccordianLabels variant='h5'>{q.key}</CustomisedAccordianLabels>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography>{q.val}</Typography>
+              </AccordionDetails>
+            </AccordionStyled>
+          </AccordionBox>
+        ))}
+      </Grid>
+    );
+  }
+
+  return null;
 };
 
 export default FAQs;
