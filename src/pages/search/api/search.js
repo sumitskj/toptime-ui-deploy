@@ -18,4 +18,25 @@ const searchByCategory = createAsyncThunk('search/byCategory', async (arg, { rej
   }
 });
 
-export { searchByCategory };
+const searchByCategoryAndName = createAsyncThunk(
+  'search/byCategoryAndName',
+  async (arg, { rejectWithValue }) => {
+    try {
+      const query = `category=${arg.category}&searchQuery=${arg.name}&page=${arg.page}`;
+      const response = await fetchBackendApiWrapper(
+        `/api/v1/professionals/searchNameWithCategory?${query}`,
+        {
+          method: 'GET',
+        },
+      );
+      if (!response.ok) {
+        return rejectWithValue(response);
+      }
+      return response;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export { searchByCategory, searchByCategoryAndName };

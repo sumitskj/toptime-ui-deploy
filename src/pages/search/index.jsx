@@ -10,7 +10,7 @@ import Categories from '../home/Categories';
 import SearchForm from './SearchForm';
 import UserFeedCard from '../user/feeds/UserFeedCard';
 
-import { searchByCategory } from './api/search';
+import { searchByCategory, searchByCategoryAndName } from './api/search';
 import { setSearchResults } from './slice/search';
 
 const Search = () => {
@@ -19,6 +19,8 @@ const Search = () => {
 
   const pageNoRef = useRef(0);
   const [loading, setLoading] = useState(true);
+
+  const [searchName, setSearchName] = useState('');
 
   const categories = useSelector((state) => state.categories);
   const searchResults = useSelector((state) => state.search);
@@ -32,7 +34,33 @@ const Search = () => {
     return returnKey === 'id' ? 8 : 'Others';
   };
 
-  const handleSearchByName = () => {};
+  const handleSearchNameInput = (value) => {
+    pageNoRef.current = 0;
+    setSearchName(value);
+  };
+
+  const handleSearchByCategoryAndName = async () => {
+    try {
+      setLoading(true);
+      const categoryNum = findCategory({ label: params.category }, 'id');
+      const resp = await dispatch(
+        searchByCategoryAndName({
+          category: categoryNum,
+          name: searchName,
+          page: pageNoRef.current,
+        }),
+      ).unwrap();
+      setLoading(false);
+      if (resp.ok) {
+        const resJson = await resp.json();
+        dispatch(setSearchResults({ page: pageNoRef.current, data: resJson }));
+      }
+    } catch (error) {
+      console.log('Error:: Search by category::: ', error);
+      setLoading(false);
+      dispatch(openNotification({ severity: 'error', message: 'Something went wrong!' }));
+    }
+  };
 
   const handleSearchByCategory = async () => {
     try {
@@ -55,6 +83,7 @@ const Search = () => {
 
   useEffect(() => {
     pageNoRef.current = 0;
+    setSearchName('');
     dispatch(setSearchResults({ page: 0, data: [] }));
     handleSearchByCategory();
   }, [params.category]);
@@ -62,7 +91,12 @@ const Search = () => {
   return (
     <Grid container>
       <Categories selected={params} />
-      <SearchForm category={params.category} handleSearch={handleSearchByName} />
+      <SearchForm
+        category={params.category}
+        searchName={searchName}
+        handleSearchNameInput={handleSearchNameInput}
+        handleSearch={handleSearchByCategoryAndName}
+      />
       {/* search results */}
       <Grid item xs={12}>
         <Grid container>

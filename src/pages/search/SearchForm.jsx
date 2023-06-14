@@ -27,7 +27,18 @@ const StyledSearchButton = styled(IconButton)`
   }
 `;
 
-const SearchForm = ({ category, handleSearch }) => {
+const SearchForm = ({ category, searchName, handleSearchNameInput, handleSearch }) => {
+  const handleChange = (e) => {
+    handleSearchNameInput(e.target.value);
+  };
+
+  const handleKeyUp = (e) => {
+    if (e.keyCode === 13) {
+      // enter key
+      handleSearch();
+    }
+  };
+
   return (
     <Grid item xs={12} id='search-form'>
       <Grid container justifyContent='center'>
@@ -45,15 +56,19 @@ const SearchForm = ({ category, handleSearch }) => {
                   {category}
                 </Typography>
               </Grid>
-              <Grid item>
+              <Grid item xs={6}>
                 <StyledFormLabel variant='h6' gutterBottom>
                   Search by name
                 </StyledFormLabel>
                 <TextField
                   variant='standard'
                   id='search-by-name'
+                  value={searchName}
+                  onChange={handleChange}
+                  onKeyUp={handleKeyUp}
                   placeholder='search by name'
-                  sx={{ minWidth: '64px' }}
+                  sx={{ minWidth: '100px' }}
+                  fullWidth
                 />
               </Grid>
               <Grid item sx={{ display: 'flex' }}>
@@ -71,11 +86,15 @@ const SearchForm = ({ category, handleSearch }) => {
 
 SearchForm.propTypes = {
   category: PropTypes.string,
+  searchName: PropTypes.string,
   handleSearch: PropTypes.func,
+  handleSearchNameInput: PropTypes.func,
 };
 SearchForm.defaultProps = {
   category: '',
+  searchName: '',
   handleSearch: () => {},
+  handleSearchNameInput: () => {},
 };
 
 export default SearchForm;

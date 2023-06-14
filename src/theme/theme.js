@@ -22,7 +22,7 @@ export const theme = createTheme({
         root: {
           minHeight: '67px',
           '@media (min-width: 600px)': {
-            minHeight: '67px',
+            minHeight: '70px',
           },
         },
         dense: {
