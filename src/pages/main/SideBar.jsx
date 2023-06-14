@@ -125,10 +125,10 @@ const SideBar = (props) => {
 
   useEffect(() => {
     if (location.pathname.includes('/user/')) {
-      toggleMode('user');
+      dispatch(setCurrentMode('user'));
     }
     if (location.pathname.includes('/professional/')) {
-      toggleMode('professional');
+      dispatch(setCurrentMode('professional'));
     }
   }, []);
 

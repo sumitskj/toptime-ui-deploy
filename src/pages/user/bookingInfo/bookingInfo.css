@@ -12,6 +12,15 @@
     0px 1px 18px 0px rgba(0, 0, 0, 0.12);
 }
 
+.bookingIdDiv {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 2rem;
+  position: relative;
+  width: 100%;
+}
+
 .feedbackDiv {
   display: flex;
   flex-direction: column;
@@ -32,10 +41,18 @@
   .bookingDetailDiv {
     width: 80vw;
   }
+
+  .bookingIdDiv {
+    flex-direction: column;
+  }
 }
 
 @media only screen and (max-width: 600px) {
   .bookingDetailDiv {
     width: 80vw;
+  }
+
+  .bookingIdDiv {
+    flex-direction: column;
   }
 }

@@ -56,7 +56,7 @@ const rescheduleBooking = createAsyncThunk(
       const state = getState();
       const authToken = state.auth.authData.accessToken;
       const response = await fetchBackendApiWrapper(
-        '/api/v1/booking/rescheduleOptionsBooking',
+        '/api/v1/booking/rescheduleBooking',
         {
           method: 'PUT',
           body: JSON.stringify(payload),
@@ -97,4 +97,28 @@ const submitFeedback = createAsyncThunk(
   },
 );
 
-export { confirmBooking, cancelBooking, rescheduleBooking, submitFeedback };
+const raiseIssueApi = createAsyncThunk(
+  'raiseIssue',
+  async (payload, { getState, rejectWithValue }) => {
+    try {
+      const state = getState();
+      const authToken = state.auth.authData.accessToken;
+      const response = await fetchPaymentApiWrapper(
+        '/api/v1/complain/booking',
+        {
+          method: 'POST',
+          body: JSON.stringify(payload),
+        },
+        authToken,
+      );
+      if (!response.ok) {
+        return rejectWithValue(response);
+      }
+      return response;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export { confirmBooking, cancelBooking, rescheduleBooking, submitFeedback, raiseIssueApi };
