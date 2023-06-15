@@ -33,7 +33,7 @@ const FAQs = () => {
     fetchStaticData();
   }, []);
 
-  if (homeData.staticData.faqData.length > 0) {
+  if (homeData.staticData.faqData?.length > 0) {
     return (
       <Grid item xs={12}>
         <CustomisedCardLabels variant='h4'>FAQs</CustomisedCardLabels>

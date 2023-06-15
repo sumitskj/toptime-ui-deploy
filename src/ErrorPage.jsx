@@ -1,3 +1,4 @@
+import { Grid, Typography } from '@mui/material';
 import React from 'react';
 import { useRouteError } from 'react-router-dom';
 
@@ -6,13 +7,21 @@ const ErrorPage = () => {
   console.error(error);
 
   return (
-    <div id='error-page'>
-      <h1>Oops!</h1>
-      <p>Sorry, an unexpected error has occurred.</p>
-      <p>
-        <i>{error.statusText || error.message}</i>
-      </p>
-    </div>
+    <Grid
+      container
+      sx={{ height: '100vh' }}
+      direction='row'
+      justifyContent='center'
+      alignItems='center'>
+      <Grid item xs={12} sx={{ textAlign: 'center' }}>
+        <Typography variant='h3' gutterBottom>
+          Oops!
+        </Typography>
+        <Typography variant='body1'>
+          Something unexpected happened! We are looking into that!
+        </Typography>
+      </Grid>
+    </Grid>
   );
 };
 
