@@ -3,12 +3,6 @@ import PropTypes from 'prop-types';
 import { Box, Typography, Radio, TextField, InputAdornment, Button, Divider } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-const BoxStyled = styled(Box)`
-  border: 1px solid #ddd;
-  border-radius: 0.7rem;
-  box-shadow: 0 0 10px 3px #ddd;
-`;
-
 const SpanStyled = styled('span')`
   display: block;
 `;
@@ -31,10 +25,11 @@ const TotalCostLabel = styled(Typography)`
   }
 `;
 
-const UserRateCard = ({ userData }) => {
+const UserRateCard = ({ userData, onClose }) => {
   const [selectedValue, setSelectedValue] = useState('audio');
 
   const [duration, setDuration] = useState(10);
+  const [mobile, setMobile] = useState('');
 
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
@@ -53,9 +48,9 @@ const UserRateCard = ({ userData }) => {
   }
 
   return (
-    <BoxStyled m={2} p={2}>
+    <Box p={2}>
       <Typography gutterBottom variant='h6'>
-        Schedule meeting
+        Start Booking
       </Typography>
       <div>
         <SpanStyled>
@@ -80,6 +75,13 @@ const UserRateCard = ({ userData }) => {
           <label>Video {userData.videoRate} INR/Min</label>
         </SpanStyled>
       </div>
+      <TextField
+        label='Mobile Number'
+        id='mobile-number'
+        value={mobile}
+        onChange={(e) => setMobile(e.target.value)}
+        sx={{ m: 1, width: '90%' }}
+      />
       <TextField label='Date Time' id='date-time-picker' sx={{ m: 1, width: '90%' }} />
       <TextField
         label='Duration'
@@ -92,9 +94,6 @@ const UserRateCard = ({ userData }) => {
         value={duration}
         onChange={(e) => setDuration(e.target.value)}
       />
-      <Button variant='contained' sx={{ margin: '8px', width: '90%' }}>
-        Reserve
-      </Button>
       <Divider sx={{ margin: '8px', width: '90%', color: '#444' }} />
       {/* cost calculation */}
       <CostLabels variant='subtitle2' gutterBottom>
@@ -108,7 +107,16 @@ const UserRateCard = ({ userData }) => {
       <TotalCostLabel variant='subtitle1' gutterBottom>
         Total cost <span>{Number(callCost) + Number(platformCharge)} INR</span>
       </TotalCostLabel>
-    </BoxStyled>
+      <Divider sx={{ margin: '8px', width: '90%', color: '#444' }} />
+      <Box sx={{ textAlign: 'right' }}>
+        <Button variant='text' onClick={onClose}>
+          Cancel
+        </Button>
+        <Button variant='contained' sx={{ margin: '8px' }}>
+          Confirm Booking
+        </Button>
+      </Box>
+    </Box>
   );
 };
 
@@ -117,6 +125,7 @@ UserRateCard.propTypes = {
     voiceRate: PropTypes.number,
     videoRate: PropTypes.number,
   }).isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default UserRateCard;

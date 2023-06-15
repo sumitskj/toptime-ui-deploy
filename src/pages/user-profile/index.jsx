@@ -1,31 +1,28 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { get } from 'lodash';
 import {
   Box,
+  Button,
   Card,
   CardContent,
   CardMedia,
   Chip,
   Divider,
   Grid,
-  IconButton,
   Typography,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import StarIcon from '@mui/icons-material/Star';
 import ReviewsIcon from '@mui/icons-material/Reviews';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import YouTubeIcon from '@mui/icons-material/YouTube';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import LinkIcon from '@mui/icons-material/Link';
 
 import './user-profile.css';
-import UserRateCard from './UserRateCard';
 
 import { getProfessionalProfile } from './api/userProfile';
 import { setProfessionalProfile } from './slice/userProfile';
+import UserSocialLinks from './UserSocialLinks';
+import UserRateInfo from './UserRateInfo';
 
 const ChipStyledProfile = styled(Chip)`
   font-weight: 600;
@@ -36,24 +33,14 @@ const ChipStyledProfile = styled(Chip)`
   }
 `;
 
-const IconButtonStyled = styled(IconButton)`
-  &:hover {
-    background: #00adff;
-    .MuiSvgIcon-root {
-      color: #444;
-    }
-  }
-  .MuiSvgIcon-root {
-    color: #00adff;
-  }
-`;
-
 const UserProfile = () => {
   const dispatch = useDispatch();
 
   const { id } = useParams();
 
   const userData = useSelector((state) => state.professionals.profile);
+
+  const [showMore, setShowMore] = useState(false);
 
   const fetchUserDetails = async () => {
     try {
@@ -74,6 +61,8 @@ const UserProfile = () => {
       dispatch(setProfessionalProfile({}));
     };
   }, [id]);
+
+  const desc = get(userData, 'description', '');
 
   return (
     <Grid container>
@@ -108,36 +97,13 @@ const UserProfile = () => {
                   className='rating-val'
                 />
               </span>
+              <UserSocialLinks userData={userData} />
               <Typography variant='body1' component='div' gutterBottom>
-                {userData.description}
+                {showMore ? desc : `${desc.substring(0, 80)}....`}
+                <Button variant='text' onClick={() => setShowMore(!showMore)}>
+                  {showMore ? 'Show less' : 'Show more'}
+                </Button>
               </Typography>
-              <Box p={1}>
-                {userData.instagramUrl && (
-                  <IconButtonStyled size='large'>
-                    <InstagramIcon />
-                  </IconButtonStyled>
-                )}
-                {userData.linkedInUrl && (
-                  <IconButtonStyled size='large'>
-                    <LinkedInIcon />
-                  </IconButtonStyled>
-                )}
-                {userData.youTubeUrl && (
-                  <IconButtonStyled size='large'>
-                    <YouTubeIcon />
-                  </IconButtonStyled>
-                )}
-                {userData.githubUrl && (
-                  <IconButtonStyled size='large'>
-                    <GitHubIcon />
-                  </IconButtonStyled>
-                )}
-                {userData.otherUrl && (
-                  <IconButtonStyled size='large'>
-                    <LinkIcon />
-                  </IconButtonStyled>
-                )}
-              </Box>
             </CardContent>
           </Card>
           <Divider variant='middle' />
@@ -146,7 +112,7 @@ const UserProfile = () => {
       <Grid item xs={12}>
         <Grid container sx={{ justifyContent: 'space-evenly' }}>
           <Grid item xs={12} sm={12} md={6} lg={5} xl={4}>
-            <UserRateCard userData={userData} />
+            {userData.voiceRate && userData.videoRate && <UserRateInfo userData={userData} />}
           </Grid>
         </Grid>
       </Grid>
