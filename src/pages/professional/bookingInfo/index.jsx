@@ -49,6 +49,13 @@ const ProfessionalBookingInfo = () => {
     navigate('/');
   };
 
+  const joinMeeting = () => {
+    window.open(
+      `${process.env.REACT_APP_MEETING_URI}/${booking.bookingId}/professional?auth_token=${authData.authData.accessToken}`,
+      '_blank',
+    );
+  };
+
   const [isOnline, setIsOnline] = useState(navigator.onLine);
 
   useEffect(() => {
@@ -86,11 +93,13 @@ const ProfessionalBookingInfo = () => {
         const bookingRes = await dispatch(fetchBookingById(bookingId)).unwrap();
         if (bookingRes.ok) {
           setBooking(await bookingRes.json());
-        } else {
-          setError(true);
         }
       } catch (err) {
+        console.error('Error in loading fetching booking: ', err);
         setError(true);
+        if (err.status === 403 || err.status === 401) {
+          navigate('/forbidden');
+        }
       }
       setLoading(false);
     };
@@ -147,7 +156,7 @@ const ProfessionalBookingInfo = () => {
 
   const AcceptBookingDialog = () => {
     return (
-      <Dialog open={openAcceptDialog} onClose={handleAcceptDialogClose} onBac>
+      <Dialog open={openAcceptDialog} onClose={handleAcceptDialogClose}>
         <DialogTitle>Do you want to accept the booking?</DialogTitle>
         <DialogActions>
           <div
@@ -221,7 +230,7 @@ const ProfessionalBookingInfo = () => {
 
   const CancelBookingDialog = () => {
     return (
-      <Dialog open={openCancelDialog} onClose={handleCancelDialogClose} onBac>
+      <Dialog open={openCancelDialog} onClose={handleCancelDialogClose}>
         <DialogTitle>Do you want to cancel the booking?</DialogTitle>
         <DialogActions>
           <div
@@ -324,7 +333,7 @@ const ProfessionalBookingInfo = () => {
     };
 
     return (
-      <Dialog open={openRescheduleDialog} onClose={handleRescheduleDialogClose} onBac>
+      <Dialog open={openRescheduleDialog} onClose={handleRescheduleDialogClose}>
         <DialogTitle>Reschedule Booking</DialogTitle>
         <DialogContent>
           <div style={{ color: 'grey', padding: '10px', textAlign: 'center' }}>
@@ -409,7 +418,7 @@ const ProfessionalBookingInfo = () => {
   };
 
   const FillFeedbackDialog = () => {
-    const [satisfied, setSatisfied] = useState(() => 0);
+    const [satisfied, setSatisfied] = useState(() => 2);
     const [feedback, setFeedback] = useState(() => '');
     const feedbackInputCallback = (event) => {
       setFeedback(event.target.value);
@@ -459,7 +468,7 @@ const ProfessionalBookingInfo = () => {
     };
 
     return (
-      <Dialog open={openFeedbackDialog} onClose={handleFeedbackDialogClose} onBac>
+      <Dialog open={openFeedbackDialog} onClose={handleFeedbackDialogClose}>
         <DialogTitle sx={{ fontSize: '1.4rem' }}>
           How was your call? Please give us a feedback, to improve your experience
         </DialogTitle>
@@ -707,7 +716,9 @@ const ProfessionalBookingInfo = () => {
                     width: '100%',
                     margin: '1rem',
                   }}>
-                  <Button style={{ width: '80%', backgroundColor: 'black', color: 'white' }}>
+                  <Button
+                    onClick={joinMeeting}
+                    style={{ width: '80%', backgroundColor: 'black', color: 'white' }}>
                     Join
                   </Button>
                 </div>

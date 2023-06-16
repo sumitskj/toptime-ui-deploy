@@ -52,6 +52,13 @@ const UserBookingInfo = () => {
     navigate('/');
   };
 
+  const joinMeeting = () => {
+    window.open(
+      `${process.env.REACT_APP_MEETING_URI}/${booking.bookingId}/user?auth_token=${authData.authData.accessToken}`,
+      '_blank',
+    );
+  };
+
   const [isOnline, setIsOnline] = useState(navigator.onLine);
 
   useEffect(() => {
@@ -86,14 +93,15 @@ const UserBookingInfo = () => {
       }
       try {
         setLoading(true);
+        console.log('res stat');
         const bookingRes = await dispatch(fetchBookingById(bookingId)).unwrap();
+        console.log('res ', bookingRes.status);
         if (bookingRes.ok) {
           setBooking(await bookingRes.json());
-        } else {
-          setError(true);
         }
       } catch (err) {
         setError(true);
+        navigate('/forbidden');
       }
       setLoading(false);
     };
@@ -414,7 +422,7 @@ const UserBookingInfo = () => {
   };
 
   const FillFeedbackDialog = () => {
-    const [satisfied, setSatisfied] = useState(() => 0);
+    const [satisfied, setSatisfied] = useState(() => 2);
     const [feedback, setFeedback] = useState(() => '');
     const [rating, setRating] = useState(() => 3.0);
     const feedbackInputCallback = (event) => {
@@ -864,7 +872,9 @@ const UserBookingInfo = () => {
                     width: '100%',
                     margin: '1rem',
                   }}>
-                  <Button style={{ width: '80%', backgroundColor: 'black', color: 'white' }}>
+                  <Button
+                    onClick={joinMeeting}
+                    style={{ width: '80%', backgroundColor: 'black', color: 'white' }}>
                     Join
                   </Button>
                 </div>

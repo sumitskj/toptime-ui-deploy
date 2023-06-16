@@ -30,6 +30,13 @@ const ProfessionalBookings = () => {
     window.open(`${window.location.origin}/user/booking/` + booking.bookingId, '_blank');
   };
 
+  const joinMeeting = (bookingId) => {
+    window.open(
+      `${process.env.REACT_APP_MEETING_URI}/${bookingId}/user?auth_token=${authData.authData.accessToken}`,
+      '_blank',
+    );
+  };
+
   const findCategory = (query, returnKey = 'id') => {
     const findItem = find(categoriesData, { ...query });
     if (findItem) {
@@ -186,6 +193,7 @@ const ProfessionalBookings = () => {
                         margin: '1rem',
                       }}>
                       <Button
+                        onClick={() => joinMeeting(booking.bookingId)}
                         style={{
                           margin: 'auto',
                           width: '80%',
