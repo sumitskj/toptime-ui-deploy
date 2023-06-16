@@ -1,0 +1,53 @@
+.profParentDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+}
+
+.balanceCardsDiv {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 60%;
+}
+
+.profBalanceDiv {
+  border: 0;
+  border-radius: 16px;
+  width: 50%;
+  position: relative;
+  background-color: #eaf3fd;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+
+.profBalanceImgDiv {
+  position: relative;
+  width: 80px;
+  height: 100px;
+  background-image: url('../../../static/images/money-bag.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.profBalanceHoldImgDiv {
+  position: relative;
+  width: 80px;
+  height: 100px;
+  background-image: url('../../../static/images/rupee.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+@media only screen and (max-width: 900px) {
+  .balanceCardsDiv {
+    width: 80%;
+  }
+
+}
