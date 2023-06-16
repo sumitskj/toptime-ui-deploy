@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Box, Button, Divider, Grid, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { validateEmail } from '../../utils';
 import { Header } from '../../components/no-login/header';
@@ -50,7 +50,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const auth = useSelector((state) => state.auth);
+  // const auth = useSelector((state) => state.auth);
 
   const [showOtp, setShowOtp] = useState(false);
   const [email, setEmail] = useState('');
@@ -123,11 +123,11 @@ const Login = () => {
     }
   };
 
-  useEffect(() => {
-    if (auth.isAuthenticated) {
-      navigate('/', { replace: true });
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (auth.isAuthenticated) {
+  //     navigate('/', { replace: true });
+  //   }
+  // }, []);
 
   return (
     <Grid container className='pre-login-header'>

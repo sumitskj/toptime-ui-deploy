@@ -23,6 +23,7 @@ import ProfessionalBookings from './pages/professional/bookings';
 import ProfessionalHome from './pages/professional/home';
 import ProfessionalBookingInfo from './pages/professional/bookingInfo';
 import UserBookingInfo from './pages/user/bookingInfo';
+import ForbiddenPage from './pages/error/forbiddenPage';
 
 const router = createBrowserRouter([
   {
@@ -73,11 +74,11 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: 'login',
+    path: '/login',
     element: <Login />,
   },
   {
-    path: 'sign-up',
+    path: '/sign-up',
     element: <SignUp />,
   },
   {
@@ -87,6 +88,10 @@ const router = createBrowserRouter([
   {
     path: '/user/booking/:id',
     element: <UserBookingInfo />,
+  },
+  {
+    path: '/forbidden',
+    element: <ForbiddenPage />,
   },
 ]);
 
