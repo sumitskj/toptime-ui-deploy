@@ -24,6 +24,7 @@ import ProfessionalHome from './pages/professional/home';
 import ProfessionalBookingInfo from './pages/professional/bookingInfo';
 import UserBookingInfo from './pages/user/bookingInfo';
 import ForbiddenPage from './pages/error/forbiddenPage';
+import ProfessionalWallet from './pages/professional/wallet';
 
 const router = createBrowserRouter([
   {
@@ -70,6 +71,10 @@ const router = createBrowserRouter([
       {
         path: '/professional/home',
         element: <ProfessionalHome />,
+      },
+      {
+        path: 'professional/wallet',
+        element: <ProfessionalWallet />,
       },
     ],
   },
