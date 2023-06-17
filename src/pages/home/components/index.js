@@ -18,6 +18,28 @@ export const StyledBoxHIW = styled(Box)`
   border-radius: 0.5rem;
 `;
 
+export const StyledBoxScrollable = styled(Box)`
+  overflow: auto;
+  white-space: nowrap;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+
+  &::-webkit-scrollbar {
+    height: 0.4em;
+  }
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #00adff;
+    border-radius: 8px;
+    outline: 1px solid #00adff;
+  }
+`;
+
 export const AccordionBox = styled(Box)`
   padding: 1rem;
   margin: 1rem 2rem;

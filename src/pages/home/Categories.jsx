@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { get, keys } from 'lodash';
 
+import { StyledBoxScrollable } from './components/index';
 import { getCategories } from '../common/api/categories';
 import { setCategories } from '../common/slice/categories';
 
@@ -53,11 +54,16 @@ const Categories = ({ selected }) => {
 
   return (
     <Grid item container justifyContent='space-between' xs={12} sx={{ p: '0 8rem;' }}>
-      {categoriesData.map((c) => (
-        <Link key={c.id} to={`/explore/${c.label}`} className={`nav-item ${activeClass(c.label)}`}>
-          {c.label}
-        </Link>
-      ))}
+      <StyledBoxScrollable>
+        {categoriesData.map((c) => (
+          <Link
+            key={c.id}
+            to={`/explore/${c.label}`}
+            className={`nav-item ${activeClass(c.label)}`}>
+            {c.label}
+          </Link>
+        ))}
+      </StyledBoxScrollable>
     </Grid>
   );
 };

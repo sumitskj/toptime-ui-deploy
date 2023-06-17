@@ -4,7 +4,7 @@ import { Grid } from '@mui/material';
 import { times, find } from 'lodash';
 
 import UserFeedCard from '../user/feeds/UserFeedCard';
-import { CustomisedCardLabels } from './components';
+import { CustomisedCardLabels, StyledBoxScrollable } from './components';
 import ProfessionalCardSkeleton from '../../components/skeleton/ProfessionalCardSkeleton';
 import { openNotification } from '../notifications/slice/notification';
 import { getFeedsTrending } from './api/home';
@@ -53,14 +53,16 @@ const Trending = () => {
     return (
       <Grid item xs={12}>
         <CustomisedCardLabels variant='h4'>Trending Experts</CustomisedCardLabels>
-        {homeData.trending.map((u) => (
-          <UserFeedCard
-            key={u.professionalId}
-            data={u}
-            navKey='professionalId'
-            category={findCategory({ id: u.category }, 'label')}
-          />
-        ))}
+        <StyledBoxScrollable sx={{ justifyContent: 'flex-start' }}>
+          {homeData.trending.map((u) => (
+            <UserFeedCard
+              key={u.professionalId}
+              data={u}
+              navKey='professionalId'
+              category={findCategory({ id: u.category }, 'label')}
+            />
+          ))}
+        </StyledBoxScrollable>
       </Grid>
     );
   }

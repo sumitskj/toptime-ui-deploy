@@ -42,6 +42,7 @@ const UserFeedCard = ({ data, navKey, category }) => {
     <Card
       sx={{
         width: 275,
+        minWidth: 275,
         display: 'inline-block',
         minHeight: 400,
         maxHeight: 400,
