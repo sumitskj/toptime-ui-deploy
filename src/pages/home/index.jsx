@@ -8,7 +8,7 @@ import Trending from './Trending';
 import HowItWorks from './HowItWorks';
 
 import './home.css';
-import CtImage from '../../static/images/home-image.svg';
+// import CtImage from '../../static/images/home-image-new.svg';
 import FAQs from './FAQs';
 import Footer from './Footer';
 import Categories from './Categories';
@@ -43,7 +43,11 @@ const Home = () => {
               </Grid>
               <Grid item xs={12} sm={12} md={6} lg={4} xl={4}>
                 <Card sx={{ width: '100%', height: '100%', boxShadow: 'none' }}>
-                  <CardMedia image={CtImage} title='content creator' sx={{ height: 500 }} />
+                  <CardMedia
+                    image='./home-image-new.svg'
+                    title='content creator'
+                    sx={{ height: 500, backgroundSize: 'contain' }}
+                  />
                 </Card>
               </Grid>
             </Grid>

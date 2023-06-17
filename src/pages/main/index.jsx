@@ -94,6 +94,20 @@ const Main = () => {
     }
   }, []);
 
+  if (categoriesData && categoriesData.length === 0) {
+    return (
+      <Grid container>
+        <Grid item xs={12}>
+          <Box
+            height='100vh'
+            sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Logo />
+          </Box>
+        </Grid>
+      </Grid>
+    );
+  }
+
   return (
     <Box sx={{ display: 'flex' }} className='top-time-app-bar'>
       <AppBar

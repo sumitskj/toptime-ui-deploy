@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Grid } from '@mui/material';
-import { times } from 'lodash';
+import { times, find } from 'lodash';
 
 import UserFeedCard from '../user/feeds/UserFeedCard';
 import { CustomisedCardLabels } from './components';
@@ -35,7 +35,9 @@ const Trending = () => {
   };
 
   const findCategory = (query, returnKey = 'id') => {
+    console.log('******** query ', query);
     const findItem = find(categories, { ...query });
+    console.log('******** findItem ', findItem);
     if (findItem) {
       return findItem[returnKey];
     }
@@ -53,7 +55,7 @@ const Trending = () => {
         <CustomisedCardLabels variant='h4'>Trending Experts</CustomisedCardLabels>
         {homeData.trending.map((u) => (
           <UserFeedCard
-            key={u.id}
+            key={u.professionalId}
             data={u}
             navKey='professionalId'
             category={findCategory({ id: u.category }, 'label')}
