@@ -14,7 +14,7 @@ import Login from './pages/login';
 import SignUp from './pages/signup';
 import UserProfile from './pages/user-profile';
 import MyServices from './pages/professional/my-services';
-import UserMyProfile from './pages/user/my-profile';
+import MyProfile from './pages/my-profile';
 import UserBookings from './pages/user/bookings';
 import UserWallet from './pages/user/wallet';
 import UserFeeds from './pages/user/feeds';
@@ -25,6 +25,7 @@ import ProfessionalBookingInfo from './pages/professional/bookingInfo';
 import UserBookingInfo from './pages/user/bookingInfo';
 import ForbiddenPage from './pages/error/forbiddenPage';
 import ProfessionalWallet from './pages/professional/wallet';
+import RegisterAsProfessional from './pages/user/registerAsProfessional';
 
 const router = createBrowserRouter([
   {
@@ -49,8 +50,8 @@ const router = createBrowserRouter([
         element: <UserProfile />,
       },
       {
-        path: 'user/my-profile',
-        element: <UserMyProfile />,
+        path: 'my-profile',
+        element: <MyProfile />,
       },
       {
         path: 'professional/my-services',
@@ -63,6 +64,10 @@ const router = createBrowserRouter([
       {
         path: 'user/bookings',
         element: <UserBookings />,
+      },
+      {
+        path: 'register-professional',
+        element: <RegisterAsProfessional />,
       },
       {
         path: '/professional/bookings',

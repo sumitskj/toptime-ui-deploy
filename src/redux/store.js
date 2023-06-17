@@ -5,7 +5,7 @@ import loginReducer from '../pages/login/slice/login';
 import notificationReducer from '../pages/notifications/slice/notification';
 import userBookingsReducer from '../pages/user/bookings/slice/bookings';
 import professionalBookingsReducer from '../pages/professional/bookings/slice/bookings';
-import myProfileReducer from '../pages/user/my-profile/slice/myProfile';
+import myProfileReducer from '../pages/my-profile/slice/myProfile';
 import feedsReducer from '../pages/user/feeds/slice/feeds';
 import professionalReducer from '../pages/user-profile/slice/userProfile';
 import categoriesReducer from '../pages/common/slice/categories';

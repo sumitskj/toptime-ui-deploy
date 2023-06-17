@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchBackendApiWrapper } from '../../../../utils/index';
+import { fetchBackendApiWrapper } from '../../../utils/index';
 
 const getUserDetails = createAsyncThunk(
   'myProfile/getUserDetails',
