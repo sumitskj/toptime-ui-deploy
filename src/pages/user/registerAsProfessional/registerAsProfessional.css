@@ -1,0 +1,97 @@
+.registerProfParentDiv {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+
+.registerProfCardDiv {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  padding: 1rem;
+  border-radius: 20px;
+  width: 70%;
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+  margin-bottom: 2rem;
+}
+
+.categoryDiv {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.headingDiv {
+  margin-top: 2rem;
+  position: relative;
+  width: 100%;
+}
+
+.errorHeadingDiv {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.inputTextBox {
+  border-radius: 8px;
+  padding: 0.4rem;
+  border: 1px solid grey;
+  position: relative;
+  width: 90%;
+}
+
+.numberTextBox {
+  border-radius: 8px;
+  padding: 0.4rem;
+  border: 1px solid grey;
+  position: relative;
+  width: 90%;
+}
+.picParentDiv {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  position: relative;
+  width: 100%;
+}
+
+.picDiv {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+
+.saveBtn {
+  margin: 3rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+
+@media only screen and (max-width: 900px) {
+  .registerProfCardDiv {
+    width: 90%;
+  }
+  .picDiv {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .picDiv img {
+    margin-top: 1rem;
+  }
+}

@@ -18,7 +18,7 @@ export const fetchBackendApiWrapper = async (path, options, token = '') => {
   }
 
   if (token) {
-    apiHeaders['auth-token'] = token;
+    options.headers['auth-token'] = token;
   }
 
   return await fetch(`${process.env.REACT_APP_BACKEND_API}${path}`, options);
@@ -30,7 +30,7 @@ export const fetchPaymentApiWrapper = async (path, options, token = '') => {
   }
 
   if (token) {
-    apiHeaders['auth-token'] = token;
+    options.headers['auth-token'] = token;
   }
 
   return await fetch(`${process.env.REACT_APP_PAYMENT_API}${path}`, options);

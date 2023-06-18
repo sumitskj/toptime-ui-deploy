@@ -48,7 +48,7 @@ const sidebarUserItems = [
   },
   {
     name: 'My Profile',
-    path: '/user/my-profile',
+    path: '/my-profile',
     icon: <Person3RoundedIcon />,
   },
   {
@@ -58,7 +58,7 @@ const sidebarUserItems = [
   },
   {
     name: 'Register as Professional',
-    path: '/user/register-as-professional',
+    path: '/register-professional',
     icon: <AppRegistrationRoundedIcon />,
   },
 ];
@@ -81,7 +81,7 @@ const sidebarProfessionlItems = [
   },
   {
     name: 'My profile',
-    path: '/professional/my-profile',
+    path: '/my-profile',
     icon: <Person3RoundedIcon />,
   },
   {
@@ -91,7 +91,7 @@ const sidebarProfessionlItems = [
   },
   {
     name: 'Monetize other skill',
-    path: '/professional/register-other-skill',
+    path: '/register-professional',
     icon: <AppRegistrationRoundedIcon />,
   },
 ];
