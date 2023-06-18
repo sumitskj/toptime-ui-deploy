@@ -5,6 +5,7 @@ import { Typography, InputBase, IconButton } from '@mui/material';
 import PropTypes from 'prop-types';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
+// social links box
 const SocialBox = ({ payload }) => {
   const dispatch = useDispatch();
   const [socialData, setSocialData] = useState(payload);
