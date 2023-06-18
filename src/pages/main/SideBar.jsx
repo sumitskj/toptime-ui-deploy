@@ -58,7 +58,7 @@ const sidebarUserItems = [
   },
   {
     name: 'Register as Professional',
-    path: 'register-professional',
+    path: '/register-professional',
     icon: <AppRegistrationRoundedIcon />,
   },
 ];
@@ -91,7 +91,7 @@ const sidebarProfessionlItems = [
   },
   {
     name: 'Monetize other skill',
-    path: 'register-professional',
+    path: '/register-professional',
     icon: <AppRegistrationRoundedIcon />,
   },
 ];

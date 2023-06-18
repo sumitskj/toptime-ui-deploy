@@ -31,9 +31,7 @@ export const theme = createTheme({
       },
     },
     MuiAppBar: {
-      defaultProps: {
-        disableRipple: true,
-      },
+      defaultProps: {},
       styleOverrides: {
         root: {
           minHeight: '67px',
