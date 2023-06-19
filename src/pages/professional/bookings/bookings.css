@@ -1,0 +1,108 @@
+.tabItems {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.tabBtn {
+  font-size: 0.8rem;
+  margin-right: 1rem;
+  padding: 0.8rem;
+  cursor: pointer;
+}
+
+.tabInactive {
+  font-weight: 300;
+  border-radius: 40px;
+  border: 1px solid black;
+}
+
+.tabActive {
+  font-weight: 500;
+  border-radius: 40px;
+  border: 2px solid black;
+}
+
+.bookingsDiv {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.bookingCardDiv {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.2s ease-in-out;
+  width: 50vw;
+  border-radius: 20px;
+  margin-top: 1rem;
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+}
+
+.bookingCardDiv:hover {
+  transform: scale(1.02);
+}
+
+.bookingHeadingDiv {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  font-weight: 500;
+  border-bottom: 1px solid rgb(171, 168, 168);
+}
+
+.bookingDataDiv {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  font-size: 0.9rem;
+  color: black;
+  font-weight: 200;
+}
+
+.dataDivLeft {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+  padding: 12px;
+}
+
+.dataDivRight {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+  padding: 12px;
+}
+
+.paginationDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem 2rem;
+}
+
+@media only screen and (max-width: 900px) {
+  .bookingCardDiv {
+    width: 60vw;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .bookingCardDiv {
+    width: 80vw;
+  }
+}

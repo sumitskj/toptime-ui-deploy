@@ -1,0 +1,62 @@
+.parentDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+}
+
+.balanceDiv {
+  border: 0;
+  border-radius: 16px;
+  width: 40%;
+  position: relative;
+  background-color: #eaf3fd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+
+.leftDiv {
+  position: relative;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.rightDiv {
+  position: relative;
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.moneyImgDiv {
+  position: relative;
+  width: 80px;
+  height: 100px;
+  background-image: url('../../../static/images/money-bag.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+@media only screen and (max-width: 900px) {
+  .balanceDiv {
+    width: 60%;
+    flex-direction: column;
+  }
+
+  .leftDiv {
+    width: 80%;
+  }
+
+  .rightDiv {
+    width: 80%;
+  }
+}
