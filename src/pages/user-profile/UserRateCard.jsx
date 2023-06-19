@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { Box, Typography, Radio, TextField, InputAdornment, Button, Divider } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
+import DateTimePicker from '../../components/date-time-picker/DateTimePicker';
+
 const SpanStyled = styled('span')`
   display: block;
 `;
@@ -28,8 +30,13 @@ const TotalCostLabel = styled(Typography)`
 const UserRateCard = ({ userData, onClose }) => {
   const [selectedValue, setSelectedValue] = useState('audio');
 
+  const [startDate, setStartDate] = useState(null);
   const [duration, setDuration] = useState(10);
   const [mobile, setMobile] = useState('');
+
+  const handleDateTimeChange = (value) => {
+    setStartDate(value);
+  };
 
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
@@ -82,7 +89,10 @@ const UserRateCard = ({ userData, onClose }) => {
         onChange={(e) => setMobile(e.target.value)}
         sx={{ m: 1, width: '90%' }}
       />
-      <TextField label='Date Time' id='date-time-picker' sx={{ m: 1, width: '90%' }} />
+      {/* <TextField label='Date Time' id='date-time-picker' sx={{ m: 1, width: '90%' }} /> */}
+      <Box width='90%' pt={1} pb={1} m={1}>
+        <DateTimePicker startDate={startDate} handleChange={handleDateTimeChange} />
+      </Box>
       <TextField
         label='Duration'
         id='outlined-start-adornment'

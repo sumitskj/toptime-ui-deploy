@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { get } from 'lodash';
+import { get, find } from 'lodash';
 import {
   Box,
   Button,
@@ -33,12 +33,21 @@ const ChipStyledProfile = styled(Chip)`
   }
 `;
 
+const DataStyledProfile = styled(Typography)`
+  font-weight: 600;
+  span {
+    font-weight: 400;
+    margin-left: 1rem;
+  }
+`;
+
 const UserProfile = () => {
   const dispatch = useDispatch();
 
   const { id } = useParams();
 
   const userData = useSelector((state) => state.professionals.profile);
+  const categoriesData = useSelector((state) => state.categories);
 
   const [showMore, setShowMore] = useState(false);
 
@@ -55,6 +64,16 @@ const UserProfile = () => {
     }
   };
 
+  const findCategory = (query) => {
+    const findItem = find(categoriesData, { ...query });
+    console.log('**** ', findItem);
+    if (findItem) {
+      return findItem.label;
+    }
+    // default category
+    return 'Others';
+  };
+
   useEffect(() => {
     fetchUserDetails();
     return () => {
@@ -69,50 +88,75 @@ const UserProfile = () => {
       <Grid item xs={12}>
         <Box pt={4} pb={4}>
           <Card sx={{ maxWidth: '50%', margin: '0 auto', boxShadow: 'none', textAlign: 'center' }}>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              <CardMedia
-                component='img'
-                alt='profile image'
-                image={userData.profilePicUrl}
-                sx={{ width: '200px', height: '200px', borderRadius: '50%' }}
-              />
-            </Box>
-
-            <CardContent>
-              <Typography variant='h6' component='div'>
-                {`${userData.firstName} ${userData.lastName}`}
-              </Typography>
-              <Typography gutterBottom variant='overline' sx={{ lineHeight: '3rem' }}>
-                {`${userData.designation} at ${userData.company}`}
-              </Typography>
-              <span className='ratings'>
-                <ChipStyledProfile
-                  icon={<StarIcon sx={{ fontSize: 20 }} />}
-                  label={userData.rating}
-                  className='rating-val'
-                />
-                <ChipStyledProfile
-                  icon={<ReviewsIcon sx={{ fontSize: 20 }} />}
-                  label={`${userData.sessionsCompleted} session completed`}
-                  className='rating-val'
-                />
-              </span>
-              <UserSocialLinks userData={userData} />
+            <Grid container>
+              <Grid item xs={3}>
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                  <CardMedia
+                    component='img'
+                    alt='profile image'
+                    image={userData.profilePicUrl}
+                    sx={{ width: '200px', height: '200px', borderRadius: '50%' }}
+                  />
+                </Box>
+                <UserSocialLinks userData={userData} />
+              </Grid>
+              <Grid item xs={9}>
+                <CardContent>
+                  <Typography variant='h6' component='div'>
+                    {`${userData.firstName} ${userData.lastName}`}
+                  </Typography>
+                  <Typography gutterBottom variant='body1' sx={{ lineHeight: '3rem' }}>
+                    {`${userData.designation} at ${userData.company}`}
+                  </Typography>
+                  <span className='ratings'>
+                    <ChipStyledProfile
+                      icon={<StarIcon sx={{ fontSize: 20 }} />}
+                      label={userData.rating}
+                      className='rating-val'
+                    />
+                    <ChipStyledProfile
+                      icon={<ReviewsIcon sx={{ fontSize: 20 }} />}
+                      label={`${userData.sessionsCompleted} session completed`}
+                      className='rating-val'
+                    />
+                  </span>
+                  <DataStyledProfile variant='h6' gutterBottom>
+                    Category <span>{findCategory({ id: userData.category })}</span>
+                  </DataStyledProfile>
+                  <DataStyledProfile variant='h6' gutterBottom>
+                    Years of experience <span>{userData.yearsExperience}</span>
+                  </DataStyledProfile>
+                </CardContent>
+              </Grid>
+            </Grid>
+          </Card>
+          <Divider variant='middle' />
+        </Box>
+      </Grid>
+      <Grid item xs={12}>
+        <Grid container sx={{ justifyContent: 'space-evenly', marginBottom: '2rem' }}>
+          <Grid item xs={12} sm={12} md={6} lg={5} xl={4}>
+            {userData.voiceRate && userData.videoRate && <UserRateInfo userData={userData} />}
+          </Grid>
+        </Grid>
+        <Divider />
+      </Grid>
+      <Grid item xs={12} sx={{ padding: '2rem', background: '#FFE0D8', minHeight: 200 }}>
+        <Grid container>
+          <Grid item xs={3}>
+            <Typography variant='h4' gutterBottom sx={{ textAlign: 'center', fontWeight: 600 }}>
+              About Me
+            </Typography>
+          </Grid>
+          <Grid item xs={9}>
+            <Box width='80%'>
               <Typography variant='body1' component='div' gutterBottom>
                 {showMore ? desc : `${desc.substring(0, 80)}....`}
                 <Button variant='text' onClick={() => setShowMore(!showMore)}>
                   {showMore ? 'Show less' : 'Show more'}
                 </Button>
               </Typography>
-            </CardContent>
-          </Card>
-          <Divider variant='middle' />
-        </Box>
-      </Grid>
-      <Grid item xs={12}>
-        <Grid container sx={{ justifyContent: 'space-evenly' }}>
-          <Grid item xs={12} sm={12} md={6} lg={5} xl={4}>
-            {userData.voiceRate && userData.videoRate && <UserRateInfo userData={userData} />}
+            </Box>
           </Grid>
         </Grid>
       </Grid>
