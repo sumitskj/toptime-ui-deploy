@@ -7,7 +7,6 @@ const uploadImages = createAsyncThunk(
     try {
       const state = getState();
       const authToken = state.auth.authData.accessToken;
-      console.log('at ', authToken);
       const formData = new FormData();
       formData.append('file', file);
       const response = await fetchBackendApiWrapper(

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +9,7 @@ import { setMyUserDetails } from './slice/myProfile';
 import { openNotification } from '../notifications/slice/notification';
 import { removeLogin } from '../../utils/loginStore';
 import { removeLogin as removeLoginRedux } from '../login/slice/login';
+import ProfessionalCardSkeleton from '../../components/skeleton/ProfessionalCardSkeleton';
 
 const ProfilePropText = ({ label, value }) => {
   return (
@@ -28,16 +29,20 @@ const MyProfile = () => {
   const navigate = useNavigate();
 
   const myData = useSelector((state) => state.myProfile);
+  const [loading, setLoader] = useState(false);
+  const [error, setError] = useState(false);
 
   const fetchMyProfile = async () => {
     try {
+      setLoader(true);
       const resp = await dispatch(getUserDetails()).unwrap();
       if (resp.ok) {
         const resJson = await resp.json();
         dispatch(setMyUserDetails(resJson));
       }
-    } catch (error) {
-      console.log('Error:: fetch Profile::: ', error);
+    } catch (err) {
+      console.log('Error:: fetch Profile::: ', err);
+      setError(true);
       if (error.status === 401) {
         dispatch(
           openNotification({ severity: 'error', message: 'Session expired. Please login again.' }),
@@ -46,6 +51,7 @@ const MyProfile = () => {
         handleLogout();
       }
     }
+    setLoader(false);
   };
 
   const handleLogout = () => {
@@ -67,108 +73,116 @@ const MyProfile = () => {
 
   return (
     <div className='myProfileParentDiv'>
-      <div className='myProfileCardDiv'>
-        <div className='contentDiv'>
-          <ProfilePropText label='Name' value={myData.firstName + ' ' + myData.lastName} />
+      {loading && <ProfessionalCardSkeleton />}
+      {error && (
+        <div style={{ textAlign: 'center', marginTop: '5rem' }}>
+          <Typography>Something went wrong. Please try refreshing page again.</Typography>
         </div>
-        <hr
-          style={{
-            width: '100%',
-            backgroundColor: '#ededed',
-            height: '1px',
-            border: '0',
-          }}
-        />
-        <div className='contentDiv'>
-          <ProfilePropText label='Email Address' value={myData.emailId} />
-        </div>
-        <hr
-          style={{
-            width: '100%',
-            backgroundColor: '#ededed',
-            height: '1px',
-            border: '0',
-          }}
-        />
-        <div className='contentDiv'>
-          <ProfilePropText label='Mobile number' value={myData.mobileNumber} />
-        </div>
-        <hr
-          style={{
-            width: '100%',
-            backgroundColor: '#ededed',
-            height: '1px',
-            border: '0',
-          }}
-        />
-        <div className='buttonDiv'>
-          <button
-            onClick={handleLogout}
+      )}
+      {!loading && !error && (
+        <div className='myProfileCardDiv'>
+          <div className='contentDiv'>
+            <ProfilePropText label='Name' value={myData.firstName + ' ' + myData.lastName} />
+          </div>
+          <hr
             style={{
-              padding: '10px',
-              fontWeight: '600',
-              backgroundColor: 'red',
+              width: '100%',
+              backgroundColor: '#ededed',
+              height: '1px',
               border: '0',
-              borderRadius: '10px',
-              color: 'white',
-              cursor: 'pointer',
-            }}>
-            Log Out
-          </button>
-          <button
-            onClick={handleAccountDeletion}
+            }}
+          />
+          <div className='contentDiv'>
+            <ProfilePropText label='Email Address' value={myData.emailId} />
+          </div>
+          <hr
             style={{
-              padding: '10px',
-              fontWeight: '200',
-              backgroundColor: 'white',
-              border: '1px solid red',
-              borderRadius: '10px',
-              color: 'red',
-              cursor: 'pointer',
-            }}>
-            Delete Account
-          </button>
-        </div>
+              width: '100%',
+              backgroundColor: '#ededed',
+              height: '1px',
+              border: '0',
+            }}
+          />
+          <div className='contentDiv'>
+            <ProfilePropText label='Mobile number' value={myData.mobileNumber} />
+          </div>
+          <hr
+            style={{
+              width: '100%',
+              backgroundColor: '#ededed',
+              height: '1px',
+              border: '0',
+            }}
+          />
+          <div className='buttonDiv'>
+            <button
+              onClick={handleLogout}
+              style={{
+                padding: '10px',
+                fontWeight: '600',
+                backgroundColor: 'red',
+                border: '0',
+                borderRadius: '10px',
+                color: 'white',
+                cursor: 'pointer',
+              }}>
+              Log Out
+            </button>
+            <button
+              onClick={handleAccountDeletion}
+              style={{
+                padding: '10px',
+                fontWeight: '200',
+                backgroundColor: 'white',
+                border: '1px solid red',
+                borderRadius: '10px',
+                color: 'red',
+                cursor: 'pointer',
+              }}>
+              Delete Account
+            </button>
+          </div>
 
-        <div className='footerDiv'>
-          <div>
-            <a
-              href='https://toptime.s3.ap-south-1.amazonaws.com/static-sites/about-us.html'
-              target='_blank'
-              rel='noreferrer'
-              style={{ textDecoration: 'none', color: 'grey', fontSize: '0.9rem' }}>
-              About Us
-            </a>
-          </div>
-          <div>
-            <a
-              href='https://toptime.s3.ap-south-1.amazonaws.com/static-sites/terms-conditions.html'
-              target='_blank'
-              rel='noreferrer'
-              style={{ textDecoration: 'none', color: 'grey', fontSize: '0.9rem' }}>
-              Terms and Conditions
-            </a>
-          </div>
-          <div>
-            <a
-              href='https://toptime.s3.ap-south-1.amazonaws.com/static-sites/privacy-policy.html'
-              target='_blank'
-              rel='noreferrer'
-              style={{ textDecoration: 'none', color: 'grey', fontSize: '0.9rem' }}>
-              Privacy Policy
-            </a>
-          </div>
-          <div>
-            <a
-              href='https://toptime.s3.ap-south-1.amazonaws.com/static-sites/cancellation-refund.html'
-              target='_blank'
-              rel='noreferrer'
-              style={{ textDecoration: 'none', color: 'grey', fontSize: '0.9rem' }}>
-              Cancellation and Refunds
-            </a>
+          <div className='footerDiv'>
+            <div>
+              <a
+                href='https://toptime.s3.ap-south-1.amazonaws.com/static-sites/about-us.html'
+                target='_blank'
+                rel='noreferrer'
+                style={{ textDecoration: 'none', color: 'grey', fontSize: '0.9rem' }}>
+                About Us
+              </a>
+            </div>
+            <div>
+              <a
+                href='https://toptime.s3.ap-south-1.amazonaws.com/static-sites/terms-conditions.html'
+                target='_blank'
+                rel='noreferrer'
+                style={{ textDecoration: 'none', color: 'grey', fontSize: '0.9rem' }}>
+                Terms and Conditions
+              </a>
+            </div>
+            <div>
+              <a
+                href='https://toptime.s3.ap-south-1.amazonaws.com/static-sites/privacy-policy.html'
+                target='_blank'
+                rel='noreferrer'
+                style={{ textDecoration: 'none', color: 'grey', fontSize: '0.9rem' }}>
+                Privacy Policy
+              </a>
+            </div>
+            <div>
+              <a
+                href='https://toptime.s3.ap-south-1.amazonaws.com/static-sites/cancellation-refund.html'
+                target='_blank'
+                rel='noreferrer'
+                style={{ textDecoration: 'none', color: 'grey', fontSize: '0.9rem' }}>
+                Cancellation and Refunds
+              </a>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
