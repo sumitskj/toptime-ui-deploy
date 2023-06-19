@@ -46,7 +46,7 @@ const UserRateInfo = ({ userData }) => {
         </Paper>
       </Grid>
       <Dialog open={open} onClose={handleClose}>
-        <DialogContent sx={{ padding: 0 }}>
+        <DialogContent sx={{ padding: 0, minWidth: 600 }}>
           <UserRateCard userData={userData} onClose={handleClose} />
         </DialogContent>
       </Dialog>

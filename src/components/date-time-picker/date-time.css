@@ -1,0 +1,28 @@
+.react-datepicker-wrapper {
+  width: 100%;
+}
+.app_dt_main {
+  padding: 16px 14px;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 4px;
+  border-color: rgba(0, 0, 0, 0.23);
+  border-width: 1px;
+}
+
+.react-datepicker-popper {
+  z-index: 999!important;
+  background-color: #95bdef;
+}
+
+.react-datepicker, .react-datepicker__time {
+  background-color: #95bdef!important;
+}
+.react-datepicker__header {
+  background-color: #3177df!important;
+}
+
+.react-datepicker > .react-datepicker__month-container {
+  width: 320px;
+  display: inline-block;
+}

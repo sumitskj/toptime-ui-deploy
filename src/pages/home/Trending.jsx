@@ -35,9 +35,7 @@ const Trending = () => {
   };
 
   const findCategory = (query, returnKey = 'id') => {
-    console.log('******** query ', query);
     const findItem = find(categories, { ...query });
-    console.log('******** findItem ', findItem);
     if (findItem) {
       return findItem[returnKey];
     }
