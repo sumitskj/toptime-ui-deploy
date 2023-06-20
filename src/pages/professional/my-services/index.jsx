@@ -4,9 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchMyServices } from './api/myServices';
 import './services.css';
 import ProfessionalCardSkeleton from '../../../components/skeleton/ProfessionalCardSkeleton';
+import { useNavigate } from 'react-router-dom';
 
 const MyServices = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [services, setServices] = useState(() => []);
   const [loading, setLoader] = useState(false);
   const [error, setError] = useState(false);
@@ -37,6 +39,10 @@ const MyServices = () => {
     return categoriesData[0];
   };
 
+  const handleEditProfile = (pid) => {
+    navigate('/professional/update-profile?professionalId=' + pid);
+  };
+
   return (
     <div className='servicesParentDiv'>
       {loading && <ProfessionalCardSkeleton />}
@@ -57,35 +63,45 @@ const MyServices = () => {
                       .substring(4)}`,
                   }}
                   className='serviceCard'>
-                  <div style={{ fontWeight: '600', textAlign: 'center', fontSize: '1.2rem' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      position: 'relative',
+                      width: '80%',
+                      justifyContent: 'flex-end',
+                    }}>
+                    <div
+                      style={{
+                        padding: '8px',
+                        fontSize: '0.5rem',
+                        color: 'white',
+                        backgroundColor: `${data.status === 2 ? 'grey' : '#03C988'}`,
+                        borderRadius: '4px',
+                        fontWeight: '600',
+                      }}>
+                      {data.status === 2 ? 'Inactive' : 'Active'}
+                    </div>
+                  </div>
+                  <div style={{ fontWeight: '600', textAlign: 'center', fontSize: '1.4rem' }}>
                     {findCategoryItem(data.category).label}
                   </div>
                   <div
                     style={{
+                      marginTop: '1rem',
                       display: 'flex',
                       justifyContent: 'space-between',
                       alignItems: 'center',
                       position: 'relative',
                       width: '80%',
                     }}>
-                    <div style={{ fontWeight: '600' }}>{data.sessionsCompleted + ' ✅'}</div>
-                    <div
-                      style={{
-                        margin: '1rem 0rem',
-                        padding: '8px',
-                        fontSize: '0.5rem',
-                        color: 'white',
-                        backgroundColor: `${data.status === 2 ? 'red' : 'green'}`,
-                        borderRadius: '4px',
-                        fontWeight: '600',
-                      }}>
-                      {data.status === 2 ? 'Inactive' : 'Active'}
-                    </div>
-                    <div style={{ fontWeight: '600' }}>{data.rating + '/5 ⭐️'}</div>
+                    <div>{data.sessionsCompleted + ' ✅ Bookings'}</div>
+                    <div>{data.rating + '/5 ⭐️ Rating'}</div>
                   </div>
                   <div>
                     <button
+                      onClick={() => handleEditProfile(data.professionalId)}
                       style={{
+                        marginTop: '1.5rem',
                         border: '0',
                         borderRadius: '4px',
                         padding: '6px',

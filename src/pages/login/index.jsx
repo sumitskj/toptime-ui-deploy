@@ -15,6 +15,8 @@ import {
   removeLogin,
   storeAppliedProfessionalCategories,
   storeIsProfessional,
+  removeIsProfessional,
+  removeAppliedProfessionalCategories,
 } from '../../utils/loginStore';
 
 const CustomizedLoginBox = styled(Box)`
@@ -111,6 +113,9 @@ const Login = () => {
         navigate('/');
       } else {
         removeLogin();
+        removeIsProfessional();
+        removeAppliedProfessionalCategories();
+        dispatch({ type: 'USER_LOGOUT' });
         if (resp.status === 401) {
           dispatch(openNotification({ severity: 'error', message: 'Invalid OTP!' }));
         } else {
@@ -120,6 +125,9 @@ const Login = () => {
     } catch (error) {
       dispatch(openNotification({ severity: 'error', message: 'Something went wrong!' }));
       removeLogin();
+      removeIsProfessional();
+      removeAppliedProfessionalCategories();
+      dispatch({ type: 'USER_LOGOUT' });
     }
   };
 

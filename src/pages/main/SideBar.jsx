@@ -24,6 +24,7 @@ import FeedbackRoundedIcon from '@mui/icons-material/FeedbackRounded';
 import AppRegistrationRoundedIcon from '@mui/icons-material/AppRegistrationRounded';
 import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
 import ChangeCircleRoundedIcon from '@mui/icons-material/ChangeCircleRounded';
+import { getIsProfessional } from '../../utils/loginStore';
 
 const sidebarUserItems = [
   {
@@ -53,7 +54,7 @@ const sidebarUserItems = [
   },
   {
     name: 'My Raised Issues',
-    path: '/user/raised-issues',
+    path: '/user/my-raised-issues',
     icon: <FeedbackRoundedIcon />,
   },
   {
@@ -118,6 +119,7 @@ const SideBar = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
+  const isProfessional = getIsProfessional();
   const currentMode = useSelector((state) => state.auth.currentMode);
   const { mobileOpen, handleDrawerToggle, drawerWidth } = props;
 
@@ -133,10 +135,16 @@ const SideBar = (props) => {
   }, []);
 
   const handleListItemClick = (path) => {
+    if (mobileOpen) {
+      handleDrawerToggle();
+    }
     navigate(path, { replace: true });
   };
 
   const toggleMode = (curMode) => {
+    if (mobileOpen) {
+      handleDrawerToggle();
+    }
     dispatch(setCurrentMode(curMode));
     if (curMode === 'user') {
       navigate('/user/feeds', { replace: true });
@@ -219,7 +227,7 @@ const SideBar = (props) => {
             </ListItemButton>
           </ListItem>
         )}
-        {currentMode === 'user' && (
+        {JSON.parse(isProfessional) && currentMode === 'user' && (
           <ListItem
             key='Switch to professional mode'
             sx={{

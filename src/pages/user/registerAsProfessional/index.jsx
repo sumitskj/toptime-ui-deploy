@@ -13,10 +13,10 @@ import PropTypes from 'prop-types';
 import { useEffect, useRef, useState } from 'react';
 import ErrorIcon from '@mui/icons-material/Error';
 import { useDispatch, useSelector } from 'react-redux';
-import { storeAppliedProfessionalCategories } from '../../../utils/loginStore';
+import { storeAppliedProfessionalCategories, storeIsProfessional } from '../../../utils/loginStore';
 import { getProfessionalAppliedCategories } from '../../login/api/login';
 import { setAlreadyAppliedCategories } from '../../login/slice/login';
-import SocialBox from './socialData';
+import SocialBox from './socialBox';
 import { addSocialLink } from './slice/socialLinksSlice';
 import { openNotification } from '../../notifications/slice/notification';
 import { onBoardProfessional, uploadImages } from './api/registerProfApi';
@@ -49,19 +49,66 @@ const RegisterAsProfessional = () => {
     inputFile.current.click();
   };
 
+  const dataURLToBlob = (dataURL) => {
+    var BASE64_MARKER = ';base64,';
+    var parts, contentType, raw;
+    if (dataURL.indexOf(BASE64_MARKER) == -1) {
+      parts = dataURL.split(',');
+      contentType = parts[0].split(':')[1];
+      raw = parts[1];
+
+      return new Blob([raw], { type: contentType });
+    }
+
+    parts = dataURL.split(BASE64_MARKER);
+    contentType = parts[0].split(':')[1];
+    raw = window.atob(parts[1]);
+    var rawLength = raw.length;
+
+    var uInt8Array = new Uint8Array(rawLength);
+
+    for (var i = 0; i < rawLength; ++i) {
+      uInt8Array[i] = raw.charCodeAt(i);
+    }
+
+    return new Blob([uInt8Array], { type: contentType });
+  };
+
   const handleImageUpload = (event) => {
     console.log('file selected 1 ');
     if (event.target.files && event.target.files[0]) {
       console.log('file selected ', event.target.files[0]);
-      setProfilePic(event.target.files[0]);
+      const reader = new FileReader();
+      reader.onload = function (readerEvent) {
+        var image = new Image();
+        image.onload = function () {
+          // Resize the image
+          var canvas = document.createElement('canvas'),
+            maxSize = 544, // TODO : pull max size from a site config
+            width = image.width,
+            height = image.height;
+          if (width > height) {
+            if (width > maxSize) {
+              height *= maxSize / width;
+              width = maxSize;
+            }
+          } else {
+            if (height > maxSize) {
+              width *= maxSize / height;
+              height = maxSize;
+            }
+          }
+          canvas.width = width;
+          canvas.height = height;
+          canvas.getContext('2d').drawImage(image, 0, 0, width, height);
+          var dataUrl = canvas.toDataURL('image/jpeg');
+          console.log('processesd ', dataUrl);
+          setProfilePic(dataURLToBlob(dataUrl));
+        };
+        image.src = readerEvent.target.result;
+      };
+      reader.readAsDataURL(event.target.files[0]);
     }
-  };
-
-  const checkFileSize = () => {
-    if (profilePic.size / (1024 * 1024) > 5) {
-      return false;
-    }
-    return true;
   };
 
   useEffect(() => {
@@ -192,7 +239,6 @@ const RegisterAsProfessional = () => {
       voiceCallRate === null ||
       isNaN(voiceCallRate) ||
       profilePic === null ||
-      !checkFileSize() ||
       !checkSocialUrls()
     ) {
       dispatch(
@@ -247,6 +293,7 @@ const RegisterAsProfessional = () => {
           console.log('register payload: ', payload);
           const onboardResp = await dispatch(onBoardProfessional({ body: payload })).unwrap();
           if (onboardResp.ok) {
+            storeIsProfessional(true);
             navigate('/');
             dispatch(
               openNotification({
@@ -309,7 +356,6 @@ const RegisterAsProfessional = () => {
             <Typography sx={{ fontSize: '0.8rem', fontWeight: '100', color: 'grey' }}>
               Enter atleast 10 characters title
             </Typography>
-            {mobile.length === 0 && <ErrorIcon color='error' sx={{ ml: '1rem' }}></ErrorIcon>}
             <div className='inputTextBox'>
               <InputBase
                 sx={{ ml: 1, flex: 1 }}
@@ -333,11 +379,11 @@ const RegisterAsProfessional = () => {
                 onChange={(event) => setCurrentCompany(event.target.value)}
               />
             </div>
-            {currentCompany}
           </div>
           <div className='headingDiv'>
             <div className='errorHeadingDiv'>
               <Typography sx={{ fontWeight: '800' }}>Mobile Number</Typography>
+              {mobile.length === 0 && <ErrorIcon color='error' sx={{ ml: '1rem' }}></ErrorIcon>}
             </div>
             <div className='inputTextBox'>
               <InputBase
@@ -395,15 +441,12 @@ const RegisterAsProfessional = () => {
           <LineBar desc='Profile Pic' />
           <div className='picParentDiv'>
             <Typography style={{ color: 'red', fontSize: '0.8rem' }}>
-              Max allowed file size: 5MB
-            </Typography>
-            <Typography style={{ color: 'red', fontSize: '0.8rem' }}>
               Fles supported: jpg, jpeg, png
             </Typography>
             <div className='picDiv'>
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Typography sx={{ fontWeight: '800' }}>Profile Pic</Typography>
-                {(profilePic === null || !checkFileSize()) && (
+                {profilePic === null && (
                   <ErrorIcon color='error' sx={{ marginLeft: '1rem' }}></ErrorIcon>
                 )}
                 <input

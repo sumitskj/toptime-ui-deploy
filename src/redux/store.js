@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { getLogin, getAppliedProfessionalCategories } from '../utils/loginStore';
 
 import loginReducer from '../pages/login/slice/login';
@@ -12,6 +12,7 @@ import categoriesReducer from '../pages/common/slice/categories';
 import searchReducer from '../pages/search/slice/search';
 import homeReducer from '../pages/home/slice/home';
 import socialReducer from '../pages/user/registerAsProfessional/slice/socialLinksSlice';
+import socialUpdateReducer from '../pages/professional/updateProfessionalProfile/slice/socialLinksUpdateSlice';
 
 let preloadedState = {};
 const adata = getLogin();
@@ -44,19 +45,34 @@ if (
   };
 }
 
+const appReducers = combineReducers({
+  auth: loginReducer,
+  notif: notificationReducer,
+  userBookings: userBookingsReducer,
+  professionalBookings: professionalBookingsReducer,
+  myProfile: myProfileReducer,
+  feeds: feedsReducer,
+  professionals: professionalReducer,
+  categories: categoriesReducer,
+  search: searchReducer,
+  home: homeReducer,
+  social: socialReducer,
+  socialUpdate: socialUpdateReducer,
+});
+
+const rootReducer = (state, action) => {
+  if (action.type === 'USER_LOGOUT') {
+    return appReducers(undefined, action);
+  }
+
+  return appReducers(state, action);
+};
+
 export default configureStore({
-  reducer: {
-    auth: loginReducer,
-    notif: notificationReducer,
-    userBookings: userBookingsReducer,
-    professionalBookings: professionalBookingsReducer,
-    myProfile: myProfileReducer,
-    feeds: feedsReducer,
-    professionals: professionalReducer,
-    categories: categoriesReducer,
-    search: searchReducer,
-    home: homeReducer,
-    social: socialReducer,
-  },
+  reducer: rootReducer,
   preloadedState: preloadedState,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });

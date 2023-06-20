@@ -26,6 +26,8 @@ import UserBookingInfo from './pages/user/bookingInfo';
 import ForbiddenPage from './pages/error/forbiddenPage';
 import ProfessionalWallet from './pages/professional/wallet';
 import RegisterAsProfessional from './pages/user/registerAsProfessional';
+import UpdateProfessionalProfile from './pages/professional/updateProfessionalProfile';
+import MyRaisedIssues from './pages/user/raisedIssues';
 
 const router = createBrowserRouter([
   {
@@ -66,6 +68,10 @@ const router = createBrowserRouter([
         element: <UserBookings />,
       },
       {
+        path: 'user/my-raised-issues',
+        element: <MyRaisedIssues />,
+      },
+      {
         path: 'register-professional',
         element: <RegisterAsProfessional />,
       },
@@ -80,6 +86,10 @@ const router = createBrowserRouter([
       {
         path: 'professional/wallet',
         element: <ProfessionalWallet />,
+      },
+      {
+        path: '/professional/update-profile',
+        element: <UpdateProfessionalProfile />,
       },
     ],
   },
