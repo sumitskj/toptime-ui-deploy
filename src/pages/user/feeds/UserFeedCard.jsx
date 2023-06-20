@@ -69,7 +69,7 @@ const UserFeedCard = ({ data, navKey, category }) => {
 };
 
 UserFeedCard.propTypes = {
-  data: PropTypes.objectOf({}),
+  data: PropTypes.object,
   navKey: PropTypes.string,
   category: PropTypes.string,
 };

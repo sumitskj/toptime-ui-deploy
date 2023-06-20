@@ -18,10 +18,18 @@ export const getIsProfessional = () => {
   return localStorage.getItem('isProfessional');
 };
 
+export const removeIsProfessional = () => {
+  localStorage.removeItem('isProfessional');
+};
+
 export const storeAppliedProfessionalCategories = (data) => {
   localStorage.setItem('appliedCategories', JSON.stringify(data));
 };
 
 export const getAppliedProfessionalCategories = () => {
   return localStorage.getItem('appliedCategories');
+};
+
+export const removeAppliedProfessionalCategories = () => {
+  localStorage.removeItem('appliedCategories');
 };

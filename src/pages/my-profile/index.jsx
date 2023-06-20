@@ -7,7 +7,11 @@ import './myProfile.css';
 import { getUserDetails } from './api/myProfile';
 import { setMyUserDetails } from './slice/myProfile';
 import { openNotification } from '../notifications/slice/notification';
-import { removeLogin } from '../../utils/loginStore';
+import {
+  removeAppliedProfessionalCategories,
+  removeIsProfessional,
+  removeLogin,
+} from '../../utils/loginStore';
 import { removeLogin as removeLoginRedux } from '../login/slice/login';
 import ProfessionalCardSkeleton from '../../components/skeleton/ProfessionalCardSkeleton';
 
@@ -56,7 +60,10 @@ const MyProfile = () => {
 
   const handleLogout = () => {
     removeLogin();
+    removeIsProfessional();
+    removeAppliedProfessionalCategories();
     dispatch(removeLoginRedux());
+    dispatch({ type: 'USER_LOGOUT' });
     navigate('/');
   };
 
@@ -103,17 +110,21 @@ const MyProfile = () => {
               border: '0',
             }}
           />
-          <div className='contentDiv'>
-            <ProfilePropText label='Mobile number' value={myData.mobileNumber} />
-          </div>
-          <hr
-            style={{
-              width: '100%',
-              backgroundColor: '#ededed',
-              height: '1px',
-              border: '0',
-            }}
-          />
+          {myData.mobileNumber !== null && (
+            <>
+              <div className='contentDiv'>
+                <ProfilePropText label='Mobile number' value={myData.mobileNumber} />
+              </div>
+              <hr
+                style={{
+                  width: '100%',
+                  backgroundColor: '#ededed',
+                  height: '1px',
+                  border: '0',
+                }}
+              />
+            </>
+          )}
           <div className='buttonDiv'>
             <button
               onClick={handleLogout}
