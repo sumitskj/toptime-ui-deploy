@@ -69,7 +69,7 @@ const Categories = ({ selected }) => {
 };
 
 Categories.propTypes = {
-  selected: PropTypes.objectOf({
+  selected: PropTypes.shape({
     category: PropTypes.string,
   }),
 };

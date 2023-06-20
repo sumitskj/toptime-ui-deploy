@@ -1,0 +1,155 @@
+.updateRegisterProfParentDiv {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+
+.updateRegisterProfCardDiv {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  padding: 1rem;
+  border-radius: 20px;
+  width: 70%;
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+  margin-bottom: 2rem;
+}
+
+.avatarDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+}
+
+.avatarText {
+  transition: 0.5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+  background-color: #009ef7;
+  padding: 4px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.avatarDiv img {
+  vertical-align: middle;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: #f2faff;
+  transition: 0.5s ease;
+  backface-visibility: hidden;
+  opacity: 1;
+  border: 4px solid #ffc629;
+  object-fit: contain;
+}
+
+.avatarTmp:hover img {
+  opacity: 0.3;
+}
+
+.avatarTmp:hover .avatarText {
+  opacity: 1;
+}
+
+.updateCategoryDiv {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  width: 90%;
+}
+
+.titleHeadDiv {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.updateHeadingDiv {
+  margin-top: 2rem;
+  position: relative;
+  width: 100%;
+}
+
+.updateErrorHeadingDiv {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.updateInputTextBox {
+  border-radius: 8px;
+  padding: 0.4rem;
+  border: 1px solid grey;
+  position: relative;
+  width: 90%;
+}
+
+.updateNumberTextBox {
+  border-radius: 8px;
+  padding: 0.4rem;
+  border: 1px solid grey;
+  position: relative;
+  width: 90%;
+}
+.updatePicParentDiv {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  position: relative;
+  width: 100%;
+}
+
+.updatePicDiv {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+
+.updateSaveBtn {
+  margin: 3rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+
+@media only screen and (max-width: 900px) {
+  .updateRegisterProfCardDiv {
+    width: 90%;
+  }
+  .updatePicDiv {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .updatePicDiv img {
+    margin-top: 1rem;
+  }
+  .titleHeadDiv {
+    flex-direction: column;
+  }
+}
