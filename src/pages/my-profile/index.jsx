@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Typography } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
 import './myProfile.css';
-import { getUserDetails } from './api/myProfile';
+import { deleteAccount, getUserDetails } from './api/myProfile';
 import { setMyUserDetails } from './slice/myProfile';
 import { openNotification } from '../notifications/slice/notification';
 import {
@@ -35,6 +35,84 @@ const MyProfile = () => {
   const myData = useSelector((state) => state.myProfile);
   const [loading, setLoader] = useState(false);
   const [error, setError] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+
+  const handleAccountDeletion = () => {
+    const deleteRequest = async () => {
+      try {
+        const resp = await dispatch(deleteAccount()).unwrap();
+        if (resp.ok) {
+          console.log('Account deleted successfully');
+          dispatch(
+            openNotification({
+              severity: 'success',
+              message: 'Account deleted successfully',
+            }),
+          );
+        }
+      } catch (err) {
+        console.error('Error in Account deleted : ', err);
+        dispatch(
+          openNotification({
+            severity: 'error',
+            message: 'Error in account deletion. Please try agan.',
+          }),
+        );
+      }
+    };
+    deleteRequest();
+    handleLogout();
+    setOpenDeleteDialog(false);
+    navigate('/');
+  };
+
+  const DeleteAccountDialog = () => {
+    return (
+      <Dialog open={openDeleteDialog} onClose={() => setOpenDeleteDialog(false)}>
+        <DialogTitle>Delete account</DialogTitle>
+        <DialogContent>Do you really want to delete your account?</DialogContent>
+        <DialogActions>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+              position: 'relative',
+              width: '100%',
+            }}>
+            <button
+              onClick={() => setOpenDeleteDialog(false)}
+              style={{
+                border: 0,
+                padding: '10px',
+                backgroundColor: 'white',
+                color: '#E44332',
+                fontWeight: '550',
+                fontSize: '1.1rem',
+                marginRight: '1rem',
+                cursor: 'pointer',
+              }}>
+              Cancel
+            </button>
+            <button
+              onClick={() => setOpenDeleteDialog(true)}
+              style={{
+                borderRadius: '8px',
+                border: 0,
+                padding: '10px',
+                backgroundColor: 'black',
+                color: 'white',
+                fontWeight: '550',
+                fontSize: '1.1rem',
+                cursor: 'pointer',
+              }}>
+              Delete
+            </button>
+          </div>
+        </DialogActions>
+      </Dialog>
+    );
+  };
 
   const fetchMyProfile = async () => {
     try {
@@ -65,13 +143,6 @@ const MyProfile = () => {
     dispatch(removeLoginRedux());
     dispatch({ type: 'USER_LOGOUT' });
     navigate('/');
-  };
-
-  const handleAccountDeletion = () => {
-    // TODO: confirm dialog and API integration
-    dispatch(
-      openNotification({ severity: 'info', message: 'Account deletion request submitted.' }),
-    );
   };
 
   useEffect(() => {
@@ -152,6 +223,7 @@ const MyProfile = () => {
               }}>
               Delete Account
             </button>
+            <DeleteAccountDialog />
           </div>
 
           <div className='footerDiv'>
