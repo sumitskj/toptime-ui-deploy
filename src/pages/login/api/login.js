@@ -26,4 +26,36 @@ const getProfessionalAppliedCategories = async (token) => {
   return response;
 };
 
-export { getEmailOtp, verifyOtp, getProfessionalAppliedCategories };
+const getUserDetails = async (token) => {
+  const response = await fetchBackendApiWrapper(
+    '/api/v1/user/userDetails',
+    {
+      method: 'GET',
+    },
+    token,
+  );
+  return response;
+};
+
+const postUserDetails = async (payload, token) => {
+  const response = await fetchBackendApiWrapper(
+    '/api/v1/user/userDetails',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    },
+    token,
+  );
+  return response;
+};
+
+export {
+  getEmailOtp,
+  verifyOtp,
+  getProfessionalAppliedCategories,
+  getUserDetails,
+  postUserDetails,
+};

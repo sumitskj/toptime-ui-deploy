@@ -15,7 +15,7 @@ import {
   Toolbar,
 } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Logo from '../../../components/logo/Logo';
+import { LogoWithName } from '../../../components/logo/Logo';
 import './bookingInfo.css';
 import { getBookingStatusFromValue, getBookingTypeFromValue } from '../../../utils/enums';
 import moment from 'moment';
@@ -564,7 +564,7 @@ const ProfessionalBookingInfo = () => {
         <AppBar position='sticky' sx={{ backgroundColor: '#FFECEC' }}>
           <Toolbar disableGutters>
             <div onClick={handleNavigateHome} style={{ cursor: 'pointer' }}>
-              <Logo />
+              <LogoWithName />
             </div>
           </Toolbar>
         </AppBar>

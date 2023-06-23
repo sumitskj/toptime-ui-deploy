@@ -9,7 +9,9 @@ import { setMyUserDetails } from './slice/myProfile';
 import { openNotification } from '../notifications/slice/notification';
 import {
   removeAppliedProfessionalCategories,
+  removeCategories,
   removeIsProfessional,
+  removeIsRegisteredUser,
   removeLogin,
 } from '../../utils/loginStore';
 import { removeLogin as removeLoginRedux } from '../login/slice/login';
@@ -63,7 +65,7 @@ const MyProfile = () => {
     deleteRequest();
     handleLogout();
     setOpenDeleteDialog(false);
-    navigate('/');
+    navigate('/', { replace: 'true' });
   };
 
   const DeleteAccountDialog = () => {
@@ -140,9 +142,11 @@ const MyProfile = () => {
     removeLogin();
     removeIsProfessional();
     removeAppliedProfessionalCategories();
+    removeCategories();
+    removeIsRegisteredUser();
     dispatch(removeLoginRedux());
     dispatch({ type: 'USER_LOGOUT' });
-    navigate('/');
+    navigate('/', { replace: 'true' });
   };
 
   useEffect(() => {

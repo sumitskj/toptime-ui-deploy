@@ -33,3 +33,25 @@ export const getAppliedProfessionalCategories = () => {
 export const removeAppliedProfessionalCategories = () => {
   localStorage.removeItem('appliedCategories');
 };
+
+export const storeCategories = (data) => {
+  localStorage.setItem('categories', JSON.stringify(data));
+};
+
+export const getCategories = () => {
+  return localStorage.getItem('categories');
+};
+export const removeCategories = () => {
+  localStorage.removeItem('categories');
+};
+
+export const storeIsRegisteredUser = (data) => {
+  localStorage.setItem('isRegisteredUser', JSON.stringify(data));
+};
+
+export const getIsRegisteredUser = () => {
+  return localStorage.getItem('isRegisteredUser');
+};
+export const removeIsRegisteredUser = () => {
+  localStorage.removeItem('isRegisteredUser');
+};
