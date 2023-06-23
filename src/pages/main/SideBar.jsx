@@ -12,7 +12,7 @@ import {
   ListItemText,
   ListItemIcon,
 } from '@mui/material';
-import Logo from '../../components/logo/Logo';
+import { LogoWithName } from '../../components/logo/Logo';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentMode } from '../login/slice/login';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
@@ -146,19 +146,22 @@ const SideBar = (props) => {
       handleDrawerToggle();
     }
     dispatch(setCurrentMode(curMode));
-    if (curMode === 'user') {
+  };
+
+  useEffect(() => {
+    if (currentMode === 'user') {
       navigate('/user/feeds', { replace: true });
     }
-    if (curMode === 'professional') {
+    if (currentMode === 'professional') {
       navigate('/professional/home', { replace: true });
     }
-  };
+  }, [currentMode]);
 
   const drawer = (
     <div>
       <Toolbar>
         <Link to='/'>
-          <Logo />
+          <LogoWithName />
         </Link>
       </Toolbar>
       <List>

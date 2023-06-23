@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { storeCategories } from '../../../utils/loginStore';
 
 const initialState = [];
 
@@ -7,6 +8,7 @@ export const categoriesSlice = createSlice({
   initialState: initialState,
   reducers: {
     setCategories: (state, action) => {
+      storeCategories(action.payload);
       return action.payload;
     },
   },

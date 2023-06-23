@@ -1,0 +1,74 @@
+.loginForm {
+  margin-top: 7rem;
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.inputLoginTextBox {
+  margin-top: 2rem;
+  border-radius: 8px;
+  border: 1px solid black;
+  padding: 0.8rem;
+  width: 30vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.continueBtn {
+  margin-top: 1rem;
+  border-radius: 8px;
+  padding: 0.8rem;
+  width: 30vw;
+  background-color: black;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.afterContinueDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.otpResendDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btnText {
+  transition: all 0.2s ease-in-out;
+}
+
+.btnText:hover {
+  transform: scale(1.01);
+}
+
+@media only screen and (max-width: 900px) {
+  .inputLoginTextBox {
+    width: 60vw;
+  }
+
+  .continueBtn {
+    width: 60vw;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .inputLoginTextBox {
+    width: 80vw;
+  }
+
+  .continueBtn {
+    width: 80vw;
+  }
+}

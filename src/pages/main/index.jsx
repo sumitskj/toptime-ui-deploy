@@ -4,36 +4,26 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { styled } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
-import { Container, Toolbar, Box, Grid, ButtonGroup, Button, IconButton } from '@mui/material';
+import { Toolbar, Box, Button, IconButton, Typography, useScrollTrigger } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { getCategories } from '../common/api/categories';
 import { setCategories } from '../common/slice/categories';
 import { keys } from 'lodash';
+import './main.css';
 
 import SideBar from './SideBar';
-import Logo from '../../components/logo/Logo';
-
-const CustomizedSignIn = styled(Button)`
-  background: #000;
-  color: #ffffff;
-  border: 1px solid #000;
-  font-weight: 600;
-
-  :hover {
-    background: #000;
-    border: 1px solid #000;
-    transform: translateY(-1px);
-  }
-`;
+import { Logo, LogoWithName } from '../../components/logo/Logo';
+import { getIsRegisteredUser } from '../../utils/loginStore';
 
 const CustomisedBecomeExpert = styled(Button)`
   font-weight: 600;
   border: 1px solid #000;
-  color: #000;
-  margin-right: 2rem;
+  background: #000;
+  color: #ffffff;
   :hover {
-    border: 1px solid #000;
-    transform: translateY(-1px);
+    background: #000;
+    border: 2px solid #000;
+    transform: scale(1.01);
   }
 `;
 
@@ -92,66 +82,182 @@ const Main = () => {
     if (categoriesData && categoriesData.length === 0) {
       fetchCategories();
     }
+    if (authData.isAuthenticated && !JSON.parse(getIsRegisteredUser())) {
+      navigate('/fill-user-details', { replace: 'true' });
+    }
   }, []);
 
-  if (categoriesData && categoriesData.length === 0) {
-    return (
-      <Grid container>
-        <Grid item xs={12}>
-          <Box
-            height='100vh'
-            sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <Logo />
-          </Box>
-        </Grid>
-      </Grid>
-    );
-  }
+  const trigger = useScrollTrigger();
 
   return (
-    <Box sx={{ display: 'flex' }} className='top-time-app-bar'>
+    <div>
       <AppBar
-        position='fixed'
-        sx={{
-          width: { sm: `calc(100% - ${calcDrawerWidth}px)` },
-          ml: { sm: `${calcDrawerWidth}px` },
+        elevation={10}
+        style={{
+          backgroundColor: `${trigger ? '#f8f7f1' : 'white'}`,
+          boxShadow: '0 2px 1px -1px #f8f7f1',
         }}>
-        <Container maxWidth='false'>
-          <Toolbar disableGutters>
+        <Toolbar
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            position: 'relative',
+            width: '100%',
+            padding: '0',
+          }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}>
             {authData.isAuthenticated && (
-              <IconButton
-                color='inherit'
-                aria-label='open drawer'
-                edge='start'
-                onClick={handleDrawerToggle}
-                sx={{ mr: 2, display: { sm: 'none' } }}>
-                <MenuIcon />
-              </IconButton>
+              <>
+                <IconButton
+                  color='inherit'
+                  onClick={handleDrawerToggle}
+                  sx={{ mr: 2, display: { sm: 'none' } }}>
+                  <MenuIcon />
+                </IconButton>
+                <Box sx={{ display: { sm: 'none' } }}>
+                  <Link to='/'>
+                    <Logo />
+                  </Link>
+                </Box>
+              </>
             )}
             {!authData.isAuthenticated && (
-              <Link to='/'>
-                <Logo />
-              </Link>
+              <>
+                <Box
+                  sx={{
+                    marginLeft: { xs: '2rem', md: '4rem' },
+                    display: { xs: 'none', sm: 'block' },
+                  }}>
+                  <Link to='/'>
+                    <LogoWithName />
+                  </Link>
+                </Box>
+                <Box
+                  sx={{
+                    marginLeft: { xs: '2rem', md: '4rem' },
+                    display: { xs: 'block', sm: 'none' },
+                  }}>
+                  <Link to='/'>
+                    <Logo />
+                  </Link>
+                </Box>
+                <Box
+                  onClick={() => <Link to={'#explore'}></Link>}
+                  sx={{
+                    display: { xs: 'none', sm: 'block' },
+                    m: {
+                      xs: '0 2rem',
+                      md: '0 3rem',
+                    },
+                    fontWeight: '600',
+                    transition: 'all 0.2s ease-in-out',
+                    cursor: 'pointer',
+                    ':hover': {
+                      transform: 'scale(1.05)',
+                    },
+                  }}>
+                  <a href='#explore' style={{ textDecoration: 'none', color: 'black' }}>
+                    Explore
+                  </a>
+                </Box>
+                <Box
+                  sx={{
+                    display: { xs: 'none', sm: 'block' },
+                    fontWeight: '600',
+                    transition: 'all 0.2s ease-in-out',
+                    cursor: 'pointer',
+                    ':hover': {
+                      transform: 'scale(1.05)',
+                    },
+                  }}>
+                  Pricing
+                </Box>
+              </>
             )}
-            <Box sx={{ flexGrow: 1, display: { xs: 'none', sm: 'flex' } }}>
-              <Grid container>
-                <Grid item xs={6}></Grid>
-                <Grid container item xs={6} justifyContent='flex-end'>
-                  {!authData.isAuthenticated && (
-                    <CustomisedBecomeExpert variant='outlined'>
-                      Become expert
-                    </CustomisedBecomeExpert>
-                  )}
-                  {!authData.isAuthenticated && (
-                    <ButtonGroup variant='outlined' disableRipple>
-                      <CustomizedSignIn onClick={handleLogIn}>Sign In</CustomizedSignIn>
-                    </ButtonGroup>
-                  )}
-                </Grid>
-              </Grid>
-            </Box>
-          </Toolbar>
-        </Container>
+          </div>
+          {!authData.isAuthenticated && (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <CustomisedBecomeExpert variant='outlined' onClick={handleLogIn}>
+                SIGN IN
+              </CustomisedBecomeExpert>
+              <Button
+                variant='outlined'
+                sx={{
+                  display: {
+                    sm: 'block',
+                    xs: 'none',
+                  },
+                  fontWeight: '600',
+                  color: 'black',
+                  border: '2px solid black',
+                  marginRight: { xs: '2rem', md: '4rem' },
+                  ml: 1,
+                  ':hover': {
+                    transform: 'scale(1.02)',
+                    backgroundColor: 'white',
+                    border: '2px solid black',
+                  },
+                }}
+                onClick={handleLogIn}>
+                BECOME EXPERT
+              </Button>
+              <div className='dropdown'>
+                <IconButton
+                  className='dropbtn'
+                  color='inherit'
+                  sx={{
+                    marginRight: { xs: '2rem', md: '4rem' },
+                    display: { sm: 'none' },
+                    backgroundColor: '#F8F7F1',
+                    borderRadius: '4px',
+                    ml: 1,
+                  }}>
+                  <MenuIcon />
+                </IconButton>
+                <div className='dropdown-content'>
+                  <IconButton sx={{ borderRadius: '0px', width: '100%' }} onClick={handleLogIn}>
+                    <Typography
+                      sx={{
+                        fontSize: '0.9rem',
+                        fontWeight: '600',
+                        color: 'black',
+                      }}>
+                      Become Expert
+                    </Typography>
+                  </IconButton>
+                  <IconButton sx={{ borderRadius: '0px', width: '100%' }}>
+                    <Typography
+                      sx={{
+                        fontSize: '0.9rem',
+                        fontWeight: '600',
+                        color: 'black',
+                      }}>
+                      <a href='#explore' style={{ textDecoration: 'none', color: 'black' }}>
+                        Explore
+                      </a>
+                    </Typography>
+                  </IconButton>
+                  <IconButton sx={{ borderRadius: '0px', width: '100%' }} onClick={handleLogIn}>
+                    <Typography
+                      sx={{
+                        fontSize: '0.9rem',
+                        fontWeight: '600',
+                        color: 'black',
+                      }}>
+                      Pricing
+                    </Typography>
+                  </IconButton>
+                </div>
+              </div>
+            </div>
+          )}
+        </Toolbar>
       </AppBar>
       {authData.isAuthenticated && (
         <Box
@@ -167,11 +273,15 @@ const Main = () => {
       )}
       <Box
         component='main'
-        sx={{ flexGrow: 1, width: { sm: `calc(100% - ${calcDrawerWidth}px)` } }}>
+        sx={{
+          flexGrow: 1,
+          width: { flexGrow: 1, sm: `calc(100% - ${calcDrawerWidth}px)` },
+          ml: { sm: `${calcDrawerWidth}px` },
+        }}>
         <Toolbar />
         <Outlet />
       </Box>
-    </Box>
+    </div>
   );
 };
 
