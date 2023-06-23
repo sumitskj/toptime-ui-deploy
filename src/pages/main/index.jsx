@@ -13,7 +13,11 @@ import './main.css';
 
 import SideBar from './SideBar';
 import { Logo, LogoWithName } from '../../components/logo/Logo';
-import { getIsRegisteredUser } from '../../utils/loginStore';
+import { getIsRegisteredUser, storeLogin } from '../../utils/loginStore';
+import jwtDecode from 'jwt-decode';
+import moment from 'moment';
+import { getRefreshToken } from '../login/api/login';
+import { setlogin } from '../login/slice/login';
 
 const CustomisedBecomeExpert = styled(Button)`
   font-weight: 600;
@@ -79,6 +83,28 @@ const Main = () => {
   };
 
   useEffect(() => {
+    const fetchRefreshToken = async () => {
+      const refreshTokenRes = await getRefreshToken(authData.authData.refreshToken);
+      if (refreshTokenRes.ok) {
+        const tokenJson = await refreshTokenRes.json();
+        storeLogin(tokenJson);
+        dispatch(setlogin(tokenJson));
+      }
+    };
+    try {
+      if (
+        jwtDecode(authData.authData.accessToken).exp < moment().add(10, 'minutes').unix() &&
+        jwtDecode(authData.authData.refreshToken).exp > moment().unix()
+      ) {
+        console.log('Auth Token expired. Fetching refresh token');
+        fetchRefreshToken();
+      } else {
+        console.log('Auth Token not expired');
+      }
+    } catch (error) {
+      console.log('Error in fetching authToken from refresh token  ', error);
+    }
+
     if (categoriesData && categoriesData.length === 0) {
       fetchCategories();
     }

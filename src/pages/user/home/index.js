@@ -1,37 +1,17 @@
-import { useEffect } from 'react';
-// import { Card, Grid, CardMedia } from '@mui/material';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-
-// import { CustomisedHomeText } from './components';
-import Trending from './Trending';
-import HowItWorks from './HowItWorks';
-
-import './home.css';
-// import HomeImage from '../../static/images/home-image-new.svg';
 import { Box, Button, Card, CardMedia, Grid, Typography } from '@mui/material';
-import FAQs from './FAQs';
-import Footer from './Footer';
-import Categories from './Categories';
+import { useNavigate } from 'react-router-dom';
+import Categories from '../../home/Categories';
+import Trending from '../../home/Trending';
+import HowItWorks from '../../home/HowItWorks';
+import FAQs from '../../home/FAQs';
+import Footer from '../../home/Footer';
+import Recommendation from './Recommendation';
 
-const Home = () => {
+const UserHome = () => {
   const navigate = useNavigate();
-  const auth = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    if (auth.isAuthenticated) {
-      const curMode = auth.currentMode;
-      console.log('Current mode: ', curMode);
-      if (curMode === 'professional') {
-        navigate('/professional/home', { replace: true });
-      } else {
-        navigate('/user/home', { replace: true });
-      }
-    }
-  }, []);
-
-  const handleLogIn = () => {
-    navigate('/login');
+  const handleRegisterProfessional = () => {
+    navigate('/register-professional');
   };
 
   return (
@@ -74,7 +54,7 @@ const Home = () => {
                 m: '5rem 0rem',
               }}>
               <Button
-                onClick={handleLogIn}
+                onClick={handleRegisterProfessional}
                 variant='filled'
                 sx={{
                   backgroundColor: 'black',
@@ -84,7 +64,7 @@ const Home = () => {
                   fontSize: { xs: '1rem', md: '1.5rem' },
                   ':hover': { transform: 'scale(1.02)', backgroundColor: 'black' },
                 }}>
-                Monetize my Skills
+                Become Expert
               </Button>
               <Button
                 onClick={() =>
@@ -124,6 +104,7 @@ const Home = () => {
         </Grid>
       </Box>
       <Categories />
+      <Recommendation />
       <Trending />
       <HowItWorks />
       <FAQs />
@@ -132,4 +113,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default UserHome;

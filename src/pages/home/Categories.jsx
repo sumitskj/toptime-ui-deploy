@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Box, CircularProgress, Grid, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { get, keys } from 'lodash';
 
@@ -11,13 +11,14 @@ import styled from '@emotion/styled';
 
 const Categories = ({ selected }) => {
   const dispatch = useDispatch();
+  const location = useLocation();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
   const categoriesData = useSelector((state) => state.categories);
 
   const categoriesToJson = (data) => {
-    let cateJson = [{ id: 21, label: 'All', image: '', hex: '' }];
+    let cateJson = [{ id: -1, label: 'All', image: '', hex: '' }];
     keys(data).forEach((key) => {
       console.log(key);
       const value = data[key].split('|');
@@ -51,7 +52,7 @@ const Categories = ({ selected }) => {
     fetchCategories();
   }, []);
 
-  const selectedCategory = get(selected, 'category', '');
+  const selectedCategory = get(selected, 'category', 'All');
 
   const activeClass = (label) => (label === selectedCategory ? 'active' : '');
 
@@ -73,22 +74,22 @@ const Categories = ({ selected }) => {
     <Box
       id='explore'
       sx={{
-        pl: { xs: '0rem', md: '4rem' },
-        pr: { xs: '0rem', md: '4rem' },
         pt: '2rem',
         mt: '0rem',
       }}>
-      <Typography
-        sx={{
-          fontSize: { xs: '1.5rem', sm: '1.4rem', md: '1.5rem', lg: '1.8rem' },
-          fontWeight: '600',
-          // m: { xs: '12px', md: '16px' },
-        }}>
-        Explore Experts
-      </Typography>
+      {!location.pathname.includes('/explore/') && (
+        <Typography
+          sx={{
+            fontSize: { xs: '1.5rem', sm: '1.4rem', md: '1.5rem', lg: '1.8rem' },
+            fontWeight: '600',
+            pl: { xs: '1rem', md: '5rem' },
+          }}>
+          Explore Experts
+        </Typography>
+      )}
       {!loading && !error && (
         <Grid item container justifyContent='space-between' xs={12}>
-          <StyledBoxScrollable>
+          <StyledBoxScrollable sx={{ pl: { xs: '0', md: '4rem' }, pr: { xs: '0', md: '4rem' } }}>
             {categoriesData.map((c) => (
               <Box
                 key={c.id}

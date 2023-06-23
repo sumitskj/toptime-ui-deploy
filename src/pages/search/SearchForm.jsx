@@ -46,7 +46,7 @@ const SearchForm = ({ category, searchName, handleSearchNameInput, handleSearch 
           <StyledSeachHead variant='h5' gutterBottom>
             Find and connect with experts in seconds
           </StyledSeachHead>
-          <Paper elevation={6} sx={{ padding: '1rem' }}>
+          <Paper elevation={6} sx={{ padding: '1rem', borderRadius: '12px' }}>
             <Grid container justifyContent='space-between'>
               <Grid item>
                 <StyledFormLabel variant='h6' gutterBottom>
@@ -58,7 +58,7 @@ const SearchForm = ({ category, searchName, handleSearchNameInput, handleSearch 
               </Grid>
               <Grid item xs={6}>
                 <StyledFormLabel variant='h6' gutterBottom>
-                  Search by name
+                  Search Name
                 </StyledFormLabel>
                 <TextField
                   variant='standard'
@@ -66,7 +66,7 @@ const SearchForm = ({ category, searchName, handleSearchNameInput, handleSearch 
                   value={searchName}
                   onChange={handleChange}
                   onKeyUp={handleKeyUp}
-                  placeholder='search by name'
+                  placeholder='Search by name'
                   sx={{ minWidth: '100px' }}
                   fullWidth
                 />
