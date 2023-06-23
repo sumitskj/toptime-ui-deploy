@@ -30,6 +30,7 @@ const UserFeedCard = ({ data, navKey, category }) => {
         ':hover': {
           transform: 'scale(1.05)',
         },
+        width: { xs: 225, md: 275 },
       }}>
       <Card
         sx={{

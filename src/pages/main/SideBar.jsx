@@ -29,12 +29,12 @@ import { getIsProfessional } from '../../utils/loginStore';
 const sidebarUserItems = [
   {
     name: 'Home',
-    path: '/user/feeds',
+    path: '/user/home',
     icon: <HomeRoundedIcon />,
   },
   {
     name: 'Explore',
-    path: '/user/explore',
+    path: '/user/explore/All',
     icon: <TravelExploreRoundedIcon />,
   },
   {
@@ -150,7 +150,7 @@ const SideBar = (props) => {
 
   useEffect(() => {
     if (currentMode === 'user') {
-      navigate('/user/feeds', { replace: true });
+      navigate('/user/home', { replace: true });
     }
     if (currentMode === 'professional') {
       navigate('/professional/home', { replace: true });

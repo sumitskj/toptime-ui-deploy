@@ -52,10 +52,22 @@ const postUserDetails = async (payload, token) => {
   return response;
 };
 
+const getRefreshToken = async (token) => {
+  const response = await fetchBackendApiWrapper(
+    '/api/v1/auth/refreshToken',
+    {
+      method: 'GET',
+    },
+    token,
+  );
+  return response;
+};
+
 export {
   getEmailOtp,
   verifyOtp,
   getProfessionalAppliedCategories,
   getUserDetails,
   postUserDetails,
+  getRefreshToken,
 };

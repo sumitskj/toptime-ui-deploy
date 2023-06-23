@@ -28,6 +28,7 @@ import RegisterAsProfessional from './pages/user/registerAsProfessional';
 import UpdateProfessionalProfile from './pages/professional/updateProfessionalProfile';
 import MyRaisedIssues from './pages/user/raisedIssues';
 import FillUserDetails from './pages/login/fillUserDetails';
+import UserHome from './pages/user/home';
 
 const router = createBrowserRouter([
   {
@@ -39,21 +40,14 @@ const router = createBrowserRouter([
         path: '/',
         element: <Home />,
       },
+
       {
-        path: 'explore/:category?',
+        path: 'user/home',
+        element: <UserHome />,
+      },
+      {
+        path: 'user/explore/:category?',
         element: <Search />,
-      },
-      {
-        path: 'user/feeds',
-        element: <Home />,
-      },
-      {
-        path: '/user/explore',
-        element: <Search />,
-      },
-      {
-        path: 'user-profile/:id',
-        element: <UserProfile />,
       },
       {
         path: 'my-profile',
@@ -80,11 +74,11 @@ const router = createBrowserRouter([
         element: <RegisterAsProfessional />,
       },
       {
-        path: '/professional/bookings',
+        path: 'professional/bookings',
         element: <ProfessionalBookings />,
       },
       {
-        path: '/professional/home',
+        path: 'professional/home',
         element: <ProfessionalHome />,
       },
       {
@@ -92,10 +86,18 @@ const router = createBrowserRouter([
         element: <ProfessionalWallet />,
       },
       {
-        path: '/professional/update-profile',
+        path: 'professional/update-profile',
         element: <UpdateProfessionalProfile />,
       },
     ],
+  },
+  {
+    path: 'explore/:category?',
+    element: <Search />,
+  },
+  {
+    path: '/user-profile/:id',
+    element: <UserProfile />,
   },
   {
     path: '/login',
