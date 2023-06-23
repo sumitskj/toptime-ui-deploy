@@ -3,16 +3,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Box, Grid, Typography } from '@mui/material';
 import { times, find } from 'lodash';
 
-import UserFeedCard from '../user/home/UserFeedCard';
-import { CustomisedCardLabels } from './components';
-import ProfessionalCardSkeleton from '../../components/skeleton/ProfessionalCardSkeleton';
-import { openNotification } from '../notifications/slice/notification';
-import { getFeedsTrending } from './api/home';
-import { setTrendingFeeds } from './slice/home';
+import UserFeedCard from './UserFeedCard';
+import { CustomisedCardLabels } from '../../home/components';
+import ProfessionalCardSkeleton from '../../../components/skeleton/ProfessionalCardSkeleton';
+import { openNotification } from '../../notifications/slice/notification';
+import { getFeedsRecommended } from '../../home/api/home';
+import { setRecommendedFeeds } from '../../home/slice/home';
 import styled from '@emotion/styled';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 
-const Trending = () => {
+const Recommendation = () => {
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(false);
@@ -20,15 +20,18 @@ const Trending = () => {
 
   const categories = useSelector((state) => state.categories);
   const homeData = useSelector((state) => state.home);
+  const authData = useSelector((state) => state.auth);
 
-  const fetchTrending = async () => {
+  const fetchRecommendations = async () => {
     try {
       setLoading(true);
-      const resp = await dispatch(getFeedsTrending()).unwrap();
+      const resp = await dispatch(
+        getFeedsRecommended({ token: authData.authData.accessToken }),
+      ).unwrap();
 
       if (resp.ok) {
         const resJson = await resp.json();
-        dispatch(setTrendingFeeds(resJson));
+        dispatch(setRecommendedFeeds(resJson));
       }
     } catch (err) {
       setError(true);
@@ -48,7 +51,7 @@ const Trending = () => {
   };
 
   useEffect(() => {
-    fetchTrending();
+    fetchRecommendations();
   }, []);
 
   const StyledBoxScrollable = styled(Box)`
@@ -71,10 +74,10 @@ const Trending = () => {
         pl: { xs: '0rem', md: '4rem' },
         pr: { xs: '0rem', md: '4rem' },
         pt: '2rem',
-        mt: '0rem',
+        mt: '1rem',
         backgroundColor: '#f8f7f1',
       }}>
-      {!error && !loading && homeData.trending.length > 0 && (
+      {!error && !loading && homeData.recommended.length > 0 && (
         <Grid item xs={12}>
           <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
             <Typography
@@ -83,13 +86,13 @@ const Trending = () => {
                 fontWeight: '600',
                 m: { xs: '12px', md: '16px' },
               }}>
-              Trending Experts
+              Recommendations For You
             </Typography>
-            <TrendingUpIcon style={{ fontSize: '32px' }} />
+            <ThumbUpOffAltIcon style={{ fontSize: '32px' }} />
           </div>
 
           <StyledBoxScrollable sx={{ justifyContent: 'flex-start' }}>
-            {homeData.trending.map((u) => (
+            {homeData.recommended.map((u) => (
               <UserFeedCard
                 key={u.professionalId}
                 data={u}
@@ -102,7 +105,7 @@ const Trending = () => {
       )}
       {loading && (
         <Grid item xs={12}>
-          <CustomisedCardLabels variant='h4'>Trending Experts</CustomisedCardLabels>
+          <CustomisedCardLabels variant='h4'>Recommended Experts For you</CustomisedCardLabels>
           {times(4).map((v) => (
             <ProfessionalCardSkeleton key={v} />
           ))}
@@ -124,4 +127,4 @@ const Trending = () => {
   );
 };
 
-export default Trending;
+export default Recommendation;

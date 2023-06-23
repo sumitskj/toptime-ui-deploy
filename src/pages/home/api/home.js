@@ -15,6 +15,27 @@ const getFeedsTrending = createAsyncThunk('feeds/trending', async (arg, { reject
   }
 });
 
+const getFeedsRecommended = createAsyncThunk(
+  'feeds/recommended',
+  async ({ token }, { rejectWithValue }) => {
+    try {
+      const response = await fetchBackendApiWrapper(
+        '/api/v1/getRecommendedProfessionals',
+        {
+          method: 'GET',
+        },
+        token,
+      );
+      if (!response.ok) {
+        return rejectWithValue(response);
+      }
+      return response;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  },
+);
+
 const getStaticData = createAsyncThunk('feeds/trending', async (arg, { rejectWithValue }) => {
   try {
     const response = await fetchBackendApiWrapper('/api/v1/getStaticData', {
@@ -29,4 +50,4 @@ const getStaticData = createAsyncThunk('feeds/trending', async (arg, { rejectWit
   }
 });
 
-export { getFeedsTrending, getStaticData };
+export { getFeedsTrending, getStaticData, getFeedsRecommended };
