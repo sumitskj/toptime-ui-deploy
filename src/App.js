@@ -17,7 +17,6 @@ import MyServices from './pages/professional/my-services';
 import MyProfile from './pages/my-profile';
 import UserBookings from './pages/user/bookings';
 import UserWallet from './pages/user/wallet';
-import UserFeeds from './pages/user/feeds';
 import Search from './pages/search';
 import ProfessionalBookings from './pages/professional/bookings';
 import ProfessionalHome from './pages/professional/home';
@@ -28,6 +27,7 @@ import ProfessionalWallet from './pages/professional/wallet';
 import RegisterAsProfessional from './pages/user/registerAsProfessional';
 import UpdateProfessionalProfile from './pages/professional/updateProfessionalProfile';
 import MyRaisedIssues from './pages/user/raisedIssues';
+import FillUserDetails from './pages/login/fillUserDetails';
 
 const router = createBrowserRouter([
   {
@@ -45,7 +45,11 @@ const router = createBrowserRouter([
       },
       {
         path: 'user/feeds',
-        element: <UserFeeds />,
+        element: <Home />,
+      },
+      {
+        path: '/user/explore',
+        element: <Search />,
       },
       {
         path: 'user-profile/:id',
@@ -96,6 +100,10 @@ const router = createBrowserRouter([
   {
     path: '/login',
     element: <Login />,
+  },
+  {
+    path: '/fill-user-details',
+    element: <FillUserDetails />,
   },
   {
     path: '/sign-up',

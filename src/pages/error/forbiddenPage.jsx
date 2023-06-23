@@ -6,7 +6,7 @@ const ForbiddenPage = () => {
     <>
       <div>Forbidden</div>
       <div>
-        <button onClick={() => navigate('/')}>Go Home</button>
+        <button onClick={() => navigate('/', { replace: 'true' })}>Go Home</button>
       </div>
     </>
   );

@@ -1,10 +1,11 @@
 .nav-item {
-  padding: 0.5rem 1rem;
-  border: 1px solid #000;
-  text-decoration: none ;
+  padding: 16px;
+  border: 0;
+  border-radius: 20px;
+  text-decoration: none;
   color: #000;
-  border-radius: 4rem;
-  font-weight: 600;
+  background-color: #f0f0f0;
+  font-weight: 400;
 }
 
 .nav-item:hover {

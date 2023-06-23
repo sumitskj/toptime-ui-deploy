@@ -478,7 +478,7 @@ const UpdateProfessionalProfile = () => {
                 </Typography>
                 {title.length < 10 && <ErrorIcon color='error' sx={{ ml: '1rem' }}></ErrorIcon>}
               </div>
-              <Typography sx={{ fontSize: '0.8rem', fontWeight: '100', color: 'grey' }}>
+              <Typography sx={{ fontSize: '0.8rem', fontWeight: '300', color: 'grey' }}>
                 Enter atleast 10 characters title
               </Typography>
               <div className='updateInputTextBox'>
@@ -536,7 +536,7 @@ const UpdateProfessionalProfile = () => {
                   <ErrorIcon color='error' sx={{ ml: '1rem' }}></ErrorIcon>
                 )}
               </div>
-              <Typography sx={{ fontSize: '0.8rem', fontWeight: '100', color: 'grey' }}>
+              <Typography sx={{ fontSize: '0.8rem', fontWeight: '300', color: 'grey' }}>
                 Enter atleast 50 characters description
               </Typography>
               <div className='updateInputTextBox'>
@@ -577,7 +577,7 @@ const UpdateProfessionalProfile = () => {
                 />
               </div>
               {videoCallRate !== null && !isNaN(videoCallRate) && (
-                <Typography sx={{ fontSize: '0.8rem', fontWeight: '100', color: 'green' }}>
+                <Typography sx={{ fontSize: '0.8rem', fontWeight: '300', color: 'green' }}>
                   For a video call of 10 min you will receive ₹{videoCallRate * 5 * 0.9}
                 </Typography>
               )}
@@ -602,7 +602,7 @@ const UpdateProfessionalProfile = () => {
                 />
               </div>
               {voiceCallRate !== null && !isNaN(voiceCallRate) && (
-                <Typography sx={{ fontSize: '0.8rem', fontWeight: '100', color: 'green' }}>
+                <Typography sx={{ fontSize: '0.8rem', fontWeight: '300', color: 'green' }}>
                   For a voice call of 10 min you will receive ₹{voiceCallRate * 5 * 0.9}
                 </Typography>
               )}
