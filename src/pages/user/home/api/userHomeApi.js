@@ -70,4 +70,27 @@ const getFeedsCategories = createAsyncThunk(
   },
 );
 
-export { getStaticData, getFeedsRecommended, getFeedsCategories };
+const getUpcomingUserBooking = createAsyncThunk(
+  'feeds/upcomingUserBooking',
+  async ({ isProfessional }, { getState, rejectWithValue }) => {
+    try {
+      const state = getState();
+      const authToken = state.auth.authData.accessToken;
+      const response = await fetchBackendApiWrapper(
+        `/api/v1/booking/upcomingBooking?isProfessional=${isProfessional}`,
+        {
+          method: 'GET',
+        },
+        authToken,
+      );
+      if (!response.ok) {
+        return rejectWithValue(response);
+      }
+      return response;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  },
+);
+
+export { getStaticData, getFeedsRecommended, getFeedsCategories, getUpcomingUserBooking };
