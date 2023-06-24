@@ -54,46 +54,26 @@ const SummaryCard = () => {
                 m: { xs: '12px', md: '16px' },
                 fontWeight: '600',
               }}>
-              My Summary
+              Summary and Earnings
             </Typography>
           </Box>
 
           <Grid container justifyContent={'space-around'}>
-            <Grid item xs={7} sx={{ justifyContent: 'center', alignItems: 'center' }}>
+            <Grid item xs={4} sx={{ justifyContent: 'center', alignItems: 'center' }}>
               <Box
                 sx={{
                   display: 'flex',
-                  flexDirection: 'column',
                   justifyContent: 'center',
                   alignItems: 'center',
                   position: 'relative',
                   height: '100%',
+                  borderRadius: '12px',
+                  backgroundColor: 'white',
+                  fontSize: { xs: '1.5rem', md: '2.4rem' },
+                  fontWeight: '600',
                 }}>
-                <Box
-                  sx={{
-                    borderRadius: '50%',
-                    width: '10vw',
-                    height: '10vw',
-                    position: 'relative',
-                    backgroundColor: '#69FD8A',
-                    padding: '2rem',
-                  }}>
-                  <Box
-                    sx={{
-                      textAlign: 'center',
-                      position: 'relative',
-                      width: '100%',
-                      height: '100%',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      fontSize: { xs: '1.5rem', md: '2.4rem' },
-                      fontWeight: '600',
-                    }}>
-                    <CurrencyRupeeIcon sx={{ fontSize: { xs: '1.5rem', md: '2.4rem' } }} />
-                    {round(summary.totalEarning, 1)}
-                  </Box>
-                </Box>
+                <CurrencyRupeeIcon sx={{ fontSize: { xs: '1.5rem', md: '2.4rem' } }} />
+                {round(summary.totalEarning, 1)}
               </Box>
             </Grid>
             <Grid item xs={4}>

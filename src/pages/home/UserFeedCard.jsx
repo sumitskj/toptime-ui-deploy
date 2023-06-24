@@ -15,7 +15,10 @@ const CardMediaStyled = styled(CardMedia)`
 
 const UserFeedCard = ({ data, navKey, category }) => {
   const handleOpenProfile = () => {
-    window.open(`${window.location.origin}/user-profile/` + data[navKey], '_blank');
+    window.open(
+      `${window.location.origin}/user-profile/` + data.firstName + '-' + data[navKey],
+      '_blank',
+    );
   };
   return (
     <Box

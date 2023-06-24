@@ -11,7 +11,6 @@ import Main from './pages/main';
 import ErrorPage from './ErrorPage';
 import Home from './pages/home';
 import Login from './pages/login';
-import SignUp from './pages/signup';
 import UserProfile from './pages/user-profile';
 import MyServices from './pages/professional/my-services';
 import MyProfile from './pages/my-profile';
@@ -106,10 +105,6 @@ const router = createBrowserRouter([
   {
     path: '/fill-user-details',
     element: <FillUserDetails />,
-  },
-  {
-    path: '/sign-up',
-    element: <SignUp />,
   },
   {
     path: '/professional/booking/:id',
