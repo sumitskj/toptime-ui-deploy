@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { AppBar, Grid, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Grid, Toolbar, Typography } from '@mui/material';
 import { find, times } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -8,17 +8,18 @@ import { openNotification } from '../notifications/slice/notification';
 import ProfessionalCardSkeleton from '../../components/skeleton/ProfessionalCardSkeleton';
 import Categories from '../home/Categories';
 import SearchForm from './SearchForm';
-import UserFeedCard from '../user/home/UserFeedCard';
 
 import { searchByCategory, searchByCategoryAndName, searchByOnlyName } from './api/search';
 import { setSearchResults } from './slice/search';
 import { LogoWithName } from '../../components/logo/Logo';
+import UserDetailCard from './UserDetailCard';
 
 const Search = () => {
   const params = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const limit = 15;
 
   const pageNoRef = useRef(0);
   const [loading, setLoading] = useState(true);
@@ -53,11 +54,12 @@ const Search = () => {
             category: categoryNum,
             name: searchName,
             page: pageNoRef.current,
+            limit: limit,
           }),
         ).unwrap();
       } else {
         resp = await dispatch(
-          searchByOnlyName({ name: searchName, page: pageNoRef.current }),
+          searchByOnlyName({ name: searchName, page: pageNoRef.current, limit: limit }),
         ).unwrap();
       }
       setLoading(false);
@@ -79,10 +81,12 @@ const Search = () => {
       let resp = null;
       if (categoryNum !== -1) {
         resp = await dispatch(
-          searchByCategory({ category: categoryNum, page: pageNoRef.current }),
+          searchByCategory({ category: categoryNum, page: pageNoRef.current, limit: limit }),
         ).unwrap();
       } else {
-        resp = await dispatch(searchByOnlyName({ name: '', page: pageNoRef.current })).unwrap();
+        resp = await dispatch(
+          searchByOnlyName({ name: '', page: pageNoRef.current, limit: limit }),
+        ).unwrap();
       }
       setLoading(false);
       if (resp.ok) {
@@ -102,6 +106,11 @@ const Search = () => {
     dispatch(setSearchResults({ page: 0, data: [] }));
     handleSearchByCategory();
   }, [params.category]);
+
+  const handlePageChange = (change) => {
+    pageNoRef.current = pageNoRef.current + change;
+    handleSearchByCategoryAndName();
+  };
 
   const handleNavigateHome = () => {
     navigate('/');
@@ -128,19 +137,12 @@ const Search = () => {
         />
         {/* search results */}
         <Grid item xs={12}>
-          <Grid container>
+          <Grid container spacing={4} sx={{ p: '2rem 3rem' }}>
             {searchResults.length > 0 && (
               <>
                 {searchResults.map((u) => (
-                  <Grid
-                    key={u.id}
-                    item
-                    xs={12}
-                    sm={6}
-                    md={4}
-                    lg={3}
-                    sx={{ padding: '1rem 2rem', margin: '0 auto' }}>
-                    <UserFeedCard
+                  <Grid key={u.id} item xs={12} sm={6} md={4} lg={3}>
+                    <UserDetailCard
                       data={u}
                       navKey='id'
                       category={findCategory({ id: u.category }, 'label')}
@@ -171,6 +173,42 @@ const Search = () => {
             </Typography>
           </Grid>
         )}
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            position: 'relative',
+            width: '100%',
+            mt: '2rem',
+          }}>
+          {/* {pageNoRef.current > 0 && (
+            <Box
+              onClick={() => handlePageChange(-1)}
+              sx={{
+                padding: '12px',
+                borderRadius: '20px',
+                border: '1px solid black',
+                color: 'black',
+                marginRight: '1rem',
+              }}>
+              Previous
+            </Box>
+          )} */}
+          {searchResults.length >= limit * (pageNoRef.current + 1) && (
+            <Box
+              onClick={() => handlePageChange(1)}
+              sx={{
+                padding: '12px',
+                borderRadius: '20px',
+                border: '1px solid black',
+                color: 'black',
+                marginRight: '1rem',
+              }}>
+              Load more
+            </Box>
+          )}
+        </Box>
       </Grid>
     </>
   );

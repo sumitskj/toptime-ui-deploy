@@ -6,6 +6,7 @@ import HowItWorks from '../../home/HowItWorks';
 import FAQs from '../../home/FAQs';
 import Footer from '../../home/Footer';
 import Recommendation from './Recommendation';
+import UserUpcomingBooking from './UserUpcomingBooking';
 
 const UserHome = () => {
   const navigate = useNavigate();
@@ -103,6 +104,7 @@ const UserHome = () => {
           </Grid>
         </Grid>
       </Box>
+      <UserUpcomingBooking />
       <Categories />
       <Recommendation />
       <Trending />

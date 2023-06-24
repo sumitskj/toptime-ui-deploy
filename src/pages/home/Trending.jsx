@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Box, Grid, Typography } from '@mui/material';
 import { times, find } from 'lodash';
 
-import UserFeedCard from '../user/home/UserFeedCard';
+import UserFeedCard from './UserFeedCard';
 import { CustomisedCardLabels } from './components';
 import ProfessionalCardSkeleton from '../../components/skeleton/ProfessionalCardSkeleton';
 import { openNotification } from '../notifications/slice/notification';

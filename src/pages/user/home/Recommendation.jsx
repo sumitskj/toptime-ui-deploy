@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Box, Grid, Typography } from '@mui/material';
 import { times, find } from 'lodash';
 
-import UserFeedCard from './UserFeedCard';
+import UserFeedCard from '../../home/UserFeedCard';
 import { CustomisedCardLabels } from '../../home/components';
 import ProfessionalCardSkeleton from '../../../components/skeleton/ProfessionalCardSkeleton';
 import { openNotification } from '../../notifications/slice/notification';
@@ -75,7 +75,7 @@ const Recommendation = () => {
         pr: { xs: '0rem', md: '4rem' },
         pt: '2rem',
         mt: '1rem',
-        backgroundColor: '#f8f7f1',
+        backgroundColor: '#E5FDD1',
       }}>
       {!error && !loading && homeData.recommended.length > 0 && (
         <Grid item xs={12}>
@@ -86,7 +86,7 @@ const Recommendation = () => {
                 fontWeight: '600',
                 m: { xs: '12px', md: '16px' },
               }}>
-              Recommendations For You
+              For You
             </Typography>
             <ThumbUpOffAltIcon style={{ fontSize: '32px' }} />
           </div>
@@ -105,7 +105,7 @@ const Recommendation = () => {
       )}
       {loading && (
         <Grid item xs={12}>
-          <CustomisedCardLabels variant='h4'>Recommended Experts For you</CustomisedCardLabels>
+          <CustomisedCardLabels variant='h4'>For you</CustomisedCardLabels>
           {times(4).map((v) => (
             <ProfessionalCardSkeleton key={v} />
           ))}

@@ -4,7 +4,7 @@ import { fetchBackendApiWrapper } from '../../../utils/index';
 const searchByCategory = createAsyncThunk('search/byCategory', async (arg, { rejectWithValue }) => {
   try {
     const response = await fetchBackendApiWrapper(
-      `/api/v1/professionals/searchByCategory?category=${arg.category}&page=${arg.page}`,
+      `/api/v1/professionals/searchByCategory?category=${arg.category}&page=${arg.page}&limit=${arg.limit}`,
       {
         method: 'GET',
       },
@@ -22,7 +22,7 @@ const searchByCategoryAndName = createAsyncThunk(
   'search/byCategoryAndName',
   async (arg, { rejectWithValue }) => {
     try {
-      const query = `category=${arg.category}&searchQuery=${arg.name}&page=${arg.page}`;
+      const query = `category=${arg.category}&searchQuery=${arg.name}&page=${arg.page}&limit=${arg.limit}`;
       const response = await fetchBackendApiWrapper(
         `/api/v1/professionals/searchNameWithCategory?${query}`,
         {
@@ -44,9 +44,12 @@ const searchByOnlyName = createAsyncThunk(
   async (arg, { rejectWithValue }) => {
     try {
       const query = `searchQuery=${arg.name}&page=${arg.page}`;
-      const response = await fetchBackendApiWrapper(`/api/v1/professionals/search?${query}`, {
-        method: 'GET',
-      });
+      const response = await fetchBackendApiWrapper(
+        `/api/v1/professionals/search?${query}&limit=${arg.limit}`,
+        {
+          method: 'GET',
+        },
+      );
       if (!response.ok) {
         return rejectWithValue(response);
       }
