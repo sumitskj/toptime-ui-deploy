@@ -202,7 +202,9 @@ const Main = () => {
                       transform: 'scale(1.05)',
                     },
                   }}>
-                  Pricing
+                  <a href='#pricingSection' style={{ textDecoration: 'none', color: 'black' }}>
+                    Pricing
+                  </a>
                 </Box>
               </>
             )}
@@ -247,7 +249,14 @@ const Main = () => {
                   <MenuIcon />
                 </IconButton>
                 <div className='dropdown-content'>
-                  <IconButton sx={{ borderRadius: '0px', width: '100%' }} onClick={handleLogIn}>
+                  <IconButton
+                    sx={{
+                      borderRadius: '0px',
+                      width: '100%',
+                      display: 'flex',
+                      justifyContent: 'flex-start',
+                    }}
+                    onClick={handleLogIn}>
                     <Typography
                       sx={{
                         fontSize: '0.9rem',
@@ -257,7 +266,13 @@ const Main = () => {
                       Become Expert
                     </Typography>
                   </IconButton>
-                  <IconButton sx={{ borderRadius: '0px', width: '100%' }}>
+                  <IconButton
+                    sx={{
+                      borderRadius: '0px',
+                      width: '100%',
+                      display: 'flex',
+                      justifyContent: 'flex-start',
+                    }}>
                     <Typography
                       sx={{
                         fontSize: '0.9rem',
@@ -269,14 +284,22 @@ const Main = () => {
                       </a>
                     </Typography>
                   </IconButton>
-                  <IconButton sx={{ borderRadius: '0px', width: '100%' }} onClick={handleLogIn}>
+                  <IconButton
+                    sx={{
+                      borderRadius: '0px',
+                      width: '100%',
+                      display: 'flex',
+                      justifyContent: 'flex-start',
+                    }}>
                     <Typography
                       sx={{
                         fontSize: '0.9rem',
                         fontWeight: '600',
                         color: 'black',
                       }}>
-                      Pricing
+                      <a href='#pricingSection' style={{ textDecoration: 'none', color: 'black' }}>
+                        Pricing
+                      </a>
                     </Typography>
                   </IconButton>
                 </div>
