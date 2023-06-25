@@ -16,7 +16,7 @@ const IconButtonStyled = styled(IconButton)`
     }
   }
   .MuiSvgIcon-root {
-    color: #00adff;
+    color: black;
   }
 `;
 
@@ -24,27 +24,27 @@ const UserSocialLinks = ({ userData }) => {
   return (
     <Box p={1}>
       {userData.instagramUrl && (
-        <IconButtonStyled size='large'>
+        <IconButtonStyled onClick={() => window.open(userData.instagramUrl, '_blank')} size='large'>
           <InstagramIcon />
         </IconButtonStyled>
       )}
       {userData.linkedInUrl && (
-        <IconButtonStyled size='large'>
+        <IconButtonStyled onClick={() => window.open(userData.linkedInUrl, '_blank')} size='large'>
           <LinkedInIcon />
         </IconButtonStyled>
       )}
       {userData.youTubeUrl && (
-        <IconButtonStyled size='large'>
+        <IconButtonStyled onClick={() => window.open(userData.youTubeUrl, '_blank')} size='large'>
           <YouTubeIcon />
         </IconButtonStyled>
       )}
       {userData.githubUrl && (
-        <IconButtonStyled size='large'>
+        <IconButtonStyled onClick={() => window.open(userData.githubUrl, '_blank')} size='large'>
           <GitHubIcon />
         </IconButtonStyled>
       )}
       {userData.otherUrl && (
-        <IconButtonStyled size='large'>
+        <IconButtonStyled onClick={() => window.open(userData.otherUrl, '_blank')} size='large'>
           <LinkIcon />
         </IconButtonStyled>
       )}
@@ -53,7 +53,7 @@ const UserSocialLinks = ({ userData }) => {
 };
 
 UserSocialLinks.propTypes = {
-  userData: PropTypes.objectOf({
+  userData: PropTypes.shape({
     instagramUrl: PropTypes.string,
     linkedInUrl: PropTypes.string,
     youTubeUrl: PropTypes.string,

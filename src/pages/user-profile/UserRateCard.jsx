@@ -131,7 +131,7 @@ const UserRateCard = ({ userData, onClose }) => {
 };
 
 UserRateCard.propTypes = {
-  userData: PropTypes.objectOf({
+  userData: PropTypes.shape({
     voiceRate: PropTypes.number,
     videoRate: PropTypes.number,
   }).isRequired,

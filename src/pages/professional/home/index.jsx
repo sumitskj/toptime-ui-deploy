@@ -54,7 +54,7 @@ const ProfessionalHome = () => {
       <ProfessionalUpcomingBooking />
       <SummaryCard />
       <HowItWorks />
-      <FAQs />
+      <FAQs isProfessional={true} />
       <Footer />
     </Box>
   );

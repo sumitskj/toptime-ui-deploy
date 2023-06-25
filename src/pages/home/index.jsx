@@ -13,6 +13,7 @@ import { Box, Button, Card, CardMedia, Grid, Typography } from '@mui/material';
 import FAQs from './FAQs';
 import Footer from './Footer';
 import Categories from './Categories';
+import Pricing from './Pricing';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -126,7 +127,8 @@ const Home = () => {
       <Categories />
       <Trending />
       <HowItWorks />
-      <FAQs />
+      <Pricing />
+      <FAQs isProfessional={false} />
       <Footer />
     </Box>
   );
