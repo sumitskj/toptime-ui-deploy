@@ -142,7 +142,7 @@ const UserProfile = () => {
                   flexDirection: 'column',
                   alignItems: { xs: 'center', sm: 'flex-start' },
                   justifyContent: 'center',
-                  marginTop: { xs: '0', sm: '2rem' },
+                  marginTop: { xs: '0', sm: '0rem' },
                 }}>
                 <Typography
                   sx={{
