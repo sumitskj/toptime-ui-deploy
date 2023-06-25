@@ -7,10 +7,10 @@ import UserFeedCard from '../../home/UserFeedCard';
 import { CustomisedCardLabels } from '../../home/components';
 import ProfessionalCardSkeleton from '../../../components/skeleton/ProfessionalCardSkeleton';
 import { openNotification } from '../../notifications/slice/notification';
-import { getFeedsRecommended } from '../../home/api/home';
 import { setRecommendedFeeds } from '../../home/slice/home';
 import styled from '@emotion/styled';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
+import { getFeedsRecommended } from './api/userHomeApi';
 
 const Recommendation = () => {
   const dispatch = useDispatch();
@@ -20,15 +20,11 @@ const Recommendation = () => {
 
   const categories = useSelector((state) => state.categories);
   const homeData = useSelector((state) => state.home);
-  const authData = useSelector((state) => state.auth);
 
   const fetchRecommendations = async () => {
     try {
       setLoading(true);
-      const resp = await dispatch(
-        getFeedsRecommended({ token: authData.authData.accessToken }),
-      ).unwrap();
-
+      const resp = await dispatch(getFeedsRecommended()).unwrap();
       if (resp.ok) {
         const resJson = await resp.json();
         dispatch(setRecommendedFeeds(resJson));

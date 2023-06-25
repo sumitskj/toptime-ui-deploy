@@ -7,6 +7,7 @@ import FAQs from '../../home/FAQs';
 import Footer from '../../home/Footer';
 import Recommendation from './Recommendation';
 import UserUpcomingBooking from './UserUpcomingBooking';
+import Pricing from '../../home/Pricing';
 
 const UserHome = () => {
   const navigate = useNavigate();
@@ -109,7 +110,8 @@ const UserHome = () => {
       <Recommendation />
       <Trending />
       <HowItWorks />
-      <FAQs />
+      <Pricing />
+      <FAQs isProfessional={false} />
       <Footer />
     </Box>
   );
