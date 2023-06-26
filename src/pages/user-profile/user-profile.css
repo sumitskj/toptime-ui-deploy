@@ -15,11 +15,10 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-end;
   position: relative;
   width: 100%;
-  margin-top: 2rem;
-  margin-bottom: 3rem;
+  margin-bottom: 0rem;
 }
 
 .profileImgDiv img {
@@ -45,7 +44,7 @@
 @media only screen and (max-width: 600px) {
   .profileImgDiv {
     justify-content: center;
-    margin-bottom: 1rem;
+    align-items: center;
   }
 
   .ratings {

@@ -233,7 +233,7 @@ const MyProfile = () => {
           <div className='footerDiv'>
             <div>
               <a
-                href='https://toptime.s3.ap-south-1.amazonaws.com/static-sites/about-us.html'
+                href={window.location.origin + '/about-us'}
                 target='_blank'
                 rel='noreferrer'
                 style={{ textDecoration: 'none', color: 'grey', fontSize: '0.9rem' }}>
@@ -242,7 +242,7 @@ const MyProfile = () => {
             </div>
             <div>
               <a
-                href='https://toptime.s3.ap-south-1.amazonaws.com/static-sites/terms-conditions.html'
+                href={window.location.origin + '/terms-and-conditions'}
                 target='_blank'
                 rel='noreferrer'
                 style={{ textDecoration: 'none', color: 'grey', fontSize: '0.9rem' }}>
@@ -251,7 +251,7 @@ const MyProfile = () => {
             </div>
             <div>
               <a
-                href='https://toptime.s3.ap-south-1.amazonaws.com/static-sites/privacy-policy.html'
+                href={window.location.origin + '/privacy-policy'}
                 target='_blank'
                 rel='noreferrer'
                 style={{ textDecoration: 'none', color: 'grey', fontSize: '0.9rem' }}>
@@ -260,7 +260,7 @@ const MyProfile = () => {
             </div>
             <div>
               <a
-                href='https://toptime.s3.ap-south-1.amazonaws.com/static-sites/cancellation-refund.html'
+                href={window.location.origin + '/cancellation-and-refund-policy'}
                 target='_blank'
                 rel='noreferrer'
                 style={{ textDecoration: 'none', color: 'grey', fontSize: '0.9rem' }}>
