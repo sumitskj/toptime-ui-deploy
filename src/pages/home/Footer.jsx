@@ -8,8 +8,8 @@ const Footer = () => {
     <Box
       mt={'1rem'}
       sx={{
-        pl: { xs: '2rem', md: '4rem' },
-        pr: { xs: '2rem', md: '4rem' },
+        pl: { xs: '0rem', md: '4rem' },
+        pr: { xs: '0rem', md: '4rem' },
         pt: '2rem',
       }}>
       <Grid
@@ -17,13 +17,7 @@ const Footer = () => {
         sx={{ background: 'white', justifyContent: { xs: 'center', sm: 'space-between' } }}>
         <Grid item xs={12} sm={6} md={6} lg={3} xl={3}>
           <List>
-            <ListItem
-              onClick={() =>
-                window.open(
-                  'https://toptime.s3.ap-south-1.amazonaws.com/static-sites/about-us.html',
-                  '_blank',
-                )
-              }>
+            <ListItem onClick={() => window.open(`${window.location.origin}/about-us`, '_blank')}>
               <ListItemText
                 sx={{ textAlign: { xs: 'center', sm: 'start' }, cursor: 'pointer' }}
                 primary='About Us'
@@ -31,10 +25,7 @@ const Footer = () => {
             </ListItem>
             <ListItem
               onClick={() =>
-                window.open(
-                  'https://toptime.s3.ap-south-1.amazonaws.com/static-sites/terms-conditions.html',
-                  '_blank',
-                )
+                window.open(`${window.location.origin}/terms-and-conditions`, '_blank')
               }>
               <ListItemText
                 sx={{ textAlign: { xs: 'center', sm: 'start' }, cursor: 'pointer' }}
@@ -42,12 +33,7 @@ const Footer = () => {
               />
             </ListItem>
             <ListItem
-              onClick={() =>
-                window.open(
-                  'https://toptime.s3.ap-south-1.amazonaws.com/static-sites/privacy-policy.html',
-                  '_blank',
-                )
-              }>
+              onClick={() => window.open(`${window.location.origin}/privacy-policy`, '_blank')}>
               <ListItemText
                 sx={{ textAlign: { xs: 'center', sm: 'start' }, cursor: 'pointer' }}
                 primary='Privacy Policy'
@@ -55,10 +41,7 @@ const Footer = () => {
             </ListItem>
             <ListItem
               onClick={() =>
-                window.open(
-                  'https://toptime.s3.ap-south-1.amazonaws.com/static-sites/cancellation-refund.html',
-                  '_blank',
-                )
+                window.open(`${window.location.origin}/cancellation-and-refund-policy`, '_blank')
               }>
               <ListItemText
                 sx={{ textAlign: { xs: 'center', sm: 'start' }, cursor: 'pointer' }}

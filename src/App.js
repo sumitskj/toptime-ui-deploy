@@ -28,6 +28,10 @@ import UpdateProfessionalProfile from './pages/professional/updateProfessionalPr
 import MyRaisedIssues from './pages/user/raisedIssues';
 import FillUserDetails from './pages/login/fillUserDetails';
 import UserHome from './pages/user/home';
+import PrivacyPolicy from './pages/policies/PrivacyPolicy';
+import TermsAndConditions from './pages/policies/Terms&Conditions';
+import CancellationAndRefund from './pages/policies/Cancellations&Refunds';
+import AboutUs from './pages/policies/AboutUs';
 
 const router = createBrowserRouter([
   {
@@ -116,6 +120,22 @@ const router = createBrowserRouter([
   {
     path: '/forbidden',
     element: <ForbiddenPage />,
+  },
+  {
+    path: '/privacy-policy',
+    element: <PrivacyPolicy />,
+  },
+  {
+    path: '/terms-and-conditions',
+    element: <TermsAndConditions />,
+  },
+  {
+    path: '/cancellation-and-refund-policy',
+    element: <CancellationAndRefund />,
+  },
+  {
+    path: '/about-us',
+    element: <AboutUs />,
   },
 ]);
 
