@@ -268,7 +268,7 @@ const Login = () => {
           By continuing, you agree to our{' '}
           <span>
             <a
-              href='https://toptime.s3.ap-south-1.amazonaws.com/static-sites/terms-conditions.html'
+              href={window.location.origin + '/terms-and-conditions'}
               target='_blank'
               rel='noreferrer'>
               Terms of Service
@@ -276,10 +276,7 @@ const Login = () => {
           </span>{' '}
           and{' '}
           <span>
-            <a
-              href='https://toptime.s3.ap-south-1.amazonaws.com/static-sites/privacy-policy.html'
-              target='_blank'
-              rel='noreferrer'>
+            <a href={window.location.origin + '/privacy-policy'} target='_blank' rel='noreferrer'>
               Privacy Policy
             </a>
           </span>
