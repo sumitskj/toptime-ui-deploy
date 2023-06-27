@@ -47,7 +47,8 @@ const AboutUs = () => {
               width: '100%',
               height: { xs: '50vh', md: '100vh' },
             }}>
-            <Typography sx={{ fontSize: '4rem', fontWeight: '600', textAlign: 'center' }}>
+            <Typography
+              sx={{ fontSize: { xs: '3rem', md: '4rem' }, fontWeight: '600', textAlign: 'center' }}>
               Connecting Experts and Seekers
             </Typography>
           </Box>
@@ -66,7 +67,12 @@ const AboutUs = () => {
               backgroundColor: '#F8DEF5',
               mb: '2rem',
             }}>
-            <Typography sx={{ fontSize: '1.5rem', fontWeight: '300', textAlign: 'center' }}>
+            <Typography
+              sx={{
+                fontSize: { xs: '1.2rem', md: '1.5rem' },
+                fontWeight: '300',
+                textAlign: 'center',
+              }}>
               At TopTime, we believe that knowledge and expertise should be easily accessible to
               everyone. We have created a platform that connects experts from various fields with
               individuals seeking personalized guidance and advice. Our marketplace allows users to
@@ -78,7 +84,9 @@ const AboutUs = () => {
       </Grid>
       <Grid container justifyContent={'center'} backgroundColor={'#F19A6F'}>
         <Grid item xs={10} m={5}>
-          <TextStyled sx={{ fontSize: '2rem', fontWeight: '500' }}>Our Mission</TextStyled>
+          <TextStyled sx={{ fontSize: { xs: '1.5rem', md: '2rem' }, fontWeight: '500' }}>
+            Our Mission
+          </TextStyled>
           <TextStyled sx={{ mt: '1rem' }}>
             Our mission is to empower individuals by providing them with direct access to experts
             who can help them overcome challenges, gain knowledge, and achieve their goals. We

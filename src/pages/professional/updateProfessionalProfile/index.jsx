@@ -1,5 +1,5 @@
 import './updateProfessionalProfile.css';
-import { Typography, InputBase, CircularProgress } from '@mui/material';
+import { Typography, InputBase, CircularProgress, Tooltip } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useEffect, useRef, useState } from 'react';
 import ErrorIcon from '@mui/icons-material/Error';
@@ -9,6 +9,7 @@ import { openNotification } from '../../notifications/slice/notification';
 import { uploadImages } from '../../user/registerAsProfessional/api/registerProfApi';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import ProfessionalCardSkeleton from '../../../components/skeleton/ProfessionalCardSkeleton';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import {
   fetchProfessionalByCategory,
   updateProfessionalServiceProfile,
@@ -21,6 +22,7 @@ const UpdateProfessionalProfile = () => {
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const professionalId = params.get('professionalId');
+  const [professionalData, setProfessionalData] = useState(null);
   const [category, setCategory] = useState('');
   const [title, setTitle] = useState('');
   const [currentCompany, setCurrentCompany] = useState('');
@@ -40,6 +42,7 @@ const UpdateProfessionalProfile = () => {
   const [error, setError] = useState(false);
   const [badRequestError, setBadRequestError] = useState(false);
   const [showLoader, setShowLoader] = useState(() => false);
+  const [openTooltip, setOpenTooltip] = useState(() => false);
 
   useEffect(() => {
     const fetchProfessionalData = async () => {
@@ -52,6 +55,7 @@ const UpdateProfessionalProfile = () => {
         console.log('s ', professionalRes);
         if (professionalRes.ok) {
           const professionalJson = await professionalRes.json();
+          setProfessionalData(professionalJson);
           setCategory(professionalJson.category);
           setTitle(professionalJson.designation);
           setDescription(professionalJson.description);
@@ -432,7 +436,7 @@ const UpdateProfessionalProfile = () => {
             <Typography>Bad Request: The professional you searched for does not exist</Typography>
           </div>
         )}
-        {!showLoader && !error && !badRequestError && (
+        {!showLoader && !error && !badRequestError && professionalData !== null && (
           <div className='updateRegisterProfCardDiv'>
             <div className='avatarDiv'>
               <div className='avatarTmp'>
@@ -469,6 +473,43 @@ const UpdateProfessionalProfile = () => {
                   }}>
                   {status !== 2 ? 'Active' : 'Inactive'}
                 </div>
+              </div>
+            </div>
+            <div className='copyProfileLinkDiv'>
+              <Typography sx={{ fontWeight: '800', marginRight: '2rem' }}>
+                Profile Share Link
+              </Typography>
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <Typography sx={{ fontWeight: '300', fontSize: '1rem' }}>
+                  {window.location.host +
+                    '/user-profile/' +
+                    professionalData.firstName +
+                    '-' +
+                    professionalId}
+                </Typography>
+                <Tooltip
+                  open={openTooltip}
+                  title='Copied'
+                  onClose={() => {
+                    setOpenTooltip(false);
+                  }}
+                  leaveDelay={500}>
+                  <ContentCopyIcon
+                    className='iconHover'
+                    onClick={() => {
+                      navigator.clipboard.writeText(
+                        window.location.host +
+                          '/user-profile/' +
+                          professionalData.firstName +
+                          '-' +
+                          professionalId,
+                      );
+                      setOpenTooltip(true);
+                    }}
+                    fontSize='1rem'
+                    sx={{ ml: 1 }}
+                  />
+                </Tooltip>
               </div>
             </div>
             <div className='updateHeadingDiv'>
