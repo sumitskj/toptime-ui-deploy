@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardMedia, Grid, Typography } from '@mui/material';
+import { Box, Button, Card, CardMedia, Grid, ListItem, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Categories from '../../home/Categories';
 import Trending from '../../home/Trending';
@@ -8,6 +8,7 @@ import Footer from '../../home/Footer';
 import Recommendation from './Recommendation';
 import UserUpcomingBooking from './UserUpcomingBooking';
 import Pricing from '../../home/Pricing';
+import PlayStoreImg from '../../../static/images/google-play-badge.png';
 
 const UserHome = () => {
   const navigate = useNavigate();
@@ -102,6 +103,20 @@ const UserHome = () => {
                 }}
               />
             </Card>
+            <ListItem
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                position: 'relative',
+                width: '100%',
+              }}>
+              <a
+                href='https://play.google.com/store/apps/details?id=club.toptime.toptime_main&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'
+                target='_blank'
+                rel='noreferrer'>
+                <img alt='Get it on Google Play' height={100} src={PlayStoreImg} />
+              </a>
+            </ListItem>
           </Grid>
         </Grid>
       </Box>

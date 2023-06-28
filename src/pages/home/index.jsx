@@ -8,8 +8,8 @@ import Trending from './Trending';
 import HowItWorks from './HowItWorks';
 
 import './home.css';
-// import HomeImage from '../../static/images/home-image-new.svg';
-import { Box, Button, Card, CardMedia, Grid, Typography } from '@mui/material';
+import PlayStoreImg from '../../static/images/google-play-badge.png';
+import { Box, Button, Card, CardMedia, Grid, ListItem, Typography } from '@mui/material';
 import FAQs from './FAQs';
 import Footer from './Footer';
 import Categories from './Categories';
@@ -121,6 +121,20 @@ const Home = () => {
                 }}
               />
             </Card>
+            <ListItem
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                position: 'relative',
+                width: '100%',
+              }}>
+              <a
+                href='https://play.google.com/store/apps/details?id=club.toptime.toptime_main&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'
+                target='_blank'
+                rel='noreferrer'>
+                <img alt='Get it on Google Play' height={100} src={PlayStoreImg} />
+              </a>
+            </ListItem>
           </Grid>
         </Grid>
       </Box>
