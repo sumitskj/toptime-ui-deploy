@@ -173,7 +173,7 @@ const SideBar = (props) => {
             border: '10px',
             fontSize: '1rem',
           }}>
-          {currentMode === 'professional' ? 'Professional Mode' : 'User Mode'}
+          {currentMode === 'professional' ? 'Expert Mode' : 'User Mode'}
         </ListItem>
         {currentMode === 'user' &&
           sidebarUserItems.map((text) => (
@@ -232,7 +232,7 @@ const SideBar = (props) => {
         )}
         {JSON.parse(isProfessional) && currentMode === 'user' && (
           <ListItem
-            key='Switch to professional mode'
+            key='Switch to expert mode'
             sx={{
               paddingTop: '0px',
               paddingBottom: '0px',
@@ -243,7 +243,7 @@ const SideBar = (props) => {
               <ListItemIcon>
                 <ChangeCircleRoundedIcon />
               </ListItemIcon>
-              <CustomisedListItemText primary='Switch to professional mode' disableTypography />
+              <CustomisedListItemText primary='Switch to expert mode' disableTypography />
             </ListItemButton>
           </ListItem>
         )}

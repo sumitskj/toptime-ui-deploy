@@ -483,7 +483,7 @@ const UpdateProfessionalProfile = () => {
                 <Typography sx={{ fontWeight: '300', fontSize: '1rem' }}>
                   {window.location.host +
                     '/user-profile/' +
-                    professionalData.firstName +
+                    professionalData.firstName.replace(/ /g, '') +
                     '-' +
                     professionalId}
                 </Typography>
