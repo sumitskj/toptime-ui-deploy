@@ -1,10 +1,12 @@
-[{
+[
+  {
     "relation": ["delegate_permission/common.handle_all_urls"],
     "target": {
       "namespace": "android_app",
-      "package_name": "com.example.deeplink_cookbook",
-      "sha256_cert_fingerprints":
-      ["FF:2A:CF:7B:DD:CC:F1:03:3E:E8:B2:27:7C:A2:E3:3C:DE:13:DB:AC:8E:EB:3A:B9:72:A1:0E:26:8A:F5:EC:AF"]
+      "package_name": "club.toptime.toptime_main",
+      "sha256_cert_fingerprints": [
+        "6E:E9:17:BD:50:6F:DD:35:FA:A1:08:C3:74:AC:1E:65:DA:24:70:CB:D6:3F:A3:EA:31:1E:2F:63:9B:06:C9:7C"
+      ]
     }
-  }]
-  
+  }
+]
