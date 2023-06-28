@@ -60,9 +60,9 @@ const Pricing = () => {
               fontWeight: '300',
               textAlign: { xs: 'justify', md: 'center' },
             }}>
-            If you registered as an expert, then for a booking you are keeping all the amount. There
-            are <span style={{ fontWeight: '800' }}>No commissions</span> from our end. You keep
-            100% of your earnings minus the transaction charges
+            If you sign up as an expert, you get to keep all the money when you receive a booking.
+            There are <span style={{ fontWeight: '800' }}>No commissions</span>. You get to keep
+            100% of your earnings, except for transaction fees.
           </Typography>
           <Typography
             sx={{
@@ -71,7 +71,7 @@ const Pricing = () => {
               mt: '1rem',
               textAlign: { xs: 'justify', md: 'center' },
             }}>
-            But we don&apos;t know for how much period it is free. So register early
+            But we don&apos;t know for how much long it will remain free. So register early
           </Typography>
           <Button
             variant='outlined'

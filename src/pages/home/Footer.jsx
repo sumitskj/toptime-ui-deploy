@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Grid, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import CopyrightIcon from '@mui/icons-material/Copyright';
 import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
+import PlayStoreImg from '../../static/images/google-play-badge.png';
 
 const Footer = () => {
   return (
@@ -63,6 +64,11 @@ const Footer = () => {
                 <CopyrightIcon style={{ color: 'black' }} />
               </ListItemIcon>
               <ListItemText primary='2023 TopTime' />
+            </ListItem>
+            <ListItem>
+              <a href='https://play.google.com/store/apps/details?id=club.toptime.toptime_main&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
+                <img alt='Get it on Google Play' height={100} src={PlayStoreImg} />
+              </a>
             </ListItem>
           </List>
         </Grid>

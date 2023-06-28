@@ -1,9 +1,10 @@
-import { Box, Card, CardMedia, Grid, Typography } from '@mui/material';
+import { Box, Card, CardMedia, Grid, ListItem, Typography } from '@mui/material';
 import FAQs from '../../home/FAQs';
 import Footer from '../../home/Footer';
 import ProfessionalUpcomingBooking from './ProfessionalUpcomingBooking';
 import HowItWorks from './HowItWorks';
 import SummaryCard from './SummaryCard';
+import PlayStoreImg from '../../../static/images/google-play-badge.png';
 
 const ProfessionalHome = () => {
   return (
@@ -48,6 +49,20 @@ const ProfessionalHome = () => {
                 }}
               />
             </Card>
+            <ListItem
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                position: 'relative',
+                width: '100%',
+              }}>
+              <a
+                href='https://play.google.com/store/apps/details?id=club.toptime.toptime_main&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'
+                target='_blank'
+                rel='noreferrer'>
+                <img alt='Get it on Google Play' height={100} src={PlayStoreImg} />
+              </a>
+            </ListItem>
           </Grid>
         </Grid>
       </Box>
