@@ -132,7 +132,8 @@ const RegisterAsProfessional = () => {
             if (
               !alreadyAppliedCategoriesRespJson['categories'].includes(
                 categoriesData[i].id.toString(),
-              )
+              ) &&
+              categoriesData[i].label !== 'All'
             ) {
               tmp.push(categoriesData[i]);
             }
