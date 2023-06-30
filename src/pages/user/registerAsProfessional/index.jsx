@@ -22,6 +22,8 @@ import { openNotification } from '../../notifications/slice/notification';
 import { onBoardProfessional, uploadImages } from './api/registerProfApi';
 import { getUserDetails } from '../../my-profile/api/myProfile';
 import { useNavigate } from 'react-router-dom';
+import { getStaticData } from '../../home/api/home';
+import { setStaticData } from '../../home/slice/home';
 
 const RegisterAsProfessional = () => {
   const dispatch = useDispatch();
@@ -32,13 +34,15 @@ const RegisterAsProfessional = () => {
   const [yearsOfExp, setYearsOfExp] = useState(-1);
   const [mobile, setMobile] = useState('');
   const [description, setDescription] = useState('');
-  const [videoCallRate, setVideoCallRate] = useState(-1);
-  const [voiceCallRate, setVoiceCallRate] = useState(-1);
+  const [videoCallRate, setVideoCallRate] = useState(null);
+  const [voiceCallRate, setVoiceCallRate] = useState(null);
   const categoriesData = useSelector((state) => state.categories);
   const authData = useSelector((state) => state.auth);
   const [categoriesOptions, setCategoriesOptions] = useState([]);
   const [socialLinks, setSocialLinks] = useState(() => []);
   const socialDataRedux = useSelector((state) => state.social);
+  const homeData = useSelector((state) => state.home);
+  const [platformFee, setPlatformFee] = useState(0);
 
   const [profilePic, setProfilePic] = useState(() => null);
   const inputFile = useRef(null);
@@ -112,6 +116,24 @@ const RegisterAsProfessional = () => {
   };
 
   useEffect(() => {
+    if (homeData.staticData === {}) {
+      const fetchStaticData = async () => {
+        try {
+          const res = await dispatch(getStaticData()).unwrap();
+          if (res.ok) {
+            let resJson = await res.json();
+            setPlatformFee(resJson['platformFee']);
+            dispatch(setStaticData(resJson));
+          }
+        } catch (error) {
+          console.error('Error:: Static data:: ', error);
+        }
+      };
+      fetchStaticData();
+    } else {
+      setPlatformFee(homeData.staticData.platformFee);
+    }
+
     const fetchAlreadyAppliedCategories = async () => {
       try {
         const alreadyAppliedCategoriesResp = await getProfessionalAppliedCategories(
@@ -487,9 +509,11 @@ const RegisterAsProfessional = () => {
             </div>
           </div>
           <LineBar desc='Call Rates (₹)' />
-          <Typography style={{ color: 'red', fontSize: '0.8rem' }}>
-            10% will be platform fees
-          </Typography>
+          {platformFee > 0 && (
+            <Typography style={{ color: 'red', fontSize: '0.8rem' }}>
+              {platformFee}% will be platform fees
+            </Typography>
+          )}
           <div className='headingDiv'>
             <div className='errorHeadingDiv'>
               <Typography sx={{ fontWeight: '800' }}>Video Call Rate</Typography>
@@ -510,7 +534,8 @@ const RegisterAsProfessional = () => {
             </div>
             {videoCallRate !== null && !isNaN(videoCallRate) && (
               <Typography sx={{ fontSize: '0.8rem', fontWeight: '300', color: 'green' }}>
-                For a video call of 10 min you will receive ₹{videoCallRate * 5 * 0.9}
+                For a video call of 10 min you will receive ₹
+                {(videoCallRate * 10 * ((100 - Number.parseInt(platformFee)) / 100)).toFixed(2)}
               </Typography>
             )}
           </div>
@@ -534,7 +559,8 @@ const RegisterAsProfessional = () => {
             </div>
             {voiceCallRate !== null && !isNaN(voiceCallRate) && (
               <Typography sx={{ fontSize: '0.8rem', fontWeight: '300', color: 'green' }}>
-                For a voice call of 10 min you will receive ₹{voiceCallRate * 5 * 0.9}
+                For a voice call of 10 min you will receive ₹
+                {(voiceCallRate * 10 * ((100 - Number.parseInt(platformFee)) / 100)).toFixed(2)}
               </Typography>
             )}
           </div>
