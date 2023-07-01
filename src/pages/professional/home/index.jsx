@@ -5,12 +5,13 @@ import ProfessionalUpcomingBooking from './ProfessionalUpcomingBooking';
 import HowItWorks from './HowItWorks';
 import SummaryCard from './SummaryCard';
 import PlayStoreImg from '../../../static/images/google-play-badge.png';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 const ProfessionalHome = () => {
   return (
     <Box
       sx={{
-        marginTop: '2rem',
+        marginTop: '0rem',
       }}>
       <Box
         sx={{
@@ -27,7 +28,23 @@ const ProfessionalHome = () => {
                 fontSize: { xs: '2.4rem', sm: '3rem', md: '3rem', lg: '4rem' },
                 fontWeight: '600',
               }}>
-              Monetize your experiences today
+              <div>
+                Interact with your favourite{' '}
+                <FavoriteIcon
+                  sx={{
+                    verticalAlign: 'sub',
+                    color: 'red',
+                    fontSize: { xs: '2.4rem', sm: '3rem', md: '3rem', lg: '4rem' },
+                  }}
+                />
+              </div>{' '}
+              <div className='moving-heading-div'>
+                <div className='moving-heading-item1'>Creator</div>
+                <div className='moving-heading-item2'>Traveller</div>
+                <div className='moving-heading-item3'>Mentor</div>
+                <div className='moving-heading-item4'>Influencer</div>
+              </div>{' '}
+              Today!
             </Typography>
             <Typography
               sx={{
@@ -35,7 +52,7 @@ const ProfessionalHome = () => {
                 fontWeight: '400',
                 m: '2rem 0',
               }}>
-              Connect, Learn and Grow: Unlock Expertise, One Minute at a Time
+              Connect, Learn and Earn: Unlock Expertise, One Minute at a Time
             </Typography>
           </Grid>
           <Grid item xs={12} sm={12} md={5}>

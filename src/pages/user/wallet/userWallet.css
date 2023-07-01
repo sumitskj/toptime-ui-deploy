@@ -46,6 +46,17 @@
   background-size: contain;
 }
 
+.txnTableDiv {
+  border: 0;
+  width: 80%;
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  padding: 1rem;
+}
+
 @media only screen and (max-width: 900px) {
   .balanceDiv {
     width: 60%;
@@ -58,5 +69,9 @@
 
   .rightDiv {
     width: 80%;
+  }
+
+  .txnTableDiv {
+    width: 95%;
   }
 }
