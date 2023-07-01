@@ -8,6 +8,7 @@ import Trending from './Trending';
 import HowItWorks from './HowItWorks';
 
 import './home.css';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import PlayStoreImg from '../../static/images/google-play-badge.png';
 import { Box, Button, Card, CardMedia, Grid, ListItem, Typography } from '@mui/material';
 import FAQs from './FAQs';
@@ -55,7 +56,23 @@ const Home = () => {
                 fontSize: { xs: '2.4rem', sm: '3rem', md: '3rem', lg: '4rem' },
                 fontWeight: '600',
               }}>
-              Monetize your experiences today
+              <div>
+                Interact with your favourite{' '}
+                <FavoriteIcon
+                  sx={{
+                    verticalAlign: 'sub',
+                    color: 'red',
+                    fontSize: { xs: '2.4rem', sm: '3rem', md: '3rem', lg: '4rem' },
+                  }}
+                />
+              </div>{' '}
+              <div className='moving-heading-div'>
+                <div className='moving-heading-item1'>Creator</div>
+                <div className='moving-heading-item2'>Traveller</div>
+                <div className='moving-heading-item3'>Mentor</div>
+                <div className='moving-heading-item4'>Influencer</div>
+              </div>{' '}
+              Today!
             </Typography>
             <Typography
               sx={{
@@ -63,7 +80,7 @@ const Home = () => {
                 fontWeight: '400',
                 m: '2rem 0',
               }}>
-              Connect, Learn and Grow: Unlock Expertise, One Minute at a Time
+              Connect, Learn and Earn: Unlock Expertise, One Minute at a Time
             </Typography>
             <Box
               sx={{

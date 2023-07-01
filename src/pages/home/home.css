@@ -17,3 +17,103 @@
   color: #fff;
   background-color: #000;
 }
+
+.moving-heading-div {
+  position: relative;
+  height: 5rem;
+  width: 100px;
+  width: auto;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 5rem;
+}
+
+.moving-heading-item1 {
+  opacity: 0;
+  position: absolute;
+  animation-name: move1;
+  background-color: #EADFFE;
+  animation-duration: 12s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+.moving-heading-item2 {
+  opacity: 0;
+  position: absolute;
+  background-color: #EADFFE;
+  animation-name: move2;
+  animation-duration: 12s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+.moving-heading-item3 {
+  opacity: 0;
+  position: absolute;
+  background-color: #EADFFE;
+  animation-name: move3;
+  animation-duration: 12s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+.moving-heading-item4 {
+  opacity: 0;
+  position: absolute;
+  background-color: #EADFFE;
+  animation-name: move4;
+  animation-duration: 12s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes move1 {
+  0% {
+    opacity: 1;
+  }
+  25% {
+    opacity: 0;
+  }
+}
+
+@keyframes move2 {
+  0% {
+    opacity: 0;
+  }
+  23% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes move3 {
+  0% {
+    opacity: 0;
+  }
+  48% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 0;
+  }
+}
+@keyframes move4 {
+  0% {
+    opacity: 0;
+  }
+  73% {
+    opacity: 0;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

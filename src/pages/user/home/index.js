@@ -9,6 +9,7 @@ import Recommendation from './Recommendation';
 import UserUpcomingBooking from './UserUpcomingBooking';
 import Pricing from '../../home/Pricing';
 import PlayStoreImg from '../../../static/images/google-play-badge.png';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 const UserHome = () => {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ const UserHome = () => {
   return (
     <Box
       sx={{
-        marginTop: '2rem',
+        marginTop: '0rem',
       }}>
       <Box
         sx={{
@@ -37,7 +38,23 @@ const UserHome = () => {
                 fontSize: { xs: '2.4rem', sm: '3rem', md: '3rem', lg: '4rem' },
                 fontWeight: '600',
               }}>
-              Monetize your experiences today
+              <div>
+                Interact with your favourite{' '}
+                <FavoriteIcon
+                  sx={{
+                    verticalAlign: 'sub',
+                    color: 'red',
+                    fontSize: { xs: '2.4rem', sm: '3rem', md: '3rem', lg: '4rem' },
+                  }}
+                />
+              </div>{' '}
+              <div className='moving-heading-div'>
+                <div className='moving-heading-item1'>Creator</div>
+                <div className='moving-heading-item2'>Traveller</div>
+                <div className='moving-heading-item3'>Mentor</div>
+                <div className='moving-heading-item4'>Influencer</div>
+              </div>{' '}
+              Today!
             </Typography>
             <Typography
               sx={{
@@ -45,7 +62,7 @@ const UserHome = () => {
                 fontWeight: '400',
                 m: '2rem 0',
               }}>
-              Connect, Learn and Grow: Unlock Expertise, One Minute at a Time
+              Connect, Learn and Earn: Unlock Expertise, One Minute at a Time
             </Typography>
             <Box
               sx={{

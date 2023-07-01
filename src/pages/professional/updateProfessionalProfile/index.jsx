@@ -43,6 +43,7 @@ const UpdateProfessionalProfile = () => {
   const [badRequestError, setBadRequestError] = useState(false);
   const [showLoader, setShowLoader] = useState(() => false);
   const [openTooltip, setOpenTooltip] = useState(() => false);
+  const [platformFee, setPlaformFee] = useState(0);
 
   useEffect(() => {
     const fetchProfessionalData = async () => {
@@ -64,6 +65,7 @@ const UpdateProfessionalProfile = () => {
           setVideoCallRate(professionalJson.videoRate);
           setVoiceCallRate(professionalJson.voiceRate);
           setStatus(professionalJson.status);
+          setPlaformFee(professionalJson.platformFee);
           setProfilePic(professionalJson.profilePicUrl);
           dispatch(initSocialLinks());
           if (professionalJson.youTubeUrl !== '' && professionalJson.youTubeUrl !== null) {
@@ -595,9 +597,11 @@ const UpdateProfessionalProfile = () => {
               </div>
             </div>
             <LineBar desc='Call Rates (₹)' />
-            <Typography style={{ color: 'red', fontSize: '0.8rem' }}>
-              10% will be platform fees
-            </Typography>
+            {platformFee > 0 && (
+              <Typography style={{ color: 'red', fontSize: '0.8rem' }}>
+                {platformFee}% will be platform fees
+              </Typography>
+            )}
             <div className='updateHeadingDiv'>
               <div className='updateErrorHeadingDiv'>
                 <Typography sx={{ fontWeight: '800' }}>Video Call Rate</Typography>
@@ -619,7 +623,8 @@ const UpdateProfessionalProfile = () => {
               </div>
               {videoCallRate !== null && !isNaN(videoCallRate) && (
                 <Typography sx={{ fontSize: '0.8rem', fontWeight: '300', color: 'green' }}>
-                  For a video call of 10 min you will receive ₹{videoCallRate * 5 * 0.9}
+                  For a video call of 10 min you will receive ₹
+                  {(videoCallRate * 10 * ((100 - Number.parseInt(platformFee)) / 100)).toFixed(2)}
                 </Typography>
               )}
             </div>
@@ -644,7 +649,8 @@ const UpdateProfessionalProfile = () => {
               </div>
               {voiceCallRate !== null && !isNaN(voiceCallRate) && (
                 <Typography sx={{ fontSize: '0.8rem', fontWeight: '300', color: 'green' }}>
-                  For a voice call of 10 min you will receive ₹{voiceCallRate * 5 * 0.9}
+                  For a voice call of 10 min you will receive ₹
+                  {(voiceCallRate * 10 * ((100 - Number.parseInt(platformFee)) / 100)).toFixed(2)}
                 </Typography>
               )}
             </div>
