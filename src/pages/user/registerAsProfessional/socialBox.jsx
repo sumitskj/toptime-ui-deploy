@@ -64,7 +64,8 @@ const SocialBox = ({ payload }) => {
             style={{
               position: 'relative',
               height: '40px',
-              border: '1px solid grey',
+              border: '0',
+              borderRight: '1px solid grey',
               borderTopLeftRadius: '8px',
               borderBottomLeftRadius: '8px',
             }}>
