@@ -18,6 +18,7 @@ import jwtDecode from 'jwt-decode';
 import moment from 'moment';
 import { getRefreshToken } from '../login/api/login';
 import { setlogin } from '../login/slice/login';
+import PromoTopBar from '../../components/PromoTopBar/PromoTopBar';
 
 const CustomisedBecomeExpert = styled(Button)`
   font-weight: 600;
@@ -328,6 +329,7 @@ const Main = () => {
           ml: { sm: `${calcDrawerWidth}px` },
         }}>
         <Toolbar />
+        {(location.pathname.includes('home') || location.pathname === '/') && <PromoTopBar />}
         <Outlet />
       </Box>
     </div>
