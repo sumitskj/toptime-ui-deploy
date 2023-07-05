@@ -1,0 +1,49 @@
+.promoTopBarDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: linear-gradient(
+    to right,
+    rgb(255, 131, 159),
+    rgb(155, 70, 188)
+  );
+  text-align: center;
+  /* -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; */
+}
+
+.spanItem {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.upcomingFeatureBtn {
+  background-color: black;
+  color: white;
+  padding: 8px;
+  border: 0;
+  font-family: "Rubik";
+  margin: 4px;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+  font-size: 1rem;
+}
+
+@media only screen and (max-width: 900px) {
+  .upcomingFeatureBtn {
+    font-size: 0.8rem;
+  }
+
+  .spanItem {
+    font-size: 0.8rem;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .upcomingFeatureBtn {
+    font-size: 0.6rem;
+  }
+
+  .spanItem {
+    font-size: 0.6rem;
+  }
+}
